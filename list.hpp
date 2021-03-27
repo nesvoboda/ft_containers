@@ -6,7 +6,7 @@
 /*   By: ashishae <ashishae@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/24 18:25:06 by ashishae          #+#    #+#             */
-/*   Updated: 2020/10/25 18:16:45 by ashishae         ###   ########.fr       */
+/*   Updated: 2021/03/23 15:55:17 by ashishae         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,27 @@
 # define LIST_HPP
 
 # include <iostream>
+
+template <typename iterator, typename T>
+class reverse_iterator {
+		iterator _iter;
+		// listNode<T> *ptr;
+		public:
+			reverse_iterator() : _iter() {};
+			// reverse_iterator(listNode<T> *_ptr) : iterator(_ptr) {};
+			reverse_iterator(iterator it) : _iter(it) {};
+			reverse_iterator(reverse_iterator const &it) : _iter(it) {};
+			reverse_iterator& operator=(const reverse_iterator &operand) {iterator::operator=(operand); return(*this);}
+			virtual ~reverse_iterator(void) {};
+			reverse_iterator& operator++() {_iter.operator--(); return *this;}
+			reverse_iterator& operator--() {_iter.operator++(); return *this;}
+			T& operator*() {return _iter.operator*();}
+			reverse_iterator operator++(int) {reverse_iterator retval = *this; ++(*this); return retval;}
+			reverse_iterator operator--(int) {reverse_iterator retval = *this; --(*this); return retval;}
+			bool operator==(reverse_iterator other) const {return _iter.operator==(other._iter);}
+			bool operator!=(reverse_iterator other) const {return !(*this == other);}
+			reverse_iterator &operator*() const {_iter.operator*(); return *this;}
+};
 
 template <typename T>
 class listNode {
@@ -43,14 +64,15 @@ private:
 
 template <typename T>
 class list {
+	
 
 public:
 
-	// Default constructor
+	// (1) Default constructor
 	explicit list(/*const allocator_type& alloc = allocator_type()*/) :
 		start(NULL) {};
 
-	// Fill constructor
+	// (2) Fill constructor
 	explicit list(unsigned int n, const T& val = T() /*, const allocator_type& alloc = allocator_type()*/)
 	{
 		this->start = new listNode<T>(val, NULL, NULL);
@@ -67,12 +89,17 @@ public:
 		tmp = new listNode<T>(T(), NULL, cursor);
 		cursor->setNext(tmp);
 	};
+
+	// TODO: (3) Range constructor
+
+	// TODO: (4) Сopy constructor
+	list(const list &copy);
 	
 	// template <class InputIterator>
 	// list (InputIterator first, InputIterator last, const allocator_type& alloc = allocator_type());
 	
 	~list() {};
-	list(const list &copy);
+	
 	list &operator= (const list &operand) {
 
 		// We only need to manipulate things if we're not self-reassigning
@@ -107,24 +134,10 @@ public:
 				tmp = tmp->getNext();
 			}
 		}
-		
 		return (*this);
 	};
-	
-	T &front(void) {return start->getValue();};
-	const T &front(void) const {return start->getValue();};
-	
-	bool empty(void) const {return start == NULL;};
-	unsigned int size() const {
-		unsigned int val = 0;
-		listNode<T> *cursor = start;
-		while (cursor->getNext() != NULL)
-		{
-			val += 1;
-			cursor = cursor->getNext();
-		}
-		return val;
-	};
+
+	// Iterators
 
 	class iterator: public std::iterator<std::bidirectional_iterator_tag, T> {
 		listNode<T> *ptr;
@@ -151,32 +164,73 @@ public:
 		return iterator(cursor);
 	}
 
-	class reverse_iterator: public iterator {
-		// listNode<T> *ptr;
-		public:
-			reverse_iterator() : iterator() {};
-			reverse_iterator(listNode<T> *_ptr) : iterator(_ptr) {};
-			reverse_iterator(iterator it) : iterator(it) {};
-			reverse_iterator(reverse_iterator const &it) : iterator(it) {};
-			reverse_iterator& operator=(const reverse_iterator &operand) {iterator::operator=(operand); return(*this);}
-			virtual ~reverse_iterator(void) {};
-			reverse_iterator& operator++() {iterator::operator--(); return *this;}
-			reverse_iterator& operator--() {iterator::operator++(); return *this;}
-			T& operator*() {return iterator::operator*();}
-			reverse_iterator operator++(int) {reverse_iterator retval = *this; ++(*this); return retval;}
-			reverse_iterator operator--(int) {reverse_iterator retval = *this; --(*this); return retval;}
-			bool operator==(reverse_iterator other) const {return iterator::operator==(other);}
-			bool operator!=(reverse_iterator other) const {return !(*this == other);}
-			reverse_iterator &operator*() const {return iterator::operator*;}
-	};
+	// class reverse_iterator: public iterator {
+	// 	// listNode<T> *ptr;
+	// 	public:
+	// 		reverse_iterator() : iterator() {};
+	// 		reverse_iterator(listNode<T> *_ptr) : iterator(_ptr) {};
+	// 		reverse_iterator(iterator it) : iterator(it) {};
+	// 		reverse_iterator(reverse_iterator const &it) : iterator(it) {};
+	// 		reverse_iterator& operator=(const reverse_iterator &operand) {iterator::operator=(operand); return(*this);}
+	// 		virtual ~reverse_iterator(void) {};
+	// 		reverse_iterator& operator++() {iterator::operator--(); return *this;}
+	// 		reverse_iterator& operator--() {iterator::operator++(); return *this;}
+	// 		T& operator*() {return iterator::operator*();}
+	// 		reverse_iterator operator++(int) {reverse_iterator retval = *this; ++(*this); return retval;}
+	// 		reverse_iterator operator--(int) {reverse_iterator retval = *this; --(*this); return retval;}
+	// 		bool operator==(reverse_iterator other) const {return iterator::operator==(other);}
+	// 		bool operator!=(reverse_iterator other) const {return !(*this == other);}
+	// 		reverse_iterator &operator*() const {return iterator::operator*;}
+	// };
+	reverse_iterator<iterator, T> reverse_iterator;
 	iterator rbegin() {return reverse_iterator(this->start);}
 	iterator rend() {
-		// listNode<T> *cursor = this->start;
-		// while (cursor->getNext() != NULL)
-		// 	cursor = cursor->getNext();
-		// return iterator(cursor);
 		return reverse_iterator(this->end());
 	}
+
+	class const_iterator: public iterator {
+		listNode<T> *ptr;
+		public:
+			const_iterator() : ptr(NULL) {}
+			const_iterator(listNode<T> *_ptr) : ptr(_ptr) {}
+			const_iterator(const_iterator const &it) : ptr(it.ptr) {};
+			const_iterator& operator=(const const_iterator &operand) {ptr = operand.ptr; return *this;}
+			~const_iterator(void) {};
+			const_iterator& operator++() {ptr = ptr->getNext(); return *this;}
+			const_iterator& operator--() {ptr = ptr->getPrev(); return *this;}
+			const T& operator*() {return ptr->getValue();}
+			const_iterator operator++(int) {const_iterator retval = *this; ++(*this); return retval;}
+			const_iterator operator--(int) {const_iterator retval = *this; --(*this); return retval;}
+			bool operator==(const_iterator other) const {return ptr == other.ptr;}
+			bool operator!=(const_iterator other) const {return !(*this == other);}
+			const_iterator &operator*() const {return ptr->getValue();}
+	};
+
+	const_iterator cbegin() {return const_iterator(this->start);}
+	const_iterator cend() {
+		listNode<T> *cursor = this->start;
+		while (cursor->getNext() != NULL)
+			cursor = cursor->getNext();
+		return const_iterator(cursor);
+	}
+	
+	// Capacity
+
+	bool empty(void) const {return start == NULL;};
+	unsigned int size() const {
+		unsigned int val = 0;
+		listNode<T> *cursor = start;
+		while (cursor->getNext() != NULL)
+		{
+			val += 1;
+			cursor = cursor->getNext();
+		}
+		return val;
+	};
+	
+	// Element access
+	T &front(void) {return start->getValue();};
+	const T &front(void) const {return start->getValue();};
 
 
 public:

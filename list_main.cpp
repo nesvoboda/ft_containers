@@ -6,7 +6,7 @@
 /*   By: ashishae <ashishae@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/24 18:44:04 by ashishae          #+#    #+#             */
-/*   Updated: 2020/10/25 18:18:43 by ashishae         ###   ########.fr       */
+/*   Updated: 2021/03/23 15:37:00 by ashishae         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -254,6 +254,72 @@ int main(void)
 	{
 		check(*lit4 == 10);
 	}
+
+	////////////////////////////////////////////////////////////////////////////
+	// List | Const iterator
+	////////////////////////////////////////////////////////////////////////////
+
+	out("List const_iterator | Constructor");
+	list<int>::const_iterator cit;
+
+	list<int>::const_iterator cit2(&ln_i6);
+
+	out("List const_iterator | Copy constructor");
+	list<int>::const_iterator cit3(cit2);
+
+	out("List const_iterator | Assignment operator");
+	list<int>::const_iterator cit4(&ln_i4);
+
+	cit4 = cit3;
+
+	out("List const_iterator | Destructor");
+	{
+		list<int>::const_iterator cit5;
+	}
+
+	list<int> cl_i2(5, 10);
+
+	*(cl_i2.end()) = 42;
+	
+	out("List | cend()");
+
+	list<int>::const_iterator lcit1 = cl_i2.cend();
+
+	check(*lcit1 == 42);
+
+	out("List const_iterator | = operator");
+
+	list<int>::const_iterator lcit2 = lcit1;
+	
+	out("List const_iterator | operator --");
+	lcit1--;
+	check(*lcit1 == 10);
+
+	out("List const_iterator | operator ++");
+	lcit1++;
+	check(*lcit1 == 42);
+
+	lcit1--;
+
+	out("List const_iterator | != operator");
+	check(lcit2 != lcit1);
+
+	out("List const_iterator | operator ++");
+	++lcit1;
+	
+	out("List const_iterator | == operator");
+	
+	check(lcit2 == lcit1);
+
+	out("List const_iterator | operator --");
+	--lcit1;
+	
+	out("List const_iterator | ++ operator");
+	lcit1++;
+	check(*lcit1 == 42);
+	lcit1--;
+	check(lcit2 != lcit1);
+
 
 	// TODO: leaks-check
 
