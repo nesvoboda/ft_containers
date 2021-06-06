@@ -430,7 +430,6 @@ public:
 		listNode<T> *cur = position.internalPtr();
 		listNode<T> *prev = position.internalPtr()->getPrev();
 
-
 		listNode<T> *newElement;
 		for (size_t i = 0; i < n; i++)
 		{
