@@ -108,19 +108,24 @@ public:
 	typedef const value_type &const_reference;
 	typedef value_type *pointer;
 	typedef const value_type *const_pointer;
+	typedef size_t size_type;
 
 	// (1) Default constructor
-	explicit list(/*const allocator_type& alloc = allocator_type()*/) : _start(NULL){};
+	explicit list(/*const allocator_type& alloc = allocator_type()*/)
+	{
+		_start = new listNode<T>(T(), NULL, NULL);
+	};
 
 	// (2) Fill constructor
 	explicit list(unsigned int n, const T &val = T() /*, const allocator_type& alloc = allocator_type()*/)
 	{
 
-		if (n == 0)
-		{
-			_start = new listNode<T>(T(), NULL, NULL);
-			return;
-		}
+		// if (n == 0)
+		// {
+		// 	_start = new listNode<T>(T(), NULL, NULL);
+		// 	return;
+		// }
+		/*
 		_start = new listNode<T>(val, NULL, NULL);
 		listNode<T> *cursor = _start;
 		listNode<T> *tmp = NULL;
@@ -134,20 +139,27 @@ public:
 		// Element for the end iterator
 		tmp = new listNode<T>(T(), NULL, cursor);
 		cursor->setNext(tmp);
+		*/
+		_start = new listNode<T>(val, NULL, NULL);
+		for (size_t i = 0; i < n; i++) {
+			listNode<T> *newElem = new listNode<T>(val, _start, NULL);
+			_start->setPrev(newElem);
+			_start = newElem;
+		}
 	};
 
 	// TODO: (3) Range constructor
 
 	// TODO: (4) Сopy constructor
-	list(const list &copy);
+	// list(const list &copy);
 
 	// template <class InputIterator>
 	// list (InputIterator first, InputIterator last, const allocator_type& alloc = allocator_type());
 
 	~list()
 	{
-		if (_start == NULL)
-			return;
+		// if (_start == NULL)
+		// 	return;
 
 		listNode<T> *cur = _start;
 
@@ -164,7 +176,7 @@ public:
 		}
 		delete cur;
 	};
-
+/*
 	list &operator=(const list &operand)
 	{
 
@@ -184,9 +196,9 @@ public:
 				cur = cur->getPrev();
 				delete prev;
 			}
-			delete cur;
+			// delete cur;
 
-			_start = NULL;
+			// _start = NULL;
 			// TODO
 			// Copy the operand
 			// listNode<T> *cursorTheirs = operand->_start;
@@ -206,13 +218,16 @@ public:
 			// }
 		}
 		return (*this);
-	};
+	}; */
 
 	// Iterators
 
 	class iterator : public std::iterator<std::bidirectional_iterator_tag, T>
 	{
+		friend class list;
 		listNode<T> *ptr;
+
+		listNode<T> *internalPtr(void) { return ptr; };
 
 	public:
 		iterator() : ptr(NULL) {}
@@ -270,12 +285,12 @@ public:
 
 	// Capacity
 
-	bool empty(void) const { return _start == NULL; };
+	bool empty(void) const {
+		// return _start == NULL;
+		return _start->getNext() == NULL;
+	};
 	unsigned int size() const
 	{
-		if (_start == NULL)
-			return 0;
-
 		unsigned int val = 0;
 		listNode<T> *cursor = _start;
 		while (cursor->getNext() != NULL)
@@ -326,36 +341,29 @@ public:
 	void pop_front()
 	{
 		// STD If empty, undefined behavior
-		if (_start == NULL)
+		if (_start->getNext() == NULL)
 		{
 			return;
 		}
-		// if 1 element, delete END element
-		if (this->size() == 1)
-		{
-			delete _start->getNext();
-			delete _start;
-			_start = NULL;
-			return;
-		}
-		else
-		{
-			listNode<T> *newStart = _start->getNext();
 
-			newStart->setPrev(NULL);
+		listNode<T> *newStart = _start->getNext();
 
-			delete _start;
-			_start = new_Start;
-		}
+		newStart->setPrev(NULL);
+
+		delete _start;
+		_start = newStart;
+
 	}
 
 	void push_back (const value_type& val)
 	{
-		if (_start == NULL)
-		{
-			_start = new listNode<T>(val, new listNode<T>(T(), NULL, NULL), NULL);
-			return;
-		}
+		// if (_start == NULL)
+		// {
+		// 	_start = new listNode<T>(val, NULL, NULL);
+		// 	_start->setNext(new listNode<T>(T(), NULL, _start)); // END
+		// 	return;
+		// }
+
 		listNode<T> *cur = _start;
 		while (cur->getNext() != NULL)
 		{
@@ -363,9 +371,77 @@ public:
 		}
 		listNode<T> *prev = cur->getPrev();
 
-		listNode<T> newElem = new listNode(val, cur, prev);
-		prev->setNext(newElem);
+		listNode<T> *newElem = new listNode<T>(val, cur, prev);
+
+		// If this is the first element, start should be adjusted
+		if (_start->getNext() == NULL)
+			_start = newElem;
+
+		if (prev)
+			prev->setNext(newElem);
+		cur->setPrev(newElem);
+	}
+
+	void pop_back()
+	{
+		if (_start->getNext() == NULL)
+		{
+			// STL: Undefined behavior
+			return;
+		}
+
+		listNode<T> *cur = _start;
 		
+		while (cur->getNext() != NULL)
+			cur = cur->getNext();
+		
+		// If list only has one element, we have to move its start point
+		// to the 'end' element
+		if (_start->getNext()->getNext() == NULL)
+			_start = cur;
+
+		listNode<T> *prev = cur->getPrev();
+		listNode<T> *before_prev = prev->getPrev();
+
+		if (before_prev)
+			before_prev->setNext(cur);
+		cur->setPrev(before_prev);
+
+		delete prev;
+	}
+
+	// single element (1)
+	iterator insert (iterator position, const value_type& val)
+	{
+		listNode<T> *cur = position.internalPtr();
+		listNode<T> *prev = position.internalPtr()->getPrev();
+		listNode<T> *newElement = new listNode<T>(val, cur, prev);
+		if (prev)
+			prev->setNext(newElement);
+		else
+			_start = newElement; // if adding to the beginning, move start pointer
+		cur->setPrev(newElement);
+		return iterator(newElement);
+	}
+
+	// fill (2)
+	void insert (iterator position, size_type n, const value_type& val)
+	{
+		listNode<T> *cur = position.internalPtr();
+		listNode<T> *prev = position.internalPtr()->getPrev();
+
+
+		listNode<T> *newElement;
+		for (size_t i = 0; i < n; i++)
+		{
+			newElement = new listNode<T>(val, cur, prev);
+			cur->setPrev(newElement);
+			cur = newElement;
+		}
+		if (prev)
+			prev->setNext(newElement);
+		else
+			_start = newElement; // if adding to the beginning, move start pointer
 	}
 
 public:

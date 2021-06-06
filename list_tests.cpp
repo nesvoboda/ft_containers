@@ -332,6 +332,7 @@ TEST(ListReverseIteratorEndBegin)
 	CHECK_EQ(revIterA, list_a.rend());
 }
 
+/*
 TEST(ListAssignmentOperator)
 {
 	list<int> list_a(5, 10);
@@ -349,6 +350,8 @@ TEST(ListAssignmentOperator)
 	}
 
 }
+*/
+
 
 TEST(ListBack)
 {
@@ -399,7 +402,6 @@ TEST(ListPushFront)
 	ASSERT_EQ(list_b.back(), 10);
 }
 
-
 TEST(ListPopFront)
 {
 	list<int> list_a(5, 10);
@@ -424,6 +426,175 @@ TEST(ListPopFront)
 	list<int> list_c(1, 10);
 	list_c.pop_front();
 	ASSERT_EQ(list_c.size(), 0);
+}
+
+TEST(ListPushBack)
+{
+	list<int> list_a;
+
+	ASSERT_EQ(list_a.size(), 0);
+
+	list_a.push_back(42);
+	ASSERT_EQ(list_a.size(), 1);
+	ASSERT_EQ(list_a.front(), 42);
+	ASSERT_EQ(list_a.back(), 42);
+
+	list<int> list_b(5, 10);
+	ASSERT_EQ(list_b.size(), 5);
+
+	list_b.push_back(-42);
+	ASSERT_EQ(list_b.size(), 6);
+	ASSERT_EQ(list_b.back(), -42);
+	ASSERT_EQ(list_b.front(), 10);
+}
+
+TEST(ListPopBack)
+{
+	list<int> list_a(5, 10);
+	ASSERT_EQ(list_a.size(), 5);
+
+	list_a.push_back(-42);
+	ASSERT_EQ(list_a.size(), 6);
+	ASSERT_EQ(list_a.back(), -42);
+	ASSERT_EQ(list_a.front(), 10);
+
+	list_a.pop_back();
+	ASSERT_EQ(list_a.size(), 5);
+	ASSERT_EQ(list_a.front(), 10);
+	ASSERT_EQ(list_a.back(), 10);
+
+	list<int> list_b(5, 10);
+	list_b.pop_back();
+	ASSERT_EQ(list_b.size(), 4);
+	ASSERT_EQ(list_b.front(), 10);
+	ASSERT_EQ(list_b.back(), 10);
+
+	list<int> list_c(1, 10);
+	list_c.pop_back();
+	ASSERT_EQ(list_c.size(), 0);
+
+	list<int> list_d(2, 10);
+	list_d.pop_back();
+	ASSERT_EQ(list_d.size(), 1);
+	ASSERT_EQ(list_d.front(), 10);
+	ASSERT_EQ(list_d.back(), 10);
+}
+
+TEST(ListInsertOne)
+{
+	list<int> list_a;
+	list_a.insert(list_a.end(), 42);
+
+	ASSERT_EQ(list_a.size(), 1);
+	ASSERT_EQ(list_a.front(), 42);
+	ASSERT_EQ(list_a.back(), 42);
+
+	list_a.insert(list_a.end(), 43);
+
+	ASSERT_EQ(list_a.size(), 2);
+	ASSERT_EQ(list_a.front(), 42);
+	ASSERT_EQ(list_a.back(), 43);
+
+	list_a.insert(list_a.begin(), 45);
+
+	ASSERT_EQ(list_a.size(), 3);
+	ASSERT_EQ(list_a.front(), 45);
+	ASSERT_EQ(list_a.back(), 43);
+
+	list<int> list_b(5, 10);
+	ASSERT_EQ(list_b.size(), 5);
+	ASSERT_EQ(list_b.front(), 10);
+	ASSERT_EQ(list_b.back(), 10);
+
+	list_b.insert(list_b.begin(), 42);
+	ASSERT_EQ(list_b.size(), 6);
+	ASSERT_EQ(list_b.front(), 42);
+	ASSERT_EQ(list_b.back(), 10);
+
+	list_b.insert(list_b.end(), 44);
+
+	ASSERT_EQ(list_b.size(), 7);
+	ASSERT_EQ(list_b.front(), 42);
+	ASSERT_EQ(list_b.back(), 44);
+
+	list<int>::iterator iter = list_b.begin();
+
+	iter++;
+
+	list_b.insert(iter, 21);
+	ASSERT_EQ(list_b.size(), 8);
+	ASSERT_EQ(list_b.front(), 42);
+	ASSERT_EQ(list_b.back(), 44);
+
+	ASSERT_EQ(*(++list_b.begin()), 21);
+
+}
+
+TEST(ListInsertFillOne)
+{
+	list<int> list_a;
+	list_a.insert(list_a.end(), 1, 42);
+
+	ASSERT_EQ(list_a.size(), 1);
+	ASSERT_EQ(list_a.front(), 42);
+	ASSERT_EQ(list_a.back(), 42);
+
+	list_a.insert(list_a.end(), 1, 43);
+
+	ASSERT_EQ(list_a.size(), 2);
+	ASSERT_EQ(list_a.front(), 42);
+	ASSERT_EQ(list_a.back(), 43);
+
+	list_a.insert(list_a.begin(), 1, 45);
+
+	ASSERT_EQ(list_a.size(), 3);
+	ASSERT_EQ(list_a.front(), 45);
+	ASSERT_EQ(list_a.back(), 43);
+
+	list<int> list_b(5, 10);
+	ASSERT_EQ(list_b.size(), 5);
+	ASSERT_EQ(list_b.front(), 10);
+	ASSERT_EQ(list_b.back(), 10);
+
+	list_b.insert(list_b.begin(), 1, 42);
+	ASSERT_EQ(list_b.size(), 6);
+	ASSERT_EQ(list_b.front(), 42);
+	ASSERT_EQ(list_b.back(), 10);
+
+	list_b.insert(list_b.end(), 1, 44);
+
+	ASSERT_EQ(list_b.size(), 7);
+	ASSERT_EQ(list_b.front(), 42);
+	ASSERT_EQ(list_b.back(), 44);
+
+	list<int>::iterator iter = list_b.begin();
+
+	iter++;
+
+	list_b.insert(iter, 1, 21);
+	ASSERT_EQ(list_b.size(), 8);
+	ASSERT_EQ(list_b.front(), 42);
+	ASSERT_EQ(list_b.back(), 44);
+
+	ASSERT_EQ(*(++list_b.begin()), 21);
+}
+
+TEST(ListInsertFillMany)
+{
+	list<int> list_a;
+
+	list_a.insert(list_a.begin(), 5, 10);
+
+	ASSERT_EQ(list_a.size(), 5);
+	ASSERT_EQ(list_a.back(), 10);
+	ASSERT_EQ(list_a.front(), 10);
+
+
+	list<int> list_b;
+	list_b.insert(list_b.begin(), 5, 10);
+	ASSERT_EQ(list_b.size(), 5);
+	ASSERT_EQ(list_b.back(), 10);
+	ASSERT_EQ(list_b.front(), 10);
 }
 
 #include <list>
