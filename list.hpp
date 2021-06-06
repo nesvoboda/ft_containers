@@ -141,7 +141,8 @@ public:
 		cursor->setNext(tmp);
 		*/
 		_start = new listNode<T>(val, NULL, NULL);
-		for (size_t i = 0; i < n; i++) {
+		for (size_t i = 0; i < n; i++)
+		{
 			listNode<T> *newElem = new listNode<T>(val, _start, NULL);
 			_start->setPrev(newElem);
 			_start = newElem;
@@ -176,7 +177,7 @@ public:
 		}
 		delete cur;
 	};
-/*
+	/*
 	list &operator=(const list &operand)
 	{
 
@@ -285,7 +286,8 @@ public:
 
 	// Capacity
 
-	bool empty(void) const {
+	bool empty(void) const
+	{
 		// return _start == NULL;
 		return _start->getNext() == NULL;
 	};
@@ -352,10 +354,9 @@ public:
 
 		delete _start;
 		_start = newStart;
-
 	}
 
-	void push_back (const value_type& val)
+	void push_back(const value_type &val)
 	{
 		// if (_start == NULL)
 		// {
@@ -391,10 +392,10 @@ public:
 		}
 
 		listNode<T> *cur = _start;
-		
+
 		while (cur->getNext() != NULL)
 			cur = cur->getNext();
-		
+
 		// If list only has one element, we have to move its start point
 		// to the 'end' element
 		if (_start->getNext()->getNext() == NULL)
@@ -411,7 +412,7 @@ public:
 	}
 
 	// single element (1)
-	iterator insert (iterator position, const value_type& val)
+	iterator insert(iterator position, const value_type &val)
 	{
 		listNode<T> *cur = position.internalPtr();
 		listNode<T> *prev = position.internalPtr()->getPrev();
@@ -425,7 +426,7 @@ public:
 	}
 
 	// fill (2)
-	void insert (iterator position, size_type n, const value_type& val)
+	void insert(iterator position, size_type n, const value_type &val)
 	{
 		listNode<T> *cur = position.internalPtr();
 		listNode<T> *prev = position.internalPtr()->getPrev();

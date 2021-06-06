@@ -352,7 +352,6 @@ TEST(ListAssignmentOperator)
 }
 */
 
-
 TEST(ListBack)
 {
 	list<int> list_a(1, 10);
@@ -366,7 +365,6 @@ TEST(ListBackConst)
 
 	ASSERT_EQ(list_a.back(), 10);
 }
-
 
 TEST(ListFront)
 {
@@ -527,7 +525,6 @@ TEST(ListInsertOne)
 	ASSERT_EQ(list_b.back(), 44);
 
 	ASSERT_EQ(*(++list_b.begin()), 21);
-
 }
 
 TEST(ListInsertFillOne)
@@ -589,7 +586,6 @@ TEST(ListInsertFillMany)
 	ASSERT_EQ(list_a.back(), 10);
 	ASSERT_EQ(list_a.front(), 10);
 
-
 	list<int> list_b;
 	list_b.insert(list_b.begin(), 5, 10);
 	ASSERT_EQ(list_b.size(), 5);
@@ -598,7 +594,6 @@ TEST(ListInsertFillMany)
 }
 
 #include <list>
-
 
 #include <unistd.h>
 
@@ -611,7 +606,6 @@ int main()
 
 	// TODO: leaks-check
 
-	
 	// listNode<int> *a = l_i2.start;
 	// for (int i = 0; i < 10; i++)
 	// {
@@ -623,6 +617,4 @@ int main()
 
 	// 	a = a->getNext();
 	// }
-	
-	
 }
