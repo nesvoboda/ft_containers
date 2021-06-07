@@ -6,7 +6,7 @@
 /*   By: ashishae <ashishae@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/24 18:25:06 by ashishae          #+#    #+#             */
-/*   Updated: 2021/06/05 19:02:24 by ashishae         ###   ########.fr       */
+/*   Updated: 2021/06/07 17:40:29 by ashishae         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 #define LIST_HPP
 
 #include <iostream>
+#include <numeric>
 
 template <typename iterator, typename T>
 class reverse_iterator
@@ -442,6 +443,47 @@ public:
 			prev->setNext(newElement);
 		else
 			_start = newElement; // if adding to the beginning, move start pointer
+	}
+
+	// range (3)
+	template <class InputIterator>
+	void insert (iterator position, InputIterator first, InputIterator last)
+	{
+		// typedef typename std::numeric_limits<InputIterator>::is_integer _Integral;
+		listNode<T> *cur = position.internalPtr();
+		listNode<T> *prev = position.internalPtr()->getPrev();
+
+		listNode<T> *newElement;
+		for (; first != last; ++first)
+		{
+			newElement = new listNode<T>(*first, cur, prev);
+			cur->setPrev(newElement);
+			
+			if (prev)
+				prev->setNext(newElement);
+			else
+				_start = newElement; // if adding to the beginning, move start pointer
+			prev = newElement;
+		}
+	}
+
+	iterator erase (iterator position)
+	{
+		if (_start->getNext() == NULL)
+			return iterator(_start); // STL: undefined behavior
+		
+		listNode<T> *cur = position.internalPtr();
+		listNode<T> *next = cur->getNext();
+		listNode<T> *prev = cur->getPrev();
+
+		if (prev)
+			prev->setNext(next);
+		else
+			_start = next;
+
+		next->setPrev(prev);
+		delete cur;
+		return iterator(next);
 	}
 
 public:

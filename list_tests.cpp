@@ -530,19 +530,19 @@ TEST(ListInsertOne)
 TEST(ListInsertFillOne)
 {
 	list<int> list_a;
-	list_a.insert(list_a.end(), 1, 42);
+	list_a.insert(list_a.end(), (size_t) 1, 42);
 
 	ASSERT_EQ(list_a.size(), 1);
 	ASSERT_EQ(list_a.front(), 42);
 	ASSERT_EQ(list_a.back(), 42);
 
-	list_a.insert(list_a.end(), 1, 43);
+	list_a.insert(list_a.end(), (size_t) 1, 43);
 
 	ASSERT_EQ(list_a.size(), 2);
 	ASSERT_EQ(list_a.front(), 42);
 	ASSERT_EQ(list_a.back(), 43);
 
-	list_a.insert(list_a.begin(), 1, 45);
+	list_a.insert(list_a.begin(), (size_t) 1, 45);
 
 	ASSERT_EQ(list_a.size(), 3);
 	ASSERT_EQ(list_a.front(), 45);
@@ -553,12 +553,12 @@ TEST(ListInsertFillOne)
 	ASSERT_EQ(list_b.front(), 10);
 	ASSERT_EQ(list_b.back(), 10);
 
-	list_b.insert(list_b.begin(), 1, 42);
+	list_b.insert(list_b.begin(), (size_t) 1, 42);
 	ASSERT_EQ(list_b.size(), 6);
 	ASSERT_EQ(list_b.front(), 42);
 	ASSERT_EQ(list_b.back(), 10);
 
-	list_b.insert(list_b.end(), 1, 44);
+	list_b.insert(list_b.end(), (size_t) 1, 44);
 
 	ASSERT_EQ(list_b.size(), 7);
 	ASSERT_EQ(list_b.front(), 42);
@@ -568,7 +568,7 @@ TEST(ListInsertFillOne)
 
 	iter++;
 
-	list_b.insert(iter, 1, 21);
+	list_b.insert(iter, (size_t) 1, 21);
 	ASSERT_EQ(list_b.size(), 8);
 	ASSERT_EQ(list_b.front(), 42);
 	ASSERT_EQ(list_b.back(), 44);
@@ -580,20 +580,101 @@ TEST(ListInsertFillMany)
 {
 	list<int> list_a;
 
-	list_a.insert(list_a.begin(), 5, 10);
+	list_a.insert(list_a.begin(), (size_t) 5, 10);
 
 	ASSERT_EQ(list_a.size(), 5);
 	ASSERT_EQ(list_a.back(), 10);
 	ASSERT_EQ(list_a.front(), 10);
 
 	list<int> list_b;
-	list_b.insert(list_b.begin(), 5, 10);
+	list_b.insert(list_b.begin(), (size_t) 5, 10);
 	ASSERT_EQ(list_b.size(), 5);
 	ASSERT_EQ(list_b.back(), 10);
 	ASSERT_EQ(list_b.front(), 10);
 }
+#include <vector>
 
 #include <list>
+
+TEST(ListInsertRangeEmpty)
+{
+	list<int> list_a;
+	std::vector<int> list_b;
+
+	list_b.push_back(5);
+	list_b.push_back(4);
+	list_b.push_back(3);
+
+	list_a.insert(list_a.begin(), list_b.begin(), list_b.end());
+
+	ASSERT_EQ(list_a.size(), 3);
+	ASSERT_EQ(list_a.front(), 5);
+	ASSERT_EQ(list_a.back(), 3);
+}
+
+TEST(ListInsertRangeSome)
+{
+	list<int> list_a(5, 10);
+	std::vector<int> list_b;
+
+	list_b.push_back(5);
+	list_b.push_back(4);
+	list_b.push_back(3);
+
+	list_a.insert(list_a.begin(), list_b.begin(), list_b.end());
+
+	ASSERT_EQ(list_a.size(), 8);
+	ASSERT_EQ(list_a.front(), 5);
+	ASSERT_EQ(list_a.back(), 10);
+}
+
+TEST(ListEraseFirst)
+{
+	list<int> list_a(1, 10);
+
+	ASSERT_EQ(list_a.size(), 1);
+
+	list_a.erase(list_a.begin());
+
+	ASSERT_EQ(list_a.size(), 0);
+
+	list<int> list_b(3, 10);
+
+	ASSERT_EQ(list_b.size(), 3);
+
+	list_b.erase(list_b.begin());
+
+	ASSERT_EQ(list_b.size(), 2);
+
+}
+
+TEST(ListEraseLast)
+{
+	list<int> list_a(3, 10);
+
+	ASSERT_EQ(list_a.size(), 3);
+
+	list_a.erase(--list_a.end());
+
+	ASSERT_EQ(list_a.size(), 2);
+}
+
+TEST(ListEraseMiddle)
+{
+	list<int> list_a;
+
+	list_a.push_back(5);
+	list_a.push_back(4);
+	list_a.push_back(3);
+
+	ASSERT_EQ(list_a.size(), 3);
+
+	list_a.erase(++list_a.begin());
+
+	ASSERT_EQ(list_a.size(), 2);
+	ASSERT_EQ(list_a.front(), 5);
+	ASSERT_EQ(list_a.back(), 3);
+}
 
 #include <unistd.h>
 
