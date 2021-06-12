@@ -6,7 +6,7 @@
 /*   By: ashishae <ashishae@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/24 18:25:06 by ashishae          #+#    #+#             */
-/*   Updated: 2021/06/12 12:07:45 by ashishae         ###   ########.fr       */
+/*   Updated: 2021/06/12 13:54:20 by ashishae         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,12 +105,16 @@ private:
 	listNode *prev;
 };
 
+template <bool B, class T = void>
+struct enable_if
+{
+};
 
-template<bool B, class T = void>
-struct enable_if {};
- 
-template<class T>
-struct enable_if<true, T> { typedef T type; };
+template <class T>
+struct enable_if<true, T>
+{
+	typedef T type;
+};
 
 template <typename T>
 class list
@@ -120,6 +124,8 @@ class list
 // friend classes
 #ifdef UNIT_TEST
 	friend class ListSwapElements;
+	friend class ListMergeElements;
+	friend class ListFrontBackSplit;
 #endif
 
 public:
@@ -153,7 +159,7 @@ public:
 
 	// (3) Range constructor
 	template <class InputIterator>
-	list (InputIterator first, InputIterator last /*, const allocator_type& alloc = allocator_type()*/)
+	list(InputIterator first, InputIterator last /*, const allocator_type& alloc = allocator_type()*/)
 	{
 		_start = new listNode<T>(T(), NULL, NULL);
 		assign(first, last);
@@ -163,7 +169,7 @@ public:
 	list(const list &copy)
 	{
 		_start = new listNode<T>(T(), NULL, NULL);
-		assign(copy);
+		assign(copy.begin(), copy.end());
 	}
 
 	// template <class InputIterator>
@@ -245,6 +251,7 @@ public:
 		bool operator!=(iterator other) const { return !(*this == other); }
 		iterator &operator*() const { return ptr->getValue(); }
 	};
+
 	iterator begin() { return iterator(_start); }
 	iterator end()
 	{
@@ -253,6 +260,57 @@ public:
 			cursor = cursor->getNext();
 
 		return iterator(cursor);
+	}
+
+	class const_iterator : public iterator
+	{
+		listNode<T> *ptr;
+
+	public:
+		const_iterator() : ptr(NULL) {}
+		const_iterator(listNode<T> *_ptr) : ptr(_ptr) {}
+		const_iterator(const_iterator const &it) : ptr(it.ptr){};
+		const_iterator &operator=(const const_iterator &operand)
+		{
+			ptr = operand.ptr;
+			return *this;
+		}
+		~const_iterator(void){};
+		const_iterator &operator++()
+		{
+			ptr = ptr->getNext();
+			return *this;
+		}
+		const_iterator &operator--()
+		{
+			ptr = ptr->getPrev();
+			return *this;
+		}
+		const T &operator*() { return ptr->getValue(); }
+		const_iterator operator++(int)
+		{
+			const_iterator retval = *this;
+			++(*this);
+			return retval;
+		}
+		const_iterator operator--(int)
+		{
+			const_iterator retval = *this;
+			--(*this);
+			return retval;
+		}
+		bool operator==(const_iterator other) const { return ptr == other.ptr; }
+		bool operator!=(const_iterator other) const { return !(*this == other); }
+		const_iterator &operator*() const { return ptr->getValue(); }
+	};
+
+	const_iterator begin() const { return const_iterator(this->_start); }
+	const_iterator end() const
+	{
+		listNode<T> *cursor = this->_start;
+		while (cursor->getNext() != NULL)
+			cursor = cursor->getNext();
+		return const_iterator(cursor);
 	}
 
 	typedef reverse_iterator<iterator, T> reverse_iterator;
@@ -307,7 +365,7 @@ public:
 
 	// Modifiers
 	template <class InputIterator>
-	void assign (InputIterator first, InputIterator last)
+	void assign(InputIterator first, InputIterator last)
 	{
 		clear();
 		for (InputIterator iter = first; iter != last; iter++)
@@ -316,7 +374,7 @@ public:
 		}
 	}
 
-	void assign (size_type n, const value_type& val)
+	void assign(size_type n, const value_type &val)
 	{
 		clear();
 		for (size_t i = 0; i < n; i++)
@@ -324,7 +382,6 @@ public:
 			push_back(val);
 		}
 	}
-	
 
 	void push_front(const value_type &val)
 	{
@@ -442,7 +499,7 @@ public:
 
 	// range (3)
 	template <class InputIterator>
-	void insert (iterator position, InputIterator first, InputIterator last)
+	void insert(iterator position, InputIterator first, InputIterator last)
 	{
 		// typedef typename std::numeric_limits<InputIterator>::is_integer _Integral;
 		listNode<T> *cur = position.internalPtr();
@@ -453,7 +510,7 @@ public:
 		{
 			newElement = new listNode<T>(*first, cur, prev);
 			cur->setPrev(newElement);
-			
+
 			if (prev)
 				prev->setNext(newElement);
 			else
@@ -466,7 +523,7 @@ public:
 	{
 		if (_start->getNext() == NULL)
 			return iterator(_start); // STL: undefined behavior
-		
+
 		listNode<T> *cur = position.internalPtr();
 		listNode<T> *next = cur->getNext();
 		listNode<T> *prev = cur->getPrev();
@@ -490,9 +547,7 @@ public:
 		return last;
 	}
 
-	
-
-	void swap (list& x)
+	void swap(list &x)
 	{
 		listNode<T> *buf = _start;
 		_start = x._start;
@@ -536,8 +591,8 @@ public:
 		_start = cur;
 	}
 
-	//entire list (1)	
-	void splice (iterator position, list& x)
+	//entire list (1)
+	void splice(iterator position, list &x)
 	{
 		// if (x == *this)
 		// 	return; // STL: undefined behavior
@@ -559,15 +614,15 @@ public:
 			our_left->setNext(their_left);
 		else
 			_start = their_left;
-		
+
 		their_left->setPrev(our_left);
-		
+
 		x._start = their_end;
 		their_end->setPrev(NULL);
 	}
 
 	// single element (2)
-	void splice (iterator position, list& x, iterator i)
+	void splice(iterator position, list &x, iterator i)
 	{
 		if (i == x.end())
 			return;
@@ -602,14 +657,15 @@ public:
 		std::cout << "Start: " << cur << std::endl;
 		while (cur->getNext() != NULL)
 		{
-			std::cout << cur->getValue() << "(" << cur << ")" << " -> ";
+			std::cout << cur->getValue() << "(" << cur << ")"
+					  << " -> ";
 			cur = cur->getNext();
 		}
 		std::cout << std::endl;
 	}
 
 	// element range (3)
-	void splice (iterator position, list& x, iterator first, iterator last)
+	void splice(iterator position, list &x, iterator first, iterator last)
 	{
 		if (first == last)
 			return;
@@ -637,11 +693,11 @@ public:
 		their_right_next->setPrev(their_left_prev);
 	}
 
-	void remove (const value_type& val)
+	void remove(const value_type &val)
 	{
 		list<T>::iterator iter = begin();
 		list<T>::iterator e = end();
-		
+
 		while (iter != e)
 		{
 			if (*iter == val)
@@ -656,7 +712,7 @@ public:
 	{
 		list<T>::iterator iter = begin();
 		list<T>::iterator e = end();
-		
+
 		while (iter != e)
 		{
 			if (pred(*iter) == true)
@@ -673,7 +729,7 @@ public:
 			return;
 		list<T>::iterator iter = begin();
 		list<T>::iterator e = --end();
-		
+
 		list<T>::iterator next = iter;
 		while (iter != e)
 		{
@@ -687,7 +743,7 @@ public:
 
 	// (2)
 	template <class BinaryPredicate>
-	void unique (BinaryPredicate binary_pred)
+	void unique(BinaryPredicate binary_pred)
 	{
 		if (size() <= 1)
 			return;
@@ -695,7 +751,7 @@ public:
 		list<T>::iterator iter = begin();
 		iter++;
 		list<T>::iterator e = end();
-		
+
 		list<T>::iterator prev = begin();
 		while (iter != e)
 		{
@@ -713,7 +769,7 @@ public:
 		}
 	}
 
-	void merge(list& x)
+	void merge(list &x)
 	{
 		if (&x == this)
 			return;
@@ -724,7 +780,7 @@ public:
 
 		while (our_iter != our_e)
 		{
-			while (x.front() < *our_iter)
+			while (x.size() && x.front() < *our_iter)
 			{
 				this->splice(our_iter, x, x.begin());
 			}
@@ -737,7 +793,7 @@ public:
 	}
 
 	template <class Compare>
-	void merge (list& x, Compare comp)
+	void merge(list &x, Compare comp)
 	{
 		if (&x == this)
 			return;
@@ -785,8 +841,60 @@ public:
 		_start = prev;
 	}
 
+	void sort()
+	{
+		mergeSort(*this);
+	}
+
 private:
 	listNode<T> *_start;
+
+	// Split the list in two halves
+	void frontBackSplit(list<T> &x)
+	{
+		size_t middle = size() / 2;
+
+		// listNode<T> *cur = _start;
+		iterator cur = begin();
+		for (size_t i = 0; i < middle; i++)
+		{
+			cur++;
+		}
+		x.splice(x.begin(), *this, cur, this->end());
+	}
+
+	// m is inclusive, r is non-inclusive
+	void merge_elements(iterator l, iterator m, iterator r)
+	{
+		list<T> leftHalf;
+		list<T> rightHalf;
+
+		iterator mIncl = m;
+		++mIncl;
+		leftHalf.insert(leftHalf.begin(), l, mIncl);
+
+		iterator rNonIncl = r;
+		rNonIncl;
+		rightHalf.insert(rightHalf.begin(), mIncl, rNonIncl);
+
+		leftHalf.merge(rightHalf);
+
+		this->erase(l, r);
+		this->insert(r, leftHalf.begin(), leftHalf.end());
+	}
+
+	static void mergeSort(list<T> &l)
+	{
+		if (l.size() == 1)
+			return;
+		list<T> right;
+
+		l.frontBackSplit(right);
+		mergeSort(l);
+		mergeSort(right);
+		l.merge(right);
+
+	}
 
 	void swap_elements(list::iterator it1, list::iterator it2)
 	{
@@ -796,11 +904,9 @@ private:
 		listNode<T> *aNext = a->getNext();
 		listNode<T> *aPrev = a->getPrev();
 
-
 		listNode<T> *bNext = b->getNext();
 		listNode<T> *bPrev = b->getPrev();
 
-		
 		if (a->getNext() == b)
 		{
 			if (bPrev)
@@ -816,7 +922,7 @@ private:
 				aPrev->setNext(b);
 			else
 				_start = b;
-			
+
 			b->setNext(a);
 			a->setPrev(b);
 		}
@@ -838,7 +944,7 @@ private:
 		else
 		{
 			a->setPrev(bPrev);
-		
+
 			if (bPrev)
 				bPrev->setNext(a);
 			else
@@ -853,11 +959,10 @@ private:
 				aPrev->setNext(b);
 			else
 				_start = b;
-			
+
 			b->setNext(aNext);
 			aNext->setPrev(b);
 		}
-		
 	}
 };
 

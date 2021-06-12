@@ -532,19 +532,19 @@ TEST(ListInsertOne)
 TEST(ListInsertFillOne)
 {
 	list<int> list_a;
-	list_a.insert(list_a.end(), (size_t) 1, 42);
+	list_a.insert(list_a.end(), (size_t)1, 42);
 
 	ASSERT_EQ(list_a.size(), 1);
 	ASSERT_EQ(list_a.front(), 42);
 	ASSERT_EQ(list_a.back(), 42);
 
-	list_a.insert(list_a.end(), (size_t) 1, 43);
+	list_a.insert(list_a.end(), (size_t)1, 43);
 
 	ASSERT_EQ(list_a.size(), 2);
 	ASSERT_EQ(list_a.front(), 42);
 	ASSERT_EQ(list_a.back(), 43);
 
-	list_a.insert(list_a.begin(), (size_t) 1, 45);
+	list_a.insert(list_a.begin(), (size_t)1, 45);
 
 	ASSERT_EQ(list_a.size(), 3);
 	ASSERT_EQ(list_a.front(), 45);
@@ -555,12 +555,12 @@ TEST(ListInsertFillOne)
 	ASSERT_EQ(list_b.front(), 10);
 	ASSERT_EQ(list_b.back(), 10);
 
-	list_b.insert(list_b.begin(), (size_t) 1, 42);
+	list_b.insert(list_b.begin(), (size_t)1, 42);
 	ASSERT_EQ(list_b.size(), 6);
 	ASSERT_EQ(list_b.front(), 42);
 	ASSERT_EQ(list_b.back(), 10);
 
-	list_b.insert(list_b.end(), (size_t) 1, 44);
+	list_b.insert(list_b.end(), (size_t)1, 44);
 
 	ASSERT_EQ(list_b.size(), 7);
 	ASSERT_EQ(list_b.front(), 42);
@@ -570,7 +570,7 @@ TEST(ListInsertFillOne)
 
 	iter++;
 
-	list_b.insert(iter, (size_t) 1, 21);
+	list_b.insert(iter, (size_t)1, 21);
 	ASSERT_EQ(list_b.size(), 8);
 	ASSERT_EQ(list_b.front(), 42);
 	ASSERT_EQ(list_b.back(), 44);
@@ -582,14 +582,14 @@ TEST(ListInsertFillMany)
 {
 	list<int> list_a;
 
-	list_a.insert(list_a.begin(), (size_t) (size_t)5, 10);
+	list_a.insert(list_a.begin(), (size_t)(size_t)5, 10);
 
 	ASSERT_EQ(list_a.size(), 5);
 	ASSERT_EQ(list_a.back(), 10);
 	ASSERT_EQ(list_a.front(), 10);
 
 	list<int> list_b;
-	list_b.insert(list_b.begin(), (size_t) (size_t)5, 10);
+	list_b.insert(list_b.begin(), (size_t)(size_t)5, 10);
 	ASSERT_EQ(list_b.size(), 5);
 	ASSERT_EQ(list_b.back(), 10);
 	ASSERT_EQ(list_b.front(), 10);
@@ -647,7 +647,6 @@ TEST(ListEraseFirst)
 	list_b.erase(list_b.begin());
 
 	ASSERT_EQ(list_b.size(), 2);
-
 }
 
 TEST(ListEraseLast)
@@ -783,7 +782,6 @@ TEST(ListSwap)
 	ASSERT_EQ(list_a.size(), 4);
 	ASSERT_EQ(list_a.front(), 20);
 	ASSERT_EQ(list_a.back(), 20);
-
 }
 
 TEST(ListResize)
@@ -830,7 +828,6 @@ TEST(ListClear)
 	list<int> list_c((size_t)5, 10);
 	list_c.clear();
 	ASSERT_EQ(list_c.size(), 0);
-
 }
 
 TEST(ListSpliceEntireList)
@@ -868,7 +865,6 @@ TEST(ListSpliceEntireListEndNotEmpty)
 	ASSERT_EQ(list_a.back(), 10);
 	ASSERT_EQ(list_b.size(), 0);
 }
-
 
 TEST(ListSpliceEntireListEmptyList)
 {
@@ -1009,7 +1005,6 @@ TEST(ListSpliceRangeToEmptyFromBeginning)
 	ASSERT_EQ(list_b.front(), 10);
 	ASSERT_EQ(list_b.back(), 10);
 }
-
 
 TEST(ListSpliceRangeToEmptyFromMiddle)
 {
@@ -1182,7 +1177,7 @@ TEST(TestSpliceRangeSameContainer)
 
 	list_a.push_back(5);
 	list_a.push_back(5);
-	
+
 	ASSERT_EQ(list_a.back(), 5);
 	ASSERT_EQ(list_a.front(), 20);
 	ASSERT_EQ(list_a.size(), 5);
@@ -1424,7 +1419,7 @@ TEST(ListReverseEmpty)
 TEST(ListReverseOne)
 {
 	list<int> list_a;
-	
+
 	list_a.push_back(1);
 
 	list_a.reverse();
@@ -1437,7 +1432,7 @@ TEST(ListReverseOne)
 TEST(ListReverseTwo)
 {
 	list<int> list_a;
-	
+
 	list_a.push_back(1);
 	list_a.push_back(2);
 
@@ -1478,14 +1473,130 @@ TEST(ListSwapElements)
 	int tester4[] = {1, 2, 3};
 	check_container(tester4, list_a.begin(), list_a.end());
 
-
 	// Elements at beginning, neighbor, reverse order
 	list_a.swap_elements(++list_a.begin(), list_a.begin());
-	
+
 	int tester5[] = {2, 1, 3};
 	check_container(tester5, list_a.begin(), list_a.end());
 }
 
+TEST(ListSort)
+{
+	list<int> list_a;
+
+	list_a.push_back(5);
+	list_a.push_back(4);
+	list_a.push_back(3);
+	list_a.push_back(2);
+	list_a.push_back(1);
+
+	list_a.sort();
+
+	for (list<int>::iterator iter = list_a.begin(); iter != list_a.end(); iter++)
+	{
+		std::cout << *iter << std::endl;
+	}
+
+	int tester[] = {1, 2, 3, 4, 5};
+	check_container(tester, list_a.begin(), list_a.end());
+}
+
+TEST(ListMergeInterestingCase)
+{
+	std::cout << "Start" << std::endl;
+	list<int> list_a;
+
+	list_a.push_back(1);
+	list_a.push_back(2);
+	list_a.push_back(5);
+
+	list<int> list_b;
+	list_b.push_back(3);
+	list_b.push_back(4);
+
+	list_a.merge(list_b);
+	std::cout << "Merged" << std::endl;
+
+	int tester[] = {1, 2, 3, 4, 5};
+	check_container(tester, list_a.begin(), list_a.end());
+}
+
+TEST(ListMergeElements)
+{
+	list<int> list_a;
+
+	list_a.push_back(1);
+	list_a.push_back(2);
+	list_a.push_back(5);
+	list_a.push_back(3);
+	list_a.push_back(4);
+	list_a.push_back(7);
+	list_a.push_back(7);
+
+	list_a.merge_elements(list_a.begin(), ++++list_a.begin(), ----list_a.end());
+
+	int tester[] = {1, 2, 3, 4, 5, 7, 7};
+	check_container(tester, list_a.begin(), list_a.end());
+
+	list_a.clear();
+
+	list_a.push_back(1);
+	list_a.push_back(3);
+	list_a.push_back(4);
+	list_a.push_back(2);
+	list_a.push_back(5);
+	list_a.push_back(7);
+	list_a.push_back(7);
+
+	list_a.merge_elements(list_a.begin(), ++++list_a.begin(), ----list_a.end());
+
+	int tester2[] = {1, 2, 3, 4, 5, 7, 7};
+	check_container(tester2, list_a.begin(), list_a.end());
+
+	list_a.clear();
+	list_a.push_back(2);
+	list_a.push_back(1);
+
+	list_a.merge_elements(list_a.begin(), list_a.begin(), list_a.end());
+	int tester3[] = {1, 2};
+	check_container(tester3, list_a.begin(), list_a.end());
+}
+
+TEST(ListFrontBackSplit)
+{
+	{
+		list<int> list_a;
+		list<int> list_b;
+
+		list_a.push_back(2);
+		list_a.push_back(1);
+
+		list_a.frontBackSplit(list_b);
+
+		int tester_a[] = {2};
+		check_container(tester_a, list_a.begin(), list_a.end());
+
+		int tester_b[] = {1};
+		check_container(tester_b, list_b.begin(), list_b.end());
+	}
+
+	{
+		list<int> list_a;
+		list<int> list_b;
+
+		list_a.push_back(1);
+		list_a.push_back(2);
+		list_a.push_back(3);
+
+		list_a.frontBackSplit(list_b);
+
+		int tester_a[] = {1};
+		check_container(tester_a, list_a.begin(), list_a.end());
+
+		int tester_b[] = {2, 3};
+		check_container(tester_b, list_b.begin(), list_b.end());
+	}
+}
 
 #include <unistd.h>
 
@@ -1495,18 +1606,4 @@ int main()
 	run_tests();
 
 	// sleep(500);
-
-	// TODO: leaks-check
-
-	// listNode<int> *a = l_i2.start;
-	// for (int i = 0; i < 10; i++)
-	// {
-	// 	std::cout << "i: " << i << std::endl;
-	// 	std::cout << a << std::endl;
-	// 	std::cout << "value: " << a->getValue() << std::endl;
-	// 	std::cout << "prev: " << a->getPrev() << std::endl;
-	// 	std::cout << "next: " << a->getNext() << std::endl;
-
-	// 	a = a->getNext();
-	// }
 }
