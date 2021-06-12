@@ -6,7 +6,7 @@
 /*   By: ashishae <ashishae@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/24 18:25:06 by ashishae          #+#    #+#             */
-/*   Updated: 2021/06/07 17:40:29 by ashishae         ###   ########.fr       */
+/*   Updated: 2021/06/11 13:44:34 by ashishae         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,14 @@
 
 #include <iostream>
 #include <numeric>
+
+template <typename T>
+void swap_val(T a, T b)
+{
+	T tmp = a;
+	a = b;
+	b = a;
+}
 
 template <typename iterator, typename T>
 class reverse_iterator
@@ -97,9 +105,22 @@ private:
 	listNode *prev;
 };
 
+
+template<bool B, class T = void>
+struct enable_if {};
+ 
+template<class T>
+struct enable_if<true, T> { typedef T type; };
+
 template <typename T>
 class list
 {
+
+// In order to test private methods, we will have to add specific tests as
+// friend classes
+#ifdef UNIT_TEST
+	friend class ListSwapElements;
+#endif
 
 public:
 	typedef T value_type;
@@ -109,6 +130,7 @@ public:
 	typedef const value_type &const_reference;
 	typedef value_type *pointer;
 	typedef const value_type *const_pointer;
+	typedef ptrdiff_t difference_type;
 	typedef size_t size_type;
 
 	// (1) Default constructor
@@ -120,27 +142,6 @@ public:
 	// (2) Fill constructor
 	explicit list(unsigned int n, const T &val = T() /*, const allocator_type& alloc = allocator_type()*/)
 	{
-
-		// if (n == 0)
-		// {
-		// 	_start = new listNode<T>(T(), NULL, NULL);
-		// 	return;
-		// }
-		/*
-		_start = new listNode<T>(val, NULL, NULL);
-		listNode<T> *cursor = _start;
-		listNode<T> *tmp = NULL;
-		for (unsigned int i = 1; i < n; i++)
-		{
-			tmp = new listNode<T>(val, NULL, cursor);
-			cursor->setNext(tmp);
-			cursor = tmp;
-		}
-
-		// Element for the end iterator
-		tmp = new listNode<T>(T(), NULL, cursor);
-		cursor->setNext(tmp);
-		*/
 		_start = new listNode<T>(val, NULL, NULL);
 		for (size_t i = 0; i < n; i++)
 		{
@@ -150,10 +151,20 @@ public:
 		}
 	};
 
-	// TODO: (3) Range constructor
+	// (3) Range constructor
+	template <class InputIterator>
+	list (InputIterator first, InputIterator last /*, const allocator_type& alloc = allocator_type()*/)
+	{
+		_start = new listNode<T>(T(), NULL, NULL);
+		assign(first, last);
+	}
 
-	// TODO: (4) Сopy constructor
-	// list(const list &copy);
+	// (4) Сopy constructor
+	list(const list &copy)
+	{
+		_start = new listNode<T>(T(), NULL, NULL);
+		assign(copy);
+	}
 
 	// template <class InputIterator>
 	// list (InputIterator first, InputIterator last, const allocator_type& alloc = allocator_type());
@@ -178,49 +189,15 @@ public:
 		}
 		delete cur;
 	};
-	/*
 	list &operator=(const list &operand)
 	{
-
 		// We only need to manipulate things if we're not self-reassigning
 		if (&operand != this)
 		{
-			// Delete whatever was here before;
-			listNode<T> *cur = _start;
-			while (cur->getNext() != NULL)
-			{
-				cur = cur->getNext();
-			}
-			listNode<T> *prev = cur;
-			while (cur->getPrev() != NULL)
-			{
-				prev = cur;
-				cur = cur->getPrev();
-				delete prev;
-			}
-			// delete cur;
-
-			// _start = NULL;
-			// TODO
-			// Copy the operand
-			// listNode<T> *cursorTheirs = operand->_start;
-
-			// while (cursorTheirs != NULL)
-			// {
-
-			// }
-			// _start = new listNode<T>(operand._start->getValue(), NULL, NULL);
-			// listNode<T> *cursor = operand._start->getNext();
-			// prev = _start;
-			// while (cursor != NULL)
-			// {
-			// 	prev->setNext(new listNode<T>(*cursor));
-			// 	cursor = cursor->getNext();
-			// 	prev = prev->getNext();
-			// }
+			assign(operand.begin(), operand.end());
 		}
 		return (*this);
-	}; */
+	};
 
 	// Iterators
 
@@ -329,8 +306,26 @@ public:
 	};
 
 	// Modifiers
+	template <class InputIterator>
+	void assign (InputIterator first, InputIterator last)
+	{
+		clear();
+		for (InputIterator iter = first; iter != last; iter++)
+		{
+			push_back(*iter);
+		}
+	}
 
-	// TODO assign
+	void assign (size_type n, const value_type& val)
+	{
+		clear();
+		for (size_t i = 0; i < n; i++)
+		{
+			push_back(val);
+		}
+	}
+	
+
 	void push_front(const value_type &val)
 	{
 		if (_start == NULL)
@@ -467,7 +462,7 @@ public:
 		}
 	}
 
-	iterator erase (iterator position)
+	iterator erase(iterator position)
 	{
 		if (_start->getNext() == NULL)
 			return iterator(_start); // STL: undefined behavior
@@ -486,8 +481,370 @@ public:
 		return iterator(next);
 	}
 
-public:
+	iterator erase(iterator first, iterator last)
+	{
+		while (first != last)
+		{
+			erase(first++);
+		}
+		return last;
+	}
+
+	
+
+	void swap (list& x)
+	{
+		listNode<T> *buf = _start;
+		_start = x._start;
+		x._start = buf;
+	}
+
+	void resize(size_type n, value_type val = value_type())
+	{
+		size_t cursize = size();
+
+		if (cursize < n)
+		{
+			list<T>::iterator e = end();
+			for (size_t i = 0; i < (n - cursize); i++)
+				insert(e, val);
+		}
+		else if (cursize > n)
+		{
+			list<T>::iterator e = end();
+			e--;
+			for (size_t i = 0; i < (cursize - n); i++)
+			{
+				e = this->erase(e);
+				e--;
+			}
+		}
+	}
+
+	void clear()
+	{
+		listNode<T> *cur = _start;
+		listNode<T> *tmp;
+
+		while (cur->getNext() != NULL)
+		{
+			tmp = cur;
+			cur = cur->getNext();
+			delete tmp;
+		}
+		cur->setPrev(NULL);
+		_start = cur;
+	}
+
+	//entire list (1)	
+	void splice (iterator position, list& x)
+	{
+		// if (x == *this)
+		// 	return; // STL: undefined behavior
+
+		if (x.size() == 0)
+			return;
+
+		listNode<T> *our_right = position.internalPtr();
+		listNode<T> *our_left = our_right->getPrev();
+		listNode<T> *their_right = (--x.end()).internalPtr();
+		listNode<T> *their_end = x.end().internalPtr();
+		listNode<T> *their_left = x._start;
+
+		if (their_right)
+			their_right->setNext(our_right);
+		our_right->setPrev(their_right);
+
+		if (our_left)
+			our_left->setNext(their_left);
+		else
+			_start = their_left;
+		
+		their_left->setPrev(our_left);
+		
+		x._start = their_end;
+		their_end->setPrev(NULL);
+	}
+
+	// single element (2)
+	void splice (iterator position, list& x, iterator i)
+	{
+		if (i == x.end())
+			return;
+
+		listNode<T> *our_right = position.internalPtr();
+		listNode<T> *our_left = our_right->getPrev();
+
+		listNode<T> *their_cur = i.internalPtr();
+		listNode<T> *their_prev = their_cur->getPrev();
+		listNode<T> *their_next = their_cur->getNext();
+
+		our_right->setPrev(their_cur);
+		their_cur->setNext(our_right);
+
+		if (our_left)
+			our_left->setNext(their_cur);
+		else
+			_start = their_cur;
+		their_cur->setPrev(our_left);
+
+		if (their_prev)
+			their_prev->setNext(their_next);
+		else
+			x._start = their_next;
+		if (their_next)
+			their_next->setPrev(their_prev);
+	}
+
+	void debug()
+	{
+		listNode<T> *cur = _start;
+		std::cout << "Start: " << cur << std::endl;
+		while (cur->getNext() != NULL)
+		{
+			std::cout << cur->getValue() << "(" << cur << ")" << " -> ";
+			cur = cur->getNext();
+		}
+		std::cout << std::endl;
+	}
+
+	// element range (3)
+	void splice (iterator position, list& x, iterator first, iterator last)
+	{
+		if (first == last)
+			return;
+		listNode<T> *our_right = position.internalPtr();
+		listNode<T> *our_left = our_right->getPrev();
+
+		listNode<T> *their_left = first.internalPtr();
+		listNode<T> *their_left_prev = their_left->getPrev();
+		listNode<T> *their_right = last.internalPtr()->getPrev();
+		listNode<T> *their_right_next = their_right->getNext();
+
+		if (our_left)
+			our_left->setNext(their_left);
+		else
+			_start = their_left;
+		their_left->setPrev(our_left);
+
+		our_right->setPrev(their_right);
+		their_right->setNext(our_right);
+
+		if (their_left_prev)
+			their_left_prev->setNext(their_right_next);
+		else
+			x._start = their_right_next;
+		their_right_next->setPrev(their_left_prev);
+	}
+
+	void remove (const value_type& val)
+	{
+		list<T>::iterator iter = begin();
+		list<T>::iterator e = end();
+		
+		while (iter != e)
+		{
+			if (*iter == val)
+				iter = erase(iter);
+			else
+				iter++;
+		}
+	}
+
+	template <class Predicate>
+	void remove_if(Predicate pred)
+	{
+		list<T>::iterator iter = begin();
+		list<T>::iterator e = end();
+		
+		while (iter != e)
+		{
+			if (pred(*iter) == true)
+				iter = erase(iter);
+			else
+				iter++;
+		}
+	}
+
+	//(1)
+	void unique()
+	{
+		if (size() <= 1)
+			return;
+		list<T>::iterator iter = begin();
+		list<T>::iterator e = --end();
+		
+		list<T>::iterator next = iter;
+		while (iter != e)
+		{
+			next++;
+			if (*iter == *next)
+				iter = erase(iter);
+			else
+				iter++;
+		}
+	}
+
+	// (2)
+	template <class BinaryPredicate>
+	void unique (BinaryPredicate binary_pred)
+	{
+		if (size() <= 1)
+			return;
+
+		list<T>::iterator iter = begin();
+		iter++;
+		list<T>::iterator e = end();
+		
+		list<T>::iterator prev = begin();
+		while (iter != e)
+		{
+			if (binary_pred(*prev, *iter))
+			{
+				iter = erase(iter);
+				prev = iter;
+				prev--;
+			}
+			else
+			{
+				iter++;
+				prev++;
+			}
+		}
+	}
+
+	void merge(list& x)
+	{
+		if (&x == this)
+			return;
+
+		list<T>::iterator our_iter = begin();
+		list<T>::iterator their_iter = begin();
+		list<T>::iterator our_e = end();
+
+		while (our_iter != our_e)
+		{
+			while (x.front() < *our_iter)
+			{
+				this->splice(our_iter, x, x.begin());
+			}
+			our_iter++;
+		}
+		if (x.size() != 0)
+		{
+			this->splice(end(), x);
+		}
+	}
+
+	template <class Compare>
+	void merge (list& x, Compare comp)
+	{
+		if (&x == this)
+			return;
+
+		list<T>::iterator our_iter = begin();
+		list<T>::iterator their_iter = begin();
+		list<T>::iterator our_e = end();
+
+		while (our_iter != our_e)
+		{
+			while (comp(x.front(), *our_iter))
+			{
+				this->splice(our_iter, x, x.begin());
+			}
+			our_iter++;
+		}
+		if (x.size() != 0)
+		{
+			this->splice(end(), x);
+		}
+	}
+
+	void reverse()
+	{
+		if (_start->getNext() == NULL)
+			return;
+		listNode<T> *cur = _start;
+		listNode<T> *old_start = _start;
+
+		listNode<T> *tmp = NULL;
+		listNode<T> *prev = NULL;
+		while (cur->getNext() != NULL)
+		{
+			tmp = cur->getNext();
+			cur->setNext(cur->getPrev());
+			cur->setPrev(tmp);
+			prev = cur;
+			cur = tmp;
+		}
+
+		old_start->setNext(cur); // set END element as last
+		cur->setPrev(old_start);
+
+		prev->setPrev(NULL);
+		_start = prev;
+	}
+
+private:
 	listNode<T> *_start;
+
+	void swap_elements(list::iterator it1, list::iterator it2)
+	{
+		listNode<T> *a = it1.internalPtr();
+		listNode<T> *b = it2.internalPtr();
+
+		listNode<T> *aNext = a->getNext();
+		listNode<T> *aPrev = a->getPrev();
+
+
+		listNode<T> *bNext = b->getNext();
+		listNode<T> *bPrev = b->getPrev();
+
+		listNode<T> *tmp;
+		
+		if (a->getNext() == b)
+		{
+			if (bPrev)
+				bPrev->setNext(a);
+			else
+				_start = a;
+
+			a->setNext(bNext);
+			bNext->setPrev(a);
+
+			b->setPrev(aPrev);
+			if (aPrev)
+				aPrev->setNext(b);
+			else
+				_start = b;
+			
+			b->setNext(a);
+			a->setPrev(b);
+		}
+		else
+		{
+			a->setPrev(bPrev);
+		
+			if (bPrev)
+				bPrev->setNext(a);
+			else
+				_start = a;
+
+			a->setNext(bNext);
+			bNext->setPrev(a);
+
+			b->setPrev(aPrev);
+
+			if (aPrev)
+				aPrev->setNext(b);
+			else
+				_start = b;
+			
+			b->setNext(aNext);
+			aNext->setPrev(b);
+		}
+		
+	}
 };
 
 #endif

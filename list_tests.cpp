@@ -1,6 +1,8 @@
 #include "list.hpp"
 #include "elementest.hpp"
 
+#define UNIT_TEST 1;
+
 TEST(listNodeConstructs)
 {
 	listNode<int> ln_i(3);
@@ -76,14 +78,14 @@ TEST(listDefaultConstructor)
 
 TEST(listFillConstructor)
 {
-	list<int> l_i1(5, 10);
+	list<int> l_i1((size_t)5, 10);
 	ASSERT_EQ(l_i1.front(), 10);
 	ASSERT_EQ(l_i1.size(), 5);
 }
 
 TEST(listFillConstructorZeroElements)
 {
-	list<int> l_i1(0, 10);
+	list<int> l_i1((size_t)0, 10);
 	// ASSERT_EQ(l_i1.front(), 10);
 	ASSERT_EQ(l_i1.size(), 0);
 
@@ -123,13 +125,13 @@ TEST(listIteratorDestructor)
 
 TEST(listBegin)
 {
-	list<int> list_a(5, 10);
+	list<int> list_a((size_t)5, 10);
 	list<int>::iterator iter_a = list_a.begin();
 }
 
 TEST(listIteratorStarOperator)
 {
-	list<int> list_a(5, 10);
+	list<int> list_a((size_t)5, 10);
 
 	list<int>::iterator iter_a = list_a.begin();
 	ASSERT_EQ(*iter_a, 10);
@@ -137,7 +139,7 @@ TEST(listIteratorStarOperator)
 
 TEST(listIteratorOperatorPlusPlus)
 {
-	list<int> list_a(5, 10);
+	list<int> list_a((size_t)5, 10);
 
 	list<int>::iterator iter_a = list_a.begin();
 	iter_a++;
@@ -146,7 +148,7 @@ TEST(listIteratorOperatorPlusPlus)
 
 TEST(listIteratorNotEqualsOperator)
 {
-	list<int> list_a(5, 10);
+	list<int> list_a((size_t)5, 10);
 
 	list<int>::iterator iter_a = list_a.begin();
 
@@ -158,7 +160,7 @@ TEST(listIteratorNotEqualsOperator)
 
 TEST(listIteratorOperatorMinusMinus)
 {
-	list<int> list_a(5, 10);
+	list<int> list_a((size_t)5, 10);
 
 	list<int>::iterator iter_a = list_a.begin();
 
@@ -170,7 +172,7 @@ TEST(listIteratorOperatorMinusMinus)
 
 TEST(listIteratorEqualityOperator)
 {
-	list<int> list_a(5, 10);
+	list<int> list_a((size_t)5, 10);
 	list<int>::iterator iter_a = list_a.begin();
 
 	list<int>::iterator iter_b = list_a.begin();
@@ -180,7 +182,7 @@ TEST(listIteratorEqualityOperator)
 
 TEST(listIteratorPlusPlusoperator)
 {
-	list<int> list_a(5, 10);
+	list<int> list_a((size_t)5, 10);
 	list<int>::iterator iter_a = list_a.begin();
 
 	iter_a++;
@@ -191,7 +193,7 @@ TEST(listIteratorPlusPlusoperator)
 
 TEST(listIteratorMinusMinusoperator)
 {
-	list<int> list_a(5, 10);
+	list<int> list_a((size_t)5, 10);
 	list<int>::iterator iter_a = list_a.begin();
 
 	iter_a++;
@@ -202,7 +204,7 @@ TEST(listIteratorMinusMinusoperator)
 
 TEST(listEnd)
 {
-	list<int> list_a(5, 10);
+	list<int> list_a((size_t)5, 10);
 	list<int>::iterator iter_a = list_a.begin();
 	for (int i = 0; i < 5; i++)
 		iter_a++;
@@ -243,7 +245,7 @@ TEST(ListReverse_iteratorDestructor)
 
 TEST(ListRend)
 {
-	list<int> list_a(5, 10);
+	list<int> list_a((size_t)5, 10);
 	list<int>::reverse_iterator revIter = list_a.rend();
 	// Can't check the value because it's null
 }
@@ -260,7 +262,7 @@ TEST(ListReverse_iteratorStaroperator)
 
 TEST(ListReverse_iteratorOperatorPlusPlus)
 {
-	list<int> list_a(5, 10);
+	list<int> list_a((size_t)5, 10);
 	list<int>::reverse_iterator revIter = list_a.rend();
 
 	revIter++;
@@ -270,7 +272,7 @@ TEST(ListReverse_iteratorOperatorPlusPlus)
 
 TEST(ListReverse_iteratorNotEqualsoperator)
 {
-	list<int> list_a(5, 10);
+	list<int> list_a((size_t)5, 10);
 	list<int>::reverse_iterator revIter = list_a.rend();
 
 	revIter++;
@@ -280,7 +282,7 @@ TEST(ListReverse_iteratorNotEqualsoperator)
 
 TEST(ListReverse_iteratoroperatorMinusMinus)
 {
-	list<int> list_a(5, 10);
+	list<int> list_a((size_t)5, 10);
 	list<int>::reverse_iterator revIter = list_a.rend();
 
 	revIter++;
@@ -296,7 +298,7 @@ TEST(ListReverse_iteratoroperatorMinusMinus)
 
 TEST(ListReverse_iteratorEqualsOperator)
 {
-	list<int> list_a(5, 10);
+	list<int> list_a((size_t)5, 10);
 	list<int>::reverse_iterator revIter = list_a.rend();
 	ASSERT_EQ((revIter == list_a.rend()), true);
 	ASSERT_EQ((revIter == list_a.rbegin()), false);
@@ -304,7 +306,7 @@ TEST(ListReverse_iteratorEqualsOperator)
 
 TEST(ListReverse_iteratorPlusPlusOperator)
 {
-	list<int> list_a(5, 10);
+	list<int> list_a((size_t)5, 10);
 	list<int>::reverse_iterator revIter = list_a.rend();
 	revIter++;
 	ASSERT_EQ((revIter == list_a.rend()), false);
@@ -312,7 +314,7 @@ TEST(ListReverse_iteratorPlusPlusOperator)
 
 TEST(ListReverse_iteratorMinusMinusOperator)
 {
-	list<int> list_a(5, 10);
+	list<int> list_a((size_t)5, 10);
 	list<int>::reverse_iterator revIter = list_a.rend();
 	revIter++;
 
@@ -322,7 +324,7 @@ TEST(ListReverse_iteratorMinusMinusOperator)
 
 TEST(ListReverseIteratorEndBegin)
 {
-	list<int> list_a(5, 10);
+	list<int> list_a((size_t)5, 10);
 	list<int>::reverse_iterator revIterA = list_a.rbegin(); // points to the element after the last
 
 	for (size_t i = 0; i < 5; i++)
@@ -335,7 +337,7 @@ TEST(ListReverseIteratorEndBegin)
 /*
 TEST(ListAssignmentOperator)
 {
-	list<int> list_a(5, 10);
+	list<int> list_a((size_t)5, 10);
 
 	list<int> list_b(3, 8);
 	
@@ -354,28 +356,28 @@ TEST(ListAssignmentOperator)
 
 TEST(ListBack)
 {
-	list<int> list_a(1, 10);
+	list<int> list_a((size_t)1, 10);
 
 	ASSERT_EQ(list_a.back(), 10);
 }
 
 TEST(ListBackConst)
 {
-	const list<int> list_a(1, 10);
+	const list<int> list_a((size_t)1, 10);
 
 	ASSERT_EQ(list_a.back(), 10);
 }
 
 TEST(ListFront)
 {
-	list<int> list_a(1, 10);
+	list<int> list_a((size_t)1, 10);
 
 	ASSERT_EQ(list_a.front(), 10);
 }
 
 TEST(ListFrontConst)
 {
-	const list<int> list_a(1, 10);
+	const list<int> list_a((size_t)1, 10);
 
 	ASSERT_EQ(list_a.front(), 10);
 }
@@ -391,7 +393,7 @@ TEST(ListPushFront)
 	ASSERT_EQ(list_a.front(), 42);
 	ASSERT_EQ(list_a.back(), 42);
 
-	list<int> list_b(5, 10);
+	list<int> list_b((size_t)5, 10);
 	ASSERT_EQ(list_b.size(), 5);
 
 	list_b.push_front(-42);
@@ -402,7 +404,7 @@ TEST(ListPushFront)
 
 TEST(ListPopFront)
 {
-	list<int> list_a(5, 10);
+	list<int> list_a((size_t)5, 10);
 	ASSERT_EQ(list_a.size(), 5);
 
 	list_a.push_front(-42);
@@ -415,13 +417,13 @@ TEST(ListPopFront)
 	ASSERT_EQ(list_a.front(), 10);
 	ASSERT_EQ(list_a.back(), 10);
 
-	list<int> list_b(5, 10);
+	list<int> list_b((size_t)5, 10);
 	list_b.pop_front();
 	ASSERT_EQ(list_b.size(), 4);
 	ASSERT_EQ(list_b.front(), 10);
 	ASSERT_EQ(list_b.back(), 10);
 
-	list<int> list_c(1, 10);
+	list<int> list_c((size_t)1, 10);
 	list_c.pop_front();
 	ASSERT_EQ(list_c.size(), 0);
 }
@@ -437,7 +439,7 @@ TEST(ListPushBack)
 	ASSERT_EQ(list_a.front(), 42);
 	ASSERT_EQ(list_a.back(), 42);
 
-	list<int> list_b(5, 10);
+	list<int> list_b((size_t)5, 10);
 	ASSERT_EQ(list_b.size(), 5);
 
 	list_b.push_back(-42);
@@ -448,7 +450,7 @@ TEST(ListPushBack)
 
 TEST(ListPopBack)
 {
-	list<int> list_a(5, 10);
+	list<int> list_a((size_t)5, 10);
 	ASSERT_EQ(list_a.size(), 5);
 
 	list_a.push_back(-42);
@@ -461,17 +463,17 @@ TEST(ListPopBack)
 	ASSERT_EQ(list_a.front(), 10);
 	ASSERT_EQ(list_a.back(), 10);
 
-	list<int> list_b(5, 10);
+	list<int> list_b((size_t)5, 10);
 	list_b.pop_back();
 	ASSERT_EQ(list_b.size(), 4);
 	ASSERT_EQ(list_b.front(), 10);
 	ASSERT_EQ(list_b.back(), 10);
 
-	list<int> list_c(1, 10);
+	list<int> list_c((size_t)1, 10);
 	list_c.pop_back();
 	ASSERT_EQ(list_c.size(), 0);
 
-	list<int> list_d(2, 10);
+	list<int> list_d((size_t)2, 10);
 	list_d.pop_back();
 	ASSERT_EQ(list_d.size(), 1);
 	ASSERT_EQ(list_d.front(), 10);
@@ -499,7 +501,7 @@ TEST(ListInsertOne)
 	ASSERT_EQ(list_a.front(), 45);
 	ASSERT_EQ(list_a.back(), 43);
 
-	list<int> list_b(5, 10);
+	list<int> list_b((size_t)5, 10);
 	ASSERT_EQ(list_b.size(), 5);
 	ASSERT_EQ(list_b.front(), 10);
 	ASSERT_EQ(list_b.back(), 10);
@@ -548,7 +550,7 @@ TEST(ListInsertFillOne)
 	ASSERT_EQ(list_a.front(), 45);
 	ASSERT_EQ(list_a.back(), 43);
 
-	list<int> list_b(5, 10);
+	list<int> list_b((size_t)5, 10);
 	ASSERT_EQ(list_b.size(), 5);
 	ASSERT_EQ(list_b.front(), 10);
 	ASSERT_EQ(list_b.back(), 10);
@@ -580,14 +582,14 @@ TEST(ListInsertFillMany)
 {
 	list<int> list_a;
 
-	list_a.insert(list_a.begin(), (size_t) 5, 10);
+	list_a.insert(list_a.begin(), (size_t) (size_t)5, 10);
 
 	ASSERT_EQ(list_a.size(), 5);
 	ASSERT_EQ(list_a.back(), 10);
 	ASSERT_EQ(list_a.front(), 10);
 
 	list<int> list_b;
-	list_b.insert(list_b.begin(), (size_t) 5, 10);
+	list_b.insert(list_b.begin(), (size_t) (size_t)5, 10);
 	ASSERT_EQ(list_b.size(), 5);
 	ASSERT_EQ(list_b.back(), 10);
 	ASSERT_EQ(list_b.front(), 10);
@@ -614,7 +616,7 @@ TEST(ListInsertRangeEmpty)
 
 TEST(ListInsertRangeSome)
 {
-	list<int> list_a(5, 10);
+	list<int> list_a((size_t)5, 10);
 	std::vector<int> list_b;
 
 	list_b.push_back(5);
@@ -630,7 +632,7 @@ TEST(ListInsertRangeSome)
 
 TEST(ListEraseFirst)
 {
-	list<int> list_a(1, 10);
+	list<int> list_a((size_t)1, 10);
 
 	ASSERT_EQ(list_a.size(), 1);
 
@@ -638,7 +640,7 @@ TEST(ListEraseFirst)
 
 	ASSERT_EQ(list_a.size(), 0);
 
-	list<int> list_b(3, 10);
+	list<int> list_b((size_t)3, 10);
 
 	ASSERT_EQ(list_b.size(), 3);
 
@@ -650,7 +652,7 @@ TEST(ListEraseFirst)
 
 TEST(ListEraseLast)
 {
-	list<int> list_a(3, 10);
+	list<int> list_a((size_t)3, 10);
 
 	ASSERT_EQ(list_a.size(), 3);
 
@@ -676,6 +678,820 @@ TEST(ListEraseMiddle)
 	ASSERT_EQ(list_a.back(), 3);
 }
 
+TEST(ListEraseRange)
+{
+	list<int> list_a;
+
+	list_a.push_back(5);
+	list_a.push_back(4);
+	list_a.push_back(3);
+	list_a.push_back(2);
+	list_a.push_back(1);
+
+	list<int>::iterator first = list_a.begin();
+
+	first++;
+
+	list<int>::iterator last = list_a.end();
+	last--;
+
+	list_a.erase(first, last);
+	ASSERT_EQ(list_a.size(), 2);
+	ASSERT_EQ(list_a.front(), 5);
+	ASSERT_EQ(list_a.back(), 1);
+}
+
+TEST(ListEraseRangeFull)
+{
+	list<int> list_a;
+
+	list_a.push_back(5);
+	list_a.push_back(4);
+	list_a.push_back(3);
+	list_a.push_back(2);
+	list_a.push_back(1);
+
+	list<int>::iterator first = list_a.begin();
+	list<int>::iterator last = list_a.end();
+
+	list_a.erase(first, last);
+	ASSERT_EQ(list_a.size(), 0);
+}
+
+TEST(ListEraseRangeBegin)
+{
+	list<int> list_a;
+
+	list_a.push_back(5);
+	list_a.push_back(4);
+	list_a.push_back(3);
+	list_a.push_back(2);
+	list_a.push_back(1);
+
+	list<int>::iterator first = list_a.begin();
+	list<int>::iterator last = list_a.end();
+	last--;
+	last--;
+
+	list_a.erase(first, last);
+	ASSERT_EQ(list_a.size(), 2);
+	ASSERT_EQ(list_a.front(), 2);
+	ASSERT_EQ(list_a.back(), 1);
+}
+
+TEST(ListEraseRangeEnd)
+{
+	list<int> list_a;
+
+	list_a.push_back(5);
+	list_a.push_back(4);
+	list_a.push_back(3);
+	list_a.push_back(2);
+	list_a.push_back(1);
+
+	list<int>::iterator first = list_a.begin();
+	first++;
+	first++;
+
+	list<int>::iterator last = list_a.end();
+
+	list_a.erase(first, last);
+	ASSERT_EQ(list_a.size(), 2);
+	ASSERT_EQ(list_a.front(), 5);
+	ASSERT_EQ(list_a.back(), 4);
+}
+
+TEST(ListSwap)
+{
+	list<int> list_a((size_t)5, 10);
+	list<int> list_b((size_t)4, 20);
+
+	ASSERT_EQ(list_a.size(), 5);
+	ASSERT_EQ(list_a.front(), 10);
+	ASSERT_EQ(list_a.back(), 10);
+
+	ASSERT_EQ(list_b.size(), 4);
+	ASSERT_EQ(list_b.front(), 20);
+	ASSERT_EQ(list_b.back(), 20);
+
+	list_a.swap(list_b);
+
+	ASSERT_EQ(list_b.size(), 5);
+	ASSERT_EQ(list_b.front(), 10);
+	ASSERT_EQ(list_b.back(), 10);
+
+	ASSERT_EQ(list_a.size(), 4);
+	ASSERT_EQ(list_a.front(), 20);
+	ASSERT_EQ(list_a.back(), 20);
+
+}
+
+TEST(ListResize)
+{
+	list<int> list_a;
+
+	// nothing should change
+	list_a.resize(0);
+
+	ASSERT_EQ(list_a.size(), 0);
+
+	list_a.resize(1, 42);
+	ASSERT_EQ(list_a.size(), 1);
+	ASSERT_EQ(list_a.front(), 42);
+	ASSERT_EQ(list_a.back(), 42);
+
+	list_a.resize(0);
+	ASSERT_EQ(list_a.size(), 0);
+
+	list_a.resize(500);
+
+	ASSERT_EQ(list_a.size(), 500);
+	ASSERT_EQ(list_a.front(), 0);
+	ASSERT_EQ(list_a.back(), 0);
+
+	for (list<int>::iterator i = list_a.begin(); i != list_a.end(); i++)
+		ASSERT_EQ(*i, 0);
+}
+
+TEST(ListClear)
+{
+	list<int> list_a;
+
+	ASSERT_EQ(list_a.size(), 0);
+	list_a.clear();
+	ASSERT_EQ(list_a.size(), 0);
+
+	list<int> list_b((size_t)5, 10);
+	ASSERT_EQ(list_b.size(), 5);
+
+	list_b.clear();
+	ASSERT_EQ(list_b.size(), 0);
+
+	list<int> list_c((size_t)5, 10);
+	list_c.clear();
+	ASSERT_EQ(list_c.size(), 0);
+
+}
+
+TEST(ListSpliceEntireList)
+{
+	list<int> list_a;
+	list<int> list_b((size_t)5, 10);
+
+	list_a.splice(list_a.begin(), list_b);
+	ASSERT_EQ(list_a.size(), 5);
+	ASSERT_EQ(list_a.front(), 10);
+	ASSERT_EQ(list_a.back(), 10);
+	ASSERT_EQ(list_b.size(), 0);
+}
+
+TEST(ListSpliceEntireListEnd)
+{
+	list<int> list_a;
+	list<int> list_b((size_t)5, 10);
+
+	list_a.splice(list_a.end(), list_b);
+	ASSERT_EQ(list_a.size(), 5);
+	ASSERT_EQ(list_a.front(), 10);
+	ASSERT_EQ(list_a.back(), 10);
+	ASSERT_EQ(list_b.size(), 0);
+}
+
+TEST(ListSpliceEntireListEndNotEmpty)
+{
+	list<int> list_a((size_t)4, 20);
+	list<int> list_b((size_t)5, 10);
+
+	list_a.splice(list_a.end(), list_b);
+	ASSERT_EQ(list_a.size(), 9);
+	ASSERT_EQ(list_a.front(), 20);
+	ASSERT_EQ(list_a.back(), 10);
+	ASSERT_EQ(list_b.size(), 0);
+}
+
+
+TEST(ListSpliceEntireListEmptyList)
+{
+	list<int> list_a;
+	list<int> list_b((size_t)5, 10);
+
+	list_a.splice(list_b.begin(), list_a);
+	ASSERT_EQ(list_b.size(), 5);
+	ASSERT_EQ(list_b.front(), 10);
+	ASSERT_EQ(list_b.back(), 10);
+	ASSERT_EQ(list_a.size(), 0);
+}
+
+TEST(ListSpliceSingleElementToEmptyFromBeginning)
+{
+	list<int> list_a;
+	list<int> list_b((size_t)5, 10);
+
+	list_a.splice(list_a.begin(), list_b, list_b.begin());
+	ASSERT_EQ(list_a.size(), 1);
+	ASSERT_EQ(list_a.front(), 10);
+	ASSERT_EQ(list_a.back(), 10);
+	ASSERT_EQ(list_b.front(), 10);
+	ASSERT_EQ(list_b.back(), 10);
+	ASSERT_EQ(list_b.size(), 4);
+}
+
+TEST(ListSpliceSingleElementToEmptyFromEnd)
+{
+	list<int> list_a;
+	list<int> list_b((size_t)5, 10);
+
+	list_a.splice(list_a.begin(), list_b, --list_b.end());
+	ASSERT_EQ(list_a.size(), 1);
+	ASSERT_EQ(list_a.front(), 10);
+	ASSERT_EQ(list_a.back(), 10);
+	ASSERT_EQ(list_b.front(), 10);
+	ASSERT_EQ(list_b.back(), 10);
+	ASSERT_EQ(list_b.size(), 4);
+}
+
+TEST(ListSpliceSingleElementToEmptyFromMiddle)
+{
+	list<int> list_a;
+	list<int> list_b((size_t)5, 10);
+
+	list_a.splice(list_a.begin(), list_b, ++list_b.begin());
+	ASSERT_EQ(list_a.size(), 1);
+	ASSERT_EQ(list_a.front(), 10);
+	ASSERT_EQ(list_a.back(), 10);
+	ASSERT_EQ(list_b.front(), 10);
+	ASSERT_EQ(list_b.back(), 10);
+	ASSERT_EQ(list_b.size(), 4);
+}
+
+template <typename T, typename iterator>
+void check_container(T comparator[], iterator first, iterator last)
+{
+	size_t i = 0;
+	for (iterator iter = first; iter != last; iter++)
+	{
+		ASSERT_EQ(*iter, comparator[i]);
+		i++;
+	}
+}
+
+TEST(ListSpliceSingleElementToNotEmptyFromBeginning)
+{
+	list<int> list_a((size_t)3, 20);
+	list<int> list_b((size_t)3, 10);
+
+	list_a.splice(list_a.begin(), list_b, list_b.begin());
+	ASSERT_EQ(list_a.size(), 4);
+	ASSERT_EQ(list_b.size(), 2);
+
+	int test[] = {10, 20, 20, 20};
+	// check_container(list_a, test);
+
+	list_a.splice(list_a.end(), list_b, list_b.begin());
+	ASSERT_EQ(list_a.size(), 5);
+	ASSERT_EQ(list_b.size(), 1);
+
+	list_a.splice(++list_a.begin(), list_b, list_b.begin());
+	ASSERT_EQ(list_a.size(), 6);
+	ASSERT_EQ(list_b.size(), 0);
+}
+
+TEST(ListSpliceSingleElementToNotEmptyFromMiddle)
+{
+	list<int> list_a((size_t)3, 20);
+	list<int> list_b((size_t)6, 10);
+
+	list_a.splice(list_a.begin(), list_b, ++list_b.begin());
+	ASSERT_EQ(list_a.size(), 4);
+	ASSERT_EQ(list_b.size(), 5);
+
+	int test[] = {10, 20, 20, 20};
+	// check_container(list_a, test);
+
+	list_a.splice(list_a.end(), list_b, ++list_b.begin());
+	ASSERT_EQ(list_a.size(), 5);
+	ASSERT_EQ(list_b.size(), 4);
+
+	list_a.splice(++list_a.begin(), list_b, ++list_b.begin());
+	ASSERT_EQ(list_a.size(), 6);
+	ASSERT_EQ(list_b.size(), 3);
+}
+
+TEST(ListSpliceSingleElementToNotEmptyFromEnd)
+{
+	list<int> list_a((size_t)3, 20);
+	list<int> list_b((size_t)6, 10);
+
+	list_a.splice(list_a.begin(), list_b, --list_b.end());
+	ASSERT_EQ(list_a.size(), 4);
+	ASSERT_EQ(list_b.size(), 5);
+
+	int test[] = {10, 20, 20, 20};
+	// check_container(list_a, test);
+
+	list_a.splice(list_a.end(), list_b, --list_b.end());
+	ASSERT_EQ(list_a.size(), 5);
+	ASSERT_EQ(list_b.size(), 4);
+
+	list_a.splice(++list_a.begin(), list_b, --list_b.end());
+	ASSERT_EQ(list_a.size(), 6);
+	ASSERT_EQ(list_b.size(), 3);
+}
+
+TEST(ListSpliceRangeToEmptyFromBeginning)
+{
+	list<int> list_a;
+	list<int> list_b((size_t)6, 10);
+
+	list_a.splice(list_a.begin(), list_b, list_b.begin(), --list_b.end());
+
+	ASSERT_EQ(list_a.size(), 5);
+	ASSERT_EQ(list_b.size(), 1);
+	ASSERT_EQ(list_a.front(), 10);
+	ASSERT_EQ(list_a.back(), 10);
+	ASSERT_EQ(list_b.front(), 10);
+	ASSERT_EQ(list_b.back(), 10);
+}
+
+
+TEST(ListSpliceRangeToEmptyFromMiddle)
+{
+	list<int> list_a;
+	list<int> list_b((size_t)6, 10);
+
+	list_a.splice(list_a.begin(), list_b, ++list_b.begin(), --list_b.end());
+
+	ASSERT_EQ(list_a.size(), 4);
+	ASSERT_EQ(list_b.size(), 2);
+	ASSERT_EQ(list_a.front(), 10);
+	ASSERT_EQ(list_a.back(), 10);
+	ASSERT_EQ(list_b.front(), 10);
+	ASSERT_EQ(list_b.back(), 10);
+}
+
+TEST(ListSpliceRangeToEmptyFromEnd)
+{
+	list<int> list_a;
+	list<int> list_b((size_t)6, 10);
+
+	list_a.splice(list_a.begin(), list_b, ++list_b.begin(), list_b.end());
+
+	ASSERT_EQ(list_a.size(), 5);
+	ASSERT_EQ(list_b.size(), 1);
+	ASSERT_EQ(list_a.front(), 10);
+	ASSERT_EQ(list_a.back(), 10);
+	ASSERT_EQ(list_b.front(), 10);
+	ASSERT_EQ(list_b.back(), 10);
+}
+
+TEST(ListSpliceRangeToNotEmptyFromBeginningToBeginning)
+{
+	list<int> list_a((size_t)3, 20);
+	list<int> list_b((size_t)6, 10);
+
+	list_a.splice(list_a.begin(), list_b, list_b.begin(), ++++++list_b.begin());
+
+	ASSERT_EQ(list_a.size(), 6);
+	ASSERT_EQ(list_b.size(), 3);
+	ASSERT_EQ(list_a.front(), 10);
+	ASSERT_EQ(list_a.back(), 20);
+	ASSERT_EQ(list_b.front(), 10);
+	ASSERT_EQ(list_b.back(), 10);
+}
+
+TEST(ListSpliceRangeToNotEmptyFromBeginningToMiddle)
+{
+	list<int> list_a((size_t)3, 20);
+	list<int> list_b((size_t)6, 10);
+
+	list_a.splice(++list_a.begin(), list_b, list_b.begin(), ++++++list_b.begin());
+
+	ASSERT_EQ(list_a.size(), 6);
+	ASSERT_EQ(list_b.size(), 3);
+	ASSERT_EQ(list_a.front(), 20);
+	ASSERT_EQ(list_a.back(), 20);
+	ASSERT_EQ(list_b.front(), 10);
+	ASSERT_EQ(list_b.back(), 10);
+}
+
+TEST(ListSpliceRangeToNotEmptyFromBeginningToEnd)
+{
+	list<int> list_a((size_t)3, 20);
+	list<int> list_b((size_t)6, 10);
+
+	list_a.splice(list_a.end(), list_b, list_b.begin(), ++++++list_b.begin());
+
+	ASSERT_EQ(list_a.size(), 6);
+	ASSERT_EQ(list_b.size(), 3);
+	ASSERT_EQ(list_a.front(), 20);
+	ASSERT_EQ(list_a.back(), 10);
+	ASSERT_EQ(list_b.front(), 10);
+	ASSERT_EQ(list_b.back(), 10);
+}
+
+TEST(ListSpliceRangeToNotEmptyFromMiddleToBeginning)
+{
+	list<int> list_a((size_t)3, 20);
+	list<int> list_b((size_t)6, 10);
+
+	list_a.splice(list_a.begin(), list_b, ++list_b.begin(), ++++++list_b.begin());
+
+	ASSERT_EQ(list_a.size(), 5);
+	ASSERT_EQ(list_b.size(), 4);
+	ASSERT_EQ(list_a.front(), 10);
+	ASSERT_EQ(list_a.back(), 20);
+	ASSERT_EQ(list_b.front(), 10);
+	ASSERT_EQ(list_b.back(), 10);
+}
+
+TEST(ListSpliceRangeToNotEmptyFromMiddleToMiddle)
+{
+	list<int> list_a((size_t)3, 20);
+	list<int> list_b((size_t)6, 10);
+
+	list_a.splice(++list_a.begin(), list_b, ++list_b.begin(), ++++++list_b.begin());
+
+	ASSERT_EQ(list_a.size(), 5);
+	ASSERT_EQ(list_b.size(), 4);
+	ASSERT_EQ(list_a.front(), 20);
+	ASSERT_EQ(list_a.back(), 20);
+	ASSERT_EQ(list_b.front(), 10);
+	ASSERT_EQ(list_b.back(), 10);
+}
+
+TEST(ListSpliceRangeToNotEmptyFromMiddleToEnd)
+{
+	list<int> list_a((size_t)3, 20);
+	list<int> list_b((size_t)6, 10);
+
+	list_a.splice(list_a.end(), list_b, ++list_b.begin(), ++++++list_b.begin());
+
+	ASSERT_EQ(list_a.size(), 5);
+	ASSERT_EQ(list_b.size(), 4);
+	ASSERT_EQ(list_a.front(), 20);
+	ASSERT_EQ(list_a.back(), 10);
+	ASSERT_EQ(list_b.front(), 10);
+	ASSERT_EQ(list_b.back(), 10);
+}
+
+TEST(ListSpliceRangeToNotEmptyFromEndToBeginning)
+{
+	list<int> list_a((size_t)3, 20);
+	list<int> list_b((size_t)6, 10);
+
+	list_a.splice(list_a.begin(), list_b, ----list_b.end(), list_b.end());
+
+	ASSERT_EQ(list_a.size(), 5);
+	ASSERT_EQ(list_b.size(), 4);
+	ASSERT_EQ(list_a.front(), 10);
+	ASSERT_EQ(list_a.back(), 20);
+	ASSERT_EQ(list_b.front(), 10);
+	ASSERT_EQ(list_b.back(), 10);
+}
+
+TEST(ListSpliceRangeToNotEmptyFromEndToMiddle)
+{
+	list<int> list_a((size_t)3, 20);
+	list<int> list_b((size_t)6, 10);
+
+	list_a.splice(++list_a.begin(), list_b, ----list_b.end(), list_b.end());
+
+	ASSERT_EQ(list_a.size(), 5);
+	ASSERT_EQ(list_b.size(), 4);
+	ASSERT_EQ(list_a.front(), 20);
+	ASSERT_EQ(list_a.back(), 20);
+	ASSERT_EQ(list_b.front(), 10);
+	ASSERT_EQ(list_b.back(), 10);
+}
+
+TEST(ListSpliceRangeToNotEmptyFromEndToEnd)
+{
+	list<int> list_a((size_t)3, 20);
+	list<int> list_b((size_t)6, 10);
+
+	list_a.splice(list_a.end(), list_b, ----list_b.end(), list_b.end());
+
+	ASSERT_EQ(list_a.size(), 5);
+	ASSERT_EQ(list_b.size(), 4);
+	ASSERT_EQ(list_a.front(), 20);
+	ASSERT_EQ(list_a.back(), 10);
+	ASSERT_EQ(list_b.front(), 10);
+	ASSERT_EQ(list_b.back(), 10);
+}
+
+TEST(TestSpliceRangeSameContainer)
+{
+	list<int> list_a((size_t)3, 20);
+
+	list_a.push_back(5);
+	list_a.push_back(5);
+	
+	ASSERT_EQ(list_a.back(), 5);
+	ASSERT_EQ(list_a.front(), 20);
+	ASSERT_EQ(list_a.size(), 5);
+
+	list_a.splice(list_a.begin(), list_a, ----list_a.end(), list_a.end());
+
+	ASSERT_EQ(list_a.back(), 20);
+	ASSERT_EQ(list_a.front(), 5);
+	ASSERT_EQ(list_a.size(), 5);
+
+	list_a.splice(list_a.end(), list_a, list_a.begin(), ++++list_a.begin());
+
+	ASSERT_EQ(list_a.back(), 5);
+	ASSERT_EQ(list_a.front(), 20);
+	ASSERT_EQ(list_a.size(), 5);
+
+	list_a.splice(++list_a.begin(), list_a, ----list_a.end(), list_a.end());
+}
+
+TEST(ListRemove)
+{
+	list<int> list_a((size_t)5, 10);
+
+	list_a.push_back(50);
+	list_a.push_back(50);
+	list_a.push_back(50);
+	list_a.push_back(10);
+	list_a.push_back(10);
+
+	ASSERT_EQ(list_a.size(), 10)
+
+	list_a.remove(50);
+
+	ASSERT_EQ(list_a.size(), 7);
+
+	list_a.push_back(50);
+	list_a.remove(50);
+	ASSERT_EQ(list_a.size(), 7);
+
+	list_a.push_front(50);
+	list_a.remove(50);
+	ASSERT_EQ(list_a.size(), 7);
+}
+
+bool equalsFifty(int i)
+{
+	return i == 50;
+}
+
+TEST(ListRemoveIf)
+{
+	list<int> list_a((size_t)5, 10);
+
+	list_a.push_back(50);
+	list_a.push_back(50);
+	list_a.push_back(50);
+	list_a.push_back(10);
+	list_a.push_back(10);
+
+	ASSERT_EQ(list_a.size(), 10)
+
+	list_a.remove_if(equalsFifty);
+
+	ASSERT_EQ(list_a.size(), 7);
+
+	list_a.push_back(50);
+	list_a.remove_if(equalsFifty);
+	ASSERT_EQ(list_a.size(), 7);
+
+	list_a.push_front(50);
+	list_a.remove_if(equalsFifty);
+	ASSERT_EQ(list_a.size(), 7);
+}
+
+TEST(ListUnique)
+{
+	list<int> list_a((size_t)3, 10);
+	list_a.push_back(20);
+
+	list_a.unique();
+
+	ASSERT_EQ(list_a.size(), 2);
+}
+
+TEST(ListUnique2)
+{
+	list<int> list_a((size_t)3, 10);
+
+	list_a.unique();
+
+	ASSERT_EQ(list_a.size(), 1);
+}
+
+bool binarypr(int a, int b)
+{
+	return a == b;
+}
+
+TEST(ListUniquePred)
+{
+	list<int> list_a((size_t)3, 10);
+	list_a.push_back(20);
+
+	list_a.unique(binarypr);
+
+	ASSERT_EQ(list_a.size(), 2);
+}
+
+TEST(ListUniquePred2)
+{
+	list<int> list_a((size_t)3, 10);
+
+	list_a.unique(binarypr);
+
+	ASSERT_EQ(list_a.size(), 1);
+}
+
+TEST(ListMerge)
+{
+	list<int> list_a;
+
+	list_a.push_back(1);
+	list_a.push_back(5);
+	list_a.push_back(5);
+	list_a.push_back(5);
+	list_a.push_back(7);
+
+	list<int> list_b;
+
+	list_b.push_back(2);
+	list_b.push_back(3);
+	list_b.push_back(4);
+	list_b.push_back(20);
+
+	list_a.merge(list_b);
+
+	int tester[] = {1, 2, 3, 4, 5, 5, 5, 7, 20};
+	check_container(tester, list_a.begin(), list_a.end());
+}
+
+bool compRev(int a, int b)
+{
+	return a > b;
+}
+
+TEST(ListMergePred)
+{
+	list<int> list_a;
+
+	list_a.push_back(7);
+	list_a.push_back(5);
+	list_a.push_back(5);
+	list_a.push_back(5);
+	list_a.push_back(1);
+
+	list<int> list_b;
+
+	list_b.push_back(20);
+	list_b.push_back(4);
+	list_b.push_back(3);
+	list_b.push_back(2);
+
+	list_a.merge(list_b, compRev);
+
+	int tester[] = {20, 7, 5, 5, 5, 4, 3, 2, 1};
+	check_container(tester, list_a.begin(), list_a.end());
+
+	// for (list<int>::iterator iter = list_a.begin(); iter != list_a.end(); iter++)
+	// {
+	// 	std::cout << *iter << std::endl;
+	// }
+}
+
+TEST(ListAssign)
+{
+	list<int> list_a((size_t)2, 42);
+
+	std::list<int> list_b;
+
+	list_b.push_back(5);
+	list_b.push_back(4);
+	list_b.push_back(3);
+
+	list_a.assign(list_b.begin(), list_b.end());
+
+	int tester[] = {5, 4, 3};
+	check_container(tester, list_a.begin(), list_a.end());
+	check_container(tester, list_b.begin(), list_b.end());
+}
+
+TEST(ListAssignFill)
+{
+	list<int> list_a((size_t)2, 42);
+
+	int tester[] = {7, 7, 7};
+	list_a.assign((size_t)3, 7);
+	check_container(tester, list_a.begin(), list_a.end());
+
+	list_a.assign((size_t)0, 7);
+	ASSERT_EQ(list_a.size(), 0);
+}
+
+TEST(ListRangeConstructor)
+{
+	std::list<int> list_a;
+	list_a.push_back(5);
+	list_a.push_back(4);
+	list_a.push_back(3);
+	list_a.push_back(2);
+
+	list<int> list_b(++list_a.begin(), --list_a.end());
+	int tester[] = {4, 3};
+	check_container(tester, list_b.begin(), list_b.end());
+}
+
+TEST(ListReverse)
+{
+	list<int> list_a;
+
+	list_a.push_back(1);
+	list_a.push_back(2);
+	list_a.push_back(3);
+
+	list_a.reverse();
+
+	int tester[] = {3, 2, 1};
+	check_container(tester, list_a.begin(), list_a.end());
+}
+
+TEST(ListReverseEmpty)
+{
+	list<int> list_a;
+
+	list_a.reverse();
+
+	ASSERT_EQ(list_a.size(), 0);
+}
+
+TEST(ListReverseOne)
+{
+	list<int> list_a;
+	
+	list_a.push_back(1);
+
+	list_a.reverse();
+
+	ASSERT_EQ(list_a.size(), 1);
+	ASSERT_EQ(list_a.front(), 1);
+	ASSERT_EQ(list_a.back(), 1);
+}
+
+TEST(ListReverseTwo)
+{
+	list<int> list_a;
+	
+	list_a.push_back(1);
+	list_a.push_back(2);
+
+	list_a.reverse();
+
+	int tester[] = {2, 1};
+	check_container(tester, list_a.begin(), list_a.end());
+}
+
+TEST(ListSwapElements)
+{
+	list<int> list_a;
+
+	list_a.push_back(1);
+	list_a.push_back(2);
+	list_a.push_back(3);
+
+	// Elements at ends
+	list_a.swap_elements(list_a.begin(), --list_a.end());
+
+	int tester[] = {3, 2, 1};
+	check_container(tester, list_a.begin(), list_a.end());
+
+	// Elements at beginning, neighbor elements
+	list_a.swap_elements(list_a.begin(), ++list_a.begin());
+
+	int tester2[] = {2, 3, 1};
+	check_container(tester2, list_a.begin(), list_a.end());
+
+	// Elements passed in reverse order
+	list_a.swap_elements(--list_a.end(), list_a.begin());
+	int tester3[] = {1, 3, 2};
+	check_container(tester3, list_a.begin(), list_a.end());
+
+	// Elements at end, neighbor elements
+	list_a.swap_elements(----list_a.end(), --list_a.end());
+
+	int tester4[] = {1, 2, 3};
+	check_container(tester4, list_a.begin(), list_a.end());
+	std::cout << "One" << std::endl;
+
+
+	// Elements at beginning, neighbor, reverse order
+	list_a.swap_elements(++list_a.begin(), list_a.begin());
+	
+	std::cout << "Two" << std::endl;
+	int tester5[] = {2, 1, 3};
+	check_container(tester5, list_a.begin(), list_a.end());
+}
+
+
 #include <unistd.h>
 
 int main()
@@ -683,7 +1499,7 @@ int main()
 
 	run_tests();
 
-	sleep(500);
+	// sleep(500);
 
 	// TODO: leaks-check
 
