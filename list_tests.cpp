@@ -1556,9 +1556,49 @@ TEST(ListMli) {
 	std::cout << lst_two.size() << std::endl;
 
 	// return (0);
-
 }
 
+void	checkErase(ft::list<std::string> const &lst,
+					ft::list<std::string>::const_iterator const &it)
+{
+	static int i = 0;
+
+	int j = 0;
+	ft::list<std::string>::const_iterator ite = lst.begin();
+	while (it != ite--)
+		++j;
+
+	std::cout << "[" << i++ << "] " << "erase: " << j << std::endl;
+	std::cout << lst.size() << std::endl;
+}
+
+TEST(MliTest2)
+{
+	ft::list<std::string> lst(10);
+	ft::list<std::string>::iterator it = lst.begin();
+
+	for (unsigned long int i = 0; i < lst.size(); ++i)
+		*it++ = std::string((lst.size() - i), i + 65);
+	std::cout << lst.size() << std::endl;
+
+	// checkErase(lst, lst.erase(++lst.begin())
+	lst.erase(++lst.begin());
+	for (ft::list<std::string>::iterator iter = lst.begin(); iter != lst.end(); iter++)
+	{
+		std::cout << *iter << std::endl;
+	}
+}
+
+TEST(EraseLastElement)
+{
+	ft::list<int> list_a;
+	list_a.push_back(2);
+
+	list_a.erase(list_a.begin());
+	ASSERT_EQ(list_a.size(), 0);
+	list_a.erase(list_a.begin());
+	ASSERT_EQ(list_a.size(), 0);
+}
 
 #include <unistd.h>
 

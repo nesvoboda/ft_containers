@@ -6,7 +6,7 @@
 /*   By: ashishae <ashishae@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/24 18:25:06 by ashishae          #+#    #+#             */
-/*   Updated: 2021/06/12 17:36:14 by ashishae         ###   ########.fr       */
+/*   Updated: 2021/06/12 17:41:39 by ashishae         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,38 +17,33 @@
 #include <numeric>
 #include <type_traits>
 
-struct __false_type
-{
-};
+struct __false_type {};
 
 class ListFrontBackSplit; // forward declaration for later
 
-namespace ft
-{
-
-	
+namespace ft {
 
 	template <typename iterator, typename T>
-	class rev_iterator
+	class reverse_iterator
 	{
 		iterator _iter;
 
 	public:
-		rev_iterator() : _iter(){};
-		rev_iterator(iterator it) : _iter(it){};
-		rev_iterator(rev_iterator<iterator, T> const &it) : _iter(it._iter){};
-		rev_iterator &operator=(const rev_iterator &operand)
+		reverse_iterator() : _iter(){};
+		reverse_iterator(iterator it) : _iter(it){};
+		reverse_iterator(reverse_iterator<iterator, T> const &it) : _iter(it._iter){};
+		reverse_iterator &operator=(const reverse_iterator &operand)
 		{
 			_iter = operand._iter;
 			return (*this);
 		}
-		virtual ~rev_iterator(void){};
-		rev_iterator &operator++()
+		virtual ~reverse_iterator(void){};
+		reverse_iterator &operator++()
 		{
 			_iter.operator--();
 			return *this;
 		}
-		rev_iterator &operator--()
+		reverse_iterator &operator--()
 		{
 			_iter.operator++();
 			return *this;
@@ -59,20 +54,20 @@ namespace ft
 			i--;
 			return i.operator*();
 		}
-		rev_iterator operator++(int)
+		reverse_iterator operator++(int)
 		{
-			rev_iterator retval = *this;
+			reverse_iterator retval = *this;
 			++(*this);
 			return retval;
 		}
-		rev_iterator operator--(int)
+		reverse_iterator operator--(int)
 		{
-			rev_iterator retval = *this;
+			reverse_iterator retval = *this;
 			--(*this);
 			return retval;
 		}
-		bool operator==(rev_iterator other) const { return _iter.operator==(other._iter); }
-		bool operator!=(rev_iterator other) const { return !(*this == other); }
+		bool operator==(reverse_iterator other) const { return _iter.operator==(other._iter); }
+		bool operator!=(reverse_iterator other) const { return !(*this == other); }
 		// reverse_iterator &operator*() const {return _iter.operator*(); return *this;}
 	};
 
@@ -109,54 +104,6 @@ namespace ft
 		listNode *prev;
 	};
 
-	template <typename T, typename node_type>
-	class list_iterator
-	{
-		typedef node_type node_t;
-		// friend class list;
-		node_t *ptr;
-
-
-	public:
-		// TODO move to arrow
-		node_t *internalPtr(void) { return ptr; };
-		list_iterator() : ptr(NULL) {}
-		list_iterator(node_t *_ptr) : ptr(_ptr) {}
-		list_iterator(const list_iterator<T, node_type> &it) : ptr(it.ptr){};
-		list_iterator &operator=(const list_iterator<T, node_type> &operand)
-		{
-			ptr = operand.ptr;
-			return *this;
-		}
-		~list_iterator(void){};
-		list_iterator &operator++()
-		{
-			ptr = ptr->getNext();
-			return *this;
-		}
-		list_iterator &operator--()
-		{
-			ptr = ptr->getPrev();
-			return *this;
-		}
-		T &operator*() { return ptr->getValue(); }
-		list_iterator operator++(int)
-		{
-			list_iterator retval = *this;
-			++(*this);
-			return retval;
-		}
-		list_iterator operator--(int)
-		{
-			list_iterator retval = *this;
-			--(*this);
-			return retval;
-		}
-		bool operator==(list_iterator other) const { return ptr == other.ptr; }
-		bool operator!=(list_iterator other) const { return !(*this == other); }
-		list_iterator &operator*() const { return ptr->getValue(); }
-	};
-
 	template <bool B, class T = void>
 	struct enable_if
 	{
@@ -168,15 +115,17 @@ namespace ft
 		typedef T type;
 	};
 
+	
+
 	template <typename T>
 	class list
 	{
 
-// In order to test private methods, we will have to add specific tests as
-// friend classes
-#ifdef UNIT_TEST
+	// In order to test private methods, we will have to add specific tests as
+	// friend classes
+	#ifdef UNIT_TEST
 		friend class ::ListFrontBackSplit;
-#endif
+	#endif
 
 	public:
 		typedef T value_type;
@@ -188,10 +137,7 @@ namespace ft
 		typedef const value_type *const_pointer;
 		typedef ptrdiff_t difference_type;
 		typedef size_t size_type;
-		typedef list_iterator<T, listNode<T> > iterator;
-		typedef list_iterator<const T, listNode<T> > const_iterator;
-		typedef rev_iterator<iterator, T> reverse_iterator;
-		typedef rev_iterator<const_iterator, T> const_reverse_iterator;
+
 
 		// (1) Default constructor
 		explicit list(/*const allocator_type& alloc = allocator_type()*/)
@@ -262,6 +208,51 @@ namespace ft
 		// Iterators
 
 		// TODO delete tag
+		class iterator : public std::iterator<std::bidirectional_iterator_tag, T>
+		{
+			friend class list;
+			listNode<T> *ptr;
+
+			// TODO move to arrow
+			listNode<T> *internalPtr(void) { return ptr; };
+
+		public:
+			iterator() : ptr(NULL) {}
+			iterator(listNode<T> *_ptr) : ptr(_ptr) {}
+			iterator(const iterator &it) : ptr(it.ptr){};
+			iterator &operator=(const iterator &operand)
+			{
+				ptr = operand.ptr;
+				return *this;
+			}
+			~iterator(void){};
+			iterator &operator++()
+			{
+				ptr = ptr->getNext();
+				return *this;
+			}
+			iterator &operator--()
+			{
+				ptr = ptr->getPrev();
+				return *this;
+			}
+			T &operator*() { return ptr->getValue(); }
+			iterator operator++(int)
+			{
+				iterator retval = *this;
+				++(*this);
+				return retval;
+			}
+			iterator operator--(int)
+			{
+				iterator retval = *this;
+				--(*this);
+				return retval;
+			}
+			bool operator==(iterator other) const { return ptr == other.ptr; }
+			bool operator!=(iterator other) const { return !(*this == other); }
+			iterator &operator*() const { return ptr->getValue(); }
+		};
 
 		iterator begin() { return iterator(_start); }
 		iterator end()
@@ -273,6 +264,49 @@ namespace ft
 			return iterator(cursor);
 		}
 
+		class const_iterator : public iterator
+		{
+			listNode<T> *ptr;
+
+		public:
+			const_iterator() : ptr(NULL) {}
+			const_iterator(listNode<T> *_ptr) : ptr(_ptr) {}
+			const_iterator(const_iterator &it) : ptr(it.ptr){};
+			const_iterator(const iterator &it) : ptr(it.ptr){};
+			const_iterator &operator=(const const_iterator &operand)
+			{
+				ptr = operand.ptr;
+				return *this;
+			}
+			~const_iterator(void){};
+			const_iterator &operator++()
+			{
+				ptr = ptr->getNext();
+				return *this;
+			}
+			const_iterator &operator--()
+			{
+				ptr = ptr->getPrev();
+				return *this;
+			}
+			T &operator*() { return ptr->getValue(); }
+			const_iterator operator++(int)
+			{
+				const_iterator retval = *this;
+				++(*this);
+				return retval;
+			}
+			const_iterator operator--(int)
+			{
+				const_iterator retval = *this;
+				--(*this);
+				return retval;
+			}
+			bool operator==(const_iterator other) const { return ptr == other.ptr; }
+			bool operator!=(const_iterator other) const { return !(*this == other); }
+			const_iterator &operator*() const { return ptr->getValue(); }
+		};
+
 		const_iterator begin() const { return const_iterator(this->_start); }
 		const_iterator end() const
 		{
@@ -282,6 +316,7 @@ namespace ft
 			return const_iterator(cursor);
 		}
 
+		typedef reverse_iterator<iterator, T> reverse_iterator;
 		reverse_iterator rbegin() { return reverse_iterator(_start); }
 		reverse_iterator rend()
 		{
@@ -628,7 +663,7 @@ namespace ft
 			while (cur->getNext() != NULL)
 			{
 				std::cout << cur->getValue() << "(" << cur << ")"
-						  << " -> ";
+						<< " -> ";
 				cur = cur->getNext();
 			}
 			std::cout << std::endl;
@@ -816,6 +851,7 @@ namespace ft
 			mergeSort(*this);
 		}
 
+
 	private:
 		listNode<T> *_start;
 
@@ -843,8 +879,12 @@ namespace ft
 			mergeSort(l);
 			mergeSort(right);
 			l.merge(right);
+
 		}
+
+		
+
 	};
 
-} // namespace ft
+}
 #endif
