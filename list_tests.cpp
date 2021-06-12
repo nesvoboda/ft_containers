@@ -1,7 +1,7 @@
+#define UNIT_TEST
+
 #include "list.hpp"
 #include "elementest.hpp"
-
-#define UNIT_TEST 1;
 
 TEST(listNodeConstructs)
 {
@@ -944,7 +944,6 @@ TEST(ListSpliceSingleElementToNotEmptyFromBeginning)
 	ASSERT_EQ(list_a.size(), 4);
 	ASSERT_EQ(list_b.size(), 2);
 
-	int test[] = {10, 20, 20, 20};
 	// check_container(list_a, test);
 
 	list_a.splice(list_a.end(), list_b, list_b.begin());
@@ -965,7 +964,6 @@ TEST(ListSpliceSingleElementToNotEmptyFromMiddle)
 	ASSERT_EQ(list_a.size(), 4);
 	ASSERT_EQ(list_b.size(), 5);
 
-	int test[] = {10, 20, 20, 20};
 	// check_container(list_a, test);
 
 	list_a.splice(list_a.end(), list_b, ++list_b.begin());
@@ -986,7 +984,6 @@ TEST(ListSpliceSingleElementToNotEmptyFromEnd)
 	ASSERT_EQ(list_a.size(), 4);
 	ASSERT_EQ(list_b.size(), 5);
 
-	int test[] = {10, 20, 20, 20};
 	// check_container(list_a, test);
 
 	list_a.splice(list_a.end(), list_b, --list_b.end());
@@ -1480,13 +1477,11 @@ TEST(ListSwapElements)
 
 	int tester4[] = {1, 2, 3};
 	check_container(tester4, list_a.begin(), list_a.end());
-	std::cout << "One" << std::endl;
 
 
 	// Elements at beginning, neighbor, reverse order
 	list_a.swap_elements(++list_a.begin(), list_a.begin());
 	
-	std::cout << "Two" << std::endl;
 	int tester5[] = {2, 1, 3};
 	check_container(tester5, list_a.begin(), list_a.end());
 }

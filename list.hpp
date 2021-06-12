@@ -6,7 +6,7 @@
 /*   By: ashishae <ashishae@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/24 18:25:06 by ashishae          #+#    #+#             */
-/*   Updated: 2021/06/11 13:44:34 by ashishae         ###   ########.fr       */
+/*   Updated: 2021/06/12 12:07:45 by ashishae         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -800,7 +800,6 @@ private:
 		listNode<T> *bNext = b->getNext();
 		listNode<T> *bPrev = b->getPrev();
 
-		listNode<T> *tmp;
 		
 		if (a->getNext() == b)
 		{
@@ -820,6 +819,21 @@ private:
 			
 			b->setNext(a);
 			a->setPrev(b);
+		}
+		else if (b->getNext() == a)
+		{
+			a->setPrev(bPrev);
+
+			if (bPrev)
+				bPrev->setNext(a);
+			else
+				_start = a;
+
+			b->setNext(aNext);
+			aNext->setPrev(b);
+
+			a->setNext(b);
+			b->setPrev(a);
 		}
 		else
 		{
