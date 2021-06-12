@@ -1345,10 +1345,6 @@ TEST(ListMergePred)
 	int tester[] = {20, 7, 5, 5, 5, 4, 3, 2, 1};
 	check_container(tester, list_a.begin(), list_a.end());
 
-	// for (list<int>::iterator iter = list_a.begin(); iter != list_a.end(); iter++)
-	// {
-	// 	std::cout << *iter << std::endl;
-	// }
 }
 
 TEST(ListAssign)
@@ -1442,44 +1438,6 @@ TEST(ListReverseTwo)
 	check_container(tester, list_a.begin(), list_a.end());
 }
 
-TEST(ListSwapElements)
-{
-	list<int> list_a;
-
-	list_a.push_back(1);
-	list_a.push_back(2);
-	list_a.push_back(3);
-
-	// Elements at ends
-	list_a.swap_elements(list_a.begin(), --list_a.end());
-
-	int tester[] = {3, 2, 1};
-	check_container(tester, list_a.begin(), list_a.end());
-
-	// Elements at beginning, neighbor elements
-	list_a.swap_elements(list_a.begin(), ++list_a.begin());
-
-	int tester2[] = {2, 3, 1};
-	check_container(tester2, list_a.begin(), list_a.end());
-
-	// Elements passed in reverse order
-	list_a.swap_elements(--list_a.end(), list_a.begin());
-	int tester3[] = {1, 3, 2};
-	check_container(tester3, list_a.begin(), list_a.end());
-
-	// Elements at end, neighbor elements
-	list_a.swap_elements(----list_a.end(), --list_a.end());
-
-	int tester4[] = {1, 2, 3};
-	check_container(tester4, list_a.begin(), list_a.end());
-
-	// Elements at beginning, neighbor, reverse order
-	list_a.swap_elements(++list_a.begin(), list_a.begin());
-
-	int tester5[] = {2, 1, 3};
-	check_container(tester5, list_a.begin(), list_a.end());
-}
-
 TEST(ListSort)
 {
 	list<int> list_a;
@@ -1492,18 +1450,13 @@ TEST(ListSort)
 
 	list_a.sort();
 
-	for (list<int>::iterator iter = list_a.begin(); iter != list_a.end(); iter++)
-	{
-		std::cout << *iter << std::endl;
-	}
-
 	int tester[] = {1, 2, 3, 4, 5};
 	check_container(tester, list_a.begin(), list_a.end());
 }
 
 TEST(ListMergeInterestingCase)
 {
-	std::cout << "Start" << std::endl;
+
 	list<int> list_a;
 
 	list_a.push_back(1);
@@ -1515,51 +1468,10 @@ TEST(ListMergeInterestingCase)
 	list_b.push_back(4);
 
 	list_a.merge(list_b);
-	std::cout << "Merged" << std::endl;
+
 
 	int tester[] = {1, 2, 3, 4, 5};
 	check_container(tester, list_a.begin(), list_a.end());
-}
-
-TEST(ListMergeElements)
-{
-	list<int> list_a;
-
-	list_a.push_back(1);
-	list_a.push_back(2);
-	list_a.push_back(5);
-	list_a.push_back(3);
-	list_a.push_back(4);
-	list_a.push_back(7);
-	list_a.push_back(7);
-
-	list_a.merge_elements(list_a.begin(), ++++list_a.begin(), ----list_a.end());
-
-	int tester[] = {1, 2, 3, 4, 5, 7, 7};
-	check_container(tester, list_a.begin(), list_a.end());
-
-	list_a.clear();
-
-	list_a.push_back(1);
-	list_a.push_back(3);
-	list_a.push_back(4);
-	list_a.push_back(2);
-	list_a.push_back(5);
-	list_a.push_back(7);
-	list_a.push_back(7);
-
-	list_a.merge_elements(list_a.begin(), ++++list_a.begin(), ----list_a.end());
-
-	int tester2[] = {1, 2, 3, 4, 5, 7, 7};
-	check_container(tester2, list_a.begin(), list_a.end());
-
-	list_a.clear();
-	list_a.push_back(2);
-	list_a.push_back(1);
-
-	list_a.merge_elements(list_a.begin(), list_a.begin(), list_a.end());
-	int tester3[] = {1, 2};
-	check_container(tester3, list_a.begin(), list_a.end());
 }
 
 TEST(ListFrontBackSplit)

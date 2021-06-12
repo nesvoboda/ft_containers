@@ -6,7 +6,7 @@
 /*   By: ashishae <ashishae@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/24 18:25:06 by ashishae          #+#    #+#             */
-/*   Updated: 2021/06/12 13:54:20 by ashishae         ###   ########.fr       */
+/*   Updated: 2021/06/12 14:43:15 by ashishae         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -846,6 +846,7 @@ public:
 		mergeSort(*this);
 	}
 
+
 private:
 	listNode<T> *_start;
 
@@ -863,26 +864,6 @@ private:
 		x.splice(x.begin(), *this, cur, this->end());
 	}
 
-	// m is inclusive, r is non-inclusive
-	void merge_elements(iterator l, iterator m, iterator r)
-	{
-		list<T> leftHalf;
-		list<T> rightHalf;
-
-		iterator mIncl = m;
-		++mIncl;
-		leftHalf.insert(leftHalf.begin(), l, mIncl);
-
-		iterator rNonIncl = r;
-		rNonIncl;
-		rightHalf.insert(rightHalf.begin(), mIncl, rNonIncl);
-
-		leftHalf.merge(rightHalf);
-
-		this->erase(l, r);
-		this->insert(r, leftHalf.begin(), leftHalf.end());
-	}
-
 	static void mergeSort(list<T> &l)
 	{
 		if (l.size() == 1)
@@ -896,74 +877,8 @@ private:
 
 	}
 
-	void swap_elements(list::iterator it1, list::iterator it2)
-	{
-		listNode<T> *a = it1.internalPtr();
-		listNode<T> *b = it2.internalPtr();
+	
 
-		listNode<T> *aNext = a->getNext();
-		listNode<T> *aPrev = a->getPrev();
-
-		listNode<T> *bNext = b->getNext();
-		listNode<T> *bPrev = b->getPrev();
-
-		if (a->getNext() == b)
-		{
-			if (bPrev)
-				bPrev->setNext(a);
-			else
-				_start = a;
-
-			a->setNext(bNext);
-			bNext->setPrev(a);
-
-			b->setPrev(aPrev);
-			if (aPrev)
-				aPrev->setNext(b);
-			else
-				_start = b;
-
-			b->setNext(a);
-			a->setPrev(b);
-		}
-		else if (b->getNext() == a)
-		{
-			a->setPrev(bPrev);
-
-			if (bPrev)
-				bPrev->setNext(a);
-			else
-				_start = a;
-
-			b->setNext(aNext);
-			aNext->setPrev(b);
-
-			a->setNext(b);
-			b->setPrev(a);
-		}
-		else
-		{
-			a->setPrev(bPrev);
-
-			if (bPrev)
-				bPrev->setNext(a);
-			else
-				_start = a;
-
-			a->setNext(bNext);
-			bNext->setPrev(a);
-
-			b->setPrev(aPrev);
-
-			if (aPrev)
-				aPrev->setNext(b);
-			else
-				_start = b;
-
-			b->setNext(aNext);
-			aNext->setPrev(b);
-		}
-	}
 };
 
 #endif
