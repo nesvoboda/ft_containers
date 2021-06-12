@@ -1511,6 +1511,54 @@ TEST(ListFrontBackSplit)
 	}
 }
 
+TEST(ListMli) {
+	ft::list<int> lst(7);
+	ft::list<int> lst_two(4);
+	ft::list<int> lst_three;
+	ft::list<int> lst_four;
+
+	ft::list<int>::iterator it;
+
+	it = lst.begin();
+	for (unsigned long int i = 0; i < lst.size(); ++i)
+		*it++ = (lst.size() - i) * 3;
+
+	it = lst_two.begin();
+	for (unsigned long int i = 0; i < lst_two.size(); ++i)
+		*it++ = (lst_two.size() - i) * 5;
+
+	std::cout << lst.size() << std::endl;
+	std::cout << lst_two.size() << std::endl;
+
+	lst_three.assign(lst.begin(), lst.end());
+	lst.assign(lst_two.begin(), lst_two.end());
+	lst_two.assign(2, 42);
+	lst_four.assign(4, 21);
+
+	std::cout << "\t### After assign(): ###" << std::endl;
+
+	std::cout << lst.size() << std::endl;
+	std::cout << lst_two.size() << std::endl;
+	std::cout << lst_three.size() << std::endl;
+	std::cout << lst_four.size() << std::endl;
+
+	lst_four.assign(6, 84);
+	std::cout << lst_four.size() << std::endl;
+
+	std::cout << "\t### assign() : ###" << std::endl;
+
+	lst.assign(5, 53);
+
+	it = lst_three.begin(); ++it; ++it; ++it;
+	lst_two.assign(lst_three.begin(), it);
+
+	std::cout << lst.size() << std::endl;
+	std::cout << lst_two.size() << std::endl;
+
+	// return (0);
+
+}
+
 
 #include <unistd.h>
 
