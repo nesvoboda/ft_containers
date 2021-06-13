@@ -6,7 +6,7 @@
 /*   By: ashishae <ashishae@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/24 18:25:06 by ashishae          #+#    #+#             */
-/*   Updated: 2021/06/13 14:26:44 by ashishae         ###   ########.fr       */
+/*   Updated: 2021/06/13 14:31:34 by ashishae         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -289,7 +289,7 @@ namespace ft {
 				ptr = ptr->getPrev();
 				return *this;
 			}
-			T &operator*() { return ptr->getValue(); }
+			const T &operator*() { return ptr->getValue(); }
 			const_iterator operator++(int)
 			{
 				const_iterator retval = *this;
