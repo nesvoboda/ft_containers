@@ -1572,17 +1572,75 @@ void	checkErase(ft::list<std::string> const &lst,
 	std::cout << lst.size() << std::endl;
 }
 
+TEST(MliSimple)
+{
+	ft::list<int> list_a;
+
+	list_a.push_back(1);
+	list_a.push_back(2);
+	list_a.push_back(3);
+	// list_a.push_back(4);
+
+
+	ft::list<int>::const_iterator it_a = list_a.begin();
+	ft::list<int>::const_iterator it_b = list_a.erase(++list_a.begin()); // should be pointing to 3;
+
+	for (ft::list<int>::iterator iter = list_a.begin(); iter != list_a.end(); iter++)
+	{
+		std::cout << *iter << std::endl;
+	}	
+
+	std::cout << "Simple bomba" << std::endl;
+
+	size_t j = 0;
+	while (it_a != it_b--)
+	{
+		std::cout << "Tick" << std::endl;
+		++j;
+	}
+
+}
+
+TEST(MliTest1)
+{
+	std::list<int> lst;
+
+	// lst.push_back(1);
+	// lst.push_back(2);
+	// lst.push_back(3);
+	std::cout << *(lst.end()) << std::endl;
+	// std::cout << lst.size() << std::endl;
+
+	std::cout << "BOMBA" << std::endl;
+	// checkErase(lst, lst.erase(++lst.begin())
+	std::list<int>::const_iterator ite = lst.begin();
+	std::list<int>::const_iterator it = ++++lst.begin();
+	while (it != ite--)
+	{
+		std::cout << "Tick" << std::endl;
+
+	}
+}
+
 TEST(MliTest2)
 {
 	ft::list<std::string> lst(10);
-	ft::list<std::string>::iterator it = lst.begin();
+	ft::list<std::string>::iterator ita = lst.begin();
 
 	for (unsigned long int i = 0; i < lst.size(); ++i)
-		*it++ = std::string((lst.size() - i), i + 65);
+		*ita++ = std::string((lst.size() - i), i + 65);
 	std::cout << lst.size() << std::endl;
 
+	std::cout << "BOMBA" << std::endl;
 	// checkErase(lst, lst.erase(++lst.begin())
-	lst.erase(++lst.begin());
+	ft::list<std::string>::const_iterator ite = lst.begin();
+	ft::list<std::string>::const_iterator it = lst.erase(++lst.begin());
+	int j = 0;
+	while (it != ite--)
+	{
+		std::cout << "Tick" << std::endl;
+		++j;
+	}
 	for (ft::list<std::string>::iterator iter = lst.begin(); iter != lst.end(); iter++)
 	{
 		std::cout << *iter << std::endl;
@@ -1614,9 +1672,56 @@ TEST(ConstIteratorsAreOK)
 	ASSERT_EQ(*iter++, 2);
 	ASSERT_EQ(*iter++, 3);
 	ASSERT_EQ(*iter++, 4);
-
-
 }
+
+TEST(EraseIterator)
+{
+	ft::list<int> list_a;
+
+	list_a.push_back(1);
+	list_a.push_back(2);
+	list_a.push_back(3);
+
+	list_a.erase(list_a.begin(), list_a.end());
+
+	ASSERT_EQ(list_a.size(), 0);
+}
+
+TEST(EraseIterator2)
+{
+	ft::list<int> list_a;
+
+	list_a.push_back(1);
+	list_a.push_back(2);
+	list_a.push_back(3);
+
+	list_a.erase(list_a.begin(), list_a.end());
+
+	ASSERT_EQ(list_a.size(), 0);
+}
+
+TEST(CopyConstructor)
+{
+	ft::list<int> list_a;
+
+	list_a.push_back(1);
+	list_a.push_back(2);
+	list_a.push_back(3);
+
+	list_a.debug();
+
+	ft::list<int> list_b(list_a);
+
+	list_b.debug();
+
+	int tester[] = {1, 2, 3};
+	
+
+	list_b = list_a;
+
+	check_container(tester, list_b.begin(), list_b.end());
+}
+
 
 #include <unistd.h>
 
