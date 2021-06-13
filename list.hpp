@@ -6,7 +6,7 @@
 /*   By: ashishae <ashishae@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/24 18:25:06 by ashishae          #+#    #+#             */
-/*   Updated: 2021/06/12 17:41:39 by ashishae         ###   ########.fr       */
+/*   Updated: 2021/06/13 14:26:44 by ashishae         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -264,14 +264,14 @@ namespace ft {
 			return iterator(cursor);
 		}
 
-		class const_iterator : public iterator
+		class const_iterator : public std::iterator<std::bidirectional_iterator_tag, T>
 		{
 			listNode<T> *ptr;
 
 		public:
 			const_iterator() : ptr(NULL) {}
 			const_iterator(listNode<T> *_ptr) : ptr(_ptr) {}
-			const_iterator(const_iterator &it) : ptr(it.ptr){};
+			const_iterator(const const_iterator &it) : ptr(it.ptr){};
 			const_iterator(const iterator &it) : ptr(it.ptr){};
 			const_iterator &operator=(const const_iterator &operand)
 			{

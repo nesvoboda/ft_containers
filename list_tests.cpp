@@ -1600,6 +1600,29 @@ TEST(EraseLastElement)
 	ASSERT_EQ(list_a.size(), 0);
 }
 
+TEST(IteratorsAreOK)
+{
+	ft::list<int> list_a;
+
+	list_a.push_back(1);
+	list_a.push_back(2);
+	list_a.push_back(3);
+	list_a.push_back(4);
+
+	ft::list<int>::iterator iter = list_a.begin();
+	// ASSERT_EQ(*iter++, 1);
+	// ASSERT_EQ(*iter++, 2);
+	// ASSERT_EQ(*iter++, 3);
+	// ASSERT_EQ(*iter++, 4);
+
+	typename ft::list<int>::const_iterator it = list_a.begin(), ite = list_a.end();
+	std::cout << std::endl << "Content is:" << std::endl;
+	for (; it != ite; ++it)
+		std::cout << "- " << *it << std::endl;
+
+
+}
+
 #include <unistd.h>
 
 int main()
