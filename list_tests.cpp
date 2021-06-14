@@ -2006,6 +2006,14 @@ TEST(RelOpInteresting)
 
 }
 
+TEST(STDHasBase)
+{
+	std::list<int> lst(5);
+	std::list<int>::reverse_iterator rit = lst.rend();
+
+	rit.base();
+}
+
 #include <unistd.h>
 
 int main()

@@ -6,7 +6,7 @@
 /*   By: ashishae <ashishae@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/24 18:25:06 by ashishae          #+#    #+#             */
-/*   Updated: 2021/06/14 14:33:01 by ashishae         ###   ########.fr       */
+/*   Updated: 2021/06/14 15:17:24 by ashishae         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,7 @@ namespace ft
 		// TODO move to arrow
 
 	public:
+		typedef T value_type;
 		nodeT *internalPtr(void) { return ptr; };
 		list_iterator() : ptr(NULL) {}
 		list_iterator(nodeT *_ptr) : ptr(_ptr) {}
@@ -96,20 +97,31 @@ namespace ft
 		friend class ::ft::list_iterator;
 	};
 
-	template <typename iterator, typename T>
+	template <class iterator>
 	class rev_iterator
 	{
 		iterator _iter;
 
 	public:
+		typedef typename iterator::value_type value_type;
+
 		rev_iterator() : _iter(){};
+
 		rev_iterator(iterator it) : _iter(it){};
-		rev_iterator(rev_iterator<iterator, T> const &it) : _iter(it._iter){};
+		
+		template<typename otherIterator>
+		rev_iterator(const rev_iterator<otherIterator> &it) : _iter(it.base()){};
+		
+		
+		// rev_iterator(rev_iterator<iterator, T> const &it) : _iter(it._iter){};
+		
+		rev_iterator(rev_iterator<iterator> const &it) : _iter(it._iter){};
 		rev_iterator &operator=(const rev_iterator &operand)
 		{
 			_iter = operand._iter;
 			return (*this);
 		}
+		iterator base() const { return _iter; }
 		virtual ~rev_iterator(void){};
 		rev_iterator &operator++()
 		{
@@ -121,7 +133,7 @@ namespace ft
 			_iter.operator++();
 			return *this;
 		}
-		T &operator*()
+		value_type &operator*()
 		{
 			iterator i = _iter;
 			i--;
@@ -302,14 +314,14 @@ namespace ft
 			return const_iterator(cursor);
 		}
 
-		typedef rev_iterator<iterator, T> reverse_iterator;
+		typedef rev_iterator<iterator> reverse_iterator;
 		reverse_iterator rbegin() { return reverse_iterator(_start); }
 		reverse_iterator rend()
 		{
 			return reverse_iterator(this->end());
 		}
 
-		typedef rev_iterator<const_iterator, const T> const_reverse_iterator;
+		typedef rev_iterator<const_iterator> const_reverse_iterator;
 		const_reverse_iterator rbegin() const { return const_reverse_iterator(_start); }
 		const_reverse_iterator rend() const
 		{
