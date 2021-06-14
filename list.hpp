@@ -6,7 +6,7 @@
 /*   By: ashishae <ashishae@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/24 18:25:06 by ashishae          #+#    #+#             */
-/*   Updated: 2021/06/14 13:02:51 by ashishae         ###   ########.fr       */
+/*   Updated: 2021/06/14 13:14:55 by ashishae         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,7 @@ namespace ft
 		list_iterator() : ptr(NULL) {}
 		list_iterator(nodeT *_ptr) : ptr(_ptr) {}
 		list_iterator(const list_iterator &it) : ptr(it.ptr){};
+
 		list_iterator &operator=(list_iterator const &operand)
 		{
 			ptr = operand.ptr;
@@ -82,9 +83,13 @@ namespace ft
 		operator list_iterator<const T, nodeT>(void) const {
 			return list_iterator<const T, nodeT>(this->ptr);
 		}
-		bool operator==(const list_iterator &other) const { return ptr == other.ptr; }
-		bool operator!=(const list_iterator &other) const { return !(ptr == other.ptr); }
+		template<typename OtherType>
+		bool operator==(const list_iterator<OtherType, nodeT> &other) const { return ptr == other.ptr; }
+		template<typename OtherType>
+		bool operator!=(const list_iterator<OtherType, nodeT> &other) const { return !(ptr == other.ptr); }
 		list_iterator &operator*() const { return ptr->getValue(); }
+		template<typename OtherType, typename OtherNodeType>
+		friend class ::ft::list_iterator;
 	};
 
 	template <typename iterator, typename T>
@@ -589,7 +594,7 @@ namespace ft
 			their_cur->setNext(our_right);
 
 			our_left->setNext(their_cur);
-			if (position == _start)
+			if (our_right == _start)
 				_start = their_cur;
 			their_cur->setPrev(our_left);
 
@@ -635,7 +640,7 @@ namespace ft
 				elementsTransferred++;
 
 			our_left->setNext(their_left);
-			if (position == _start)
+			if (our_right == _start)
 				_start = their_left;
 			their_left->setPrev(our_left);
 
