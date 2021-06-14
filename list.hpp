@@ -6,7 +6,7 @@
 /*   By: ashishae <ashishae@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/24 18:25:06 by ashishae          #+#    #+#             */
-/*   Updated: 2021/06/14 13:35:37 by ashishae         ###   ########.fr       */
+/*   Updated: 2021/06/14 13:44:12 by ashishae         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 #include <iostream>
 #include <numeric>
 #include <type_traits>
+#include <memory>
 
 struct __false_type
 {
@@ -65,7 +66,7 @@ namespace ft
 			return *this;
 		}
 
-		T *operator->(void) {return &ptr->getValue(); };
+		T *operator->(void) { return &ptr->getValue(); };
 		T &operator*() { return ptr->getValue(); }
 		list_iterator operator++(int)
 		{
@@ -80,15 +81,18 @@ namespace ft
 			return retval;
 		}
 
-		operator list_iterator<const T, nodeT>(void) const {
+		operator list_iterator<const T, nodeT>(void) const
+		{
 			return list_iterator<const T, nodeT>(this->ptr);
 		}
-		template<typename OtherType>
+		template <typename OtherType>
 		bool operator==(const list_iterator<OtherType, nodeT> &other) const { return ptr == other.ptr; }
-		template<typename OtherType>
+		template <typename OtherType>
 		bool operator!=(const list_iterator<OtherType, nodeT> &other) const { return !(ptr == other.ptr); }
 		list_iterator &operator*() const { return ptr->getValue(); }
-		template<typename OtherType, typename OtherNodeType>
+
+		// We have to befriend constIterators to be able to compare with them.
+		template <typename OtherType, typename OtherNodeType>
 		friend class ::ft::list_iterator;
 	};
 
@@ -135,7 +139,7 @@ namespace ft
 			--(*this);
 			return retval;
 		}
-		
+
 		bool operator==(rev_iterator other) const { return _iter.operator==(other._iter); }
 		bool operator!=(rev_iterator other) const { return !(*this == other); }
 		// reverse_iterator &operator*() const {return _iter.operator*(); return *this;}
@@ -185,7 +189,8 @@ namespace ft
 		typedef T type;
 	};
 
-	template <typename T>
+	// TODO: check allocator
+	template <typename T, typename Alloc = std::allocator<T> >
 	class list
 	{
 
@@ -216,7 +221,6 @@ namespace ft
 			_start->setPrev(_start);
 			_start->setNext(_start);
 			this->_size = 0;
-
 		};
 
 		// (2) Fill constructor
@@ -261,7 +265,7 @@ namespace ft
 		{
 			node_type *cur = _start;
 			node_type *tmp;
-			for (size_t i = 0; i < _size+1; i++)
+			for (size_t i = 0; i < _size + 1; i++)
 			{
 				tmp = cur->getNext();
 				delete cur;
@@ -344,7 +348,7 @@ namespace ft
 			// 	cur = cur->getNext();
 
 			// return cur->getValue();
-			return *(--end());			
+			return *(--end());
 		};
 
 		// Modifiers
@@ -458,7 +462,7 @@ namespace ft
 			if (cur == _start)
 				_start = newElement; // if adding to the beginning, move start pointer
 			cur->setPrev(newElement);
-		
+
 			_size++;
 			return iterator(newElement);
 		}
@@ -521,13 +525,13 @@ namespace ft
 
 			if (cursize < n)
 			{
-				list<T>::iterator e = end();
+				list<T, Alloc>::iterator e = end();
 				for (size_t i = 0; i < (n - cursize); i++)
 					insert(e, val);
 			}
 			else if (cursize > n)
 			{
-				list<T>::iterator e = end();
+				list<T, Alloc>::iterator e = end();
 				e--;
 				for (size_t i = 0; i < (cursize - n); i++)
 				{
@@ -562,7 +566,6 @@ namespace ft
 			if (their_right)
 				their_right->setNext(our_right);
 			our_right->setPrev(their_right);
-
 
 			our_left->setNext(their_left);
 			if (_size == 0)
@@ -605,7 +608,6 @@ namespace ft
 			_size += 1;
 			x._size -= 1;
 		}
-
 
 		// TODO remove
 		void debug()
@@ -658,8 +660,8 @@ namespace ft
 
 		void remove(const value_type &val)
 		{
-			list<T>::iterator iter = begin();
-			list<T>::iterator e = end();
+			list<T, Alloc>::iterator iter = begin();
+			list<T, Alloc>::iterator e = end();
 
 			while (iter != e)
 			{
@@ -673,8 +675,8 @@ namespace ft
 		template <class Predicate>
 		void remove_if(Predicate pred)
 		{
-			list<T>::iterator iter = begin();
-			list<T>::iterator e = end();
+			list<T, Alloc>::iterator iter = begin();
+			list<T, Alloc>::iterator e = end();
 
 			while (iter != e)
 			{
@@ -690,10 +692,10 @@ namespace ft
 		{
 			if (size() <= 1)
 				return;
-			list<T>::iterator iter = begin();
-			list<T>::iterator e = --end();
+			list<T, Alloc>::iterator iter = begin();
+			list<T, Alloc>::iterator e = --end();
 
-			list<T>::iterator next = iter;
+			list<T, Alloc>::iterator next = iter;
 			while (iter != e)
 			{
 				next++;
@@ -711,11 +713,11 @@ namespace ft
 			if (size() <= 1)
 				return;
 
-			list<T>::iterator iter = begin();
+			list<T, Alloc>::iterator iter = begin();
 			iter++;
-			list<T>::iterator e = end();
+			list<T, Alloc>::iterator e = end();
 
-			list<T>::iterator prev = begin();
+			list<T, Alloc>::iterator prev = begin();
 			while (iter != e)
 			{
 				if (binary_pred(*prev, *iter))
@@ -737,9 +739,9 @@ namespace ft
 			if (&x == this)
 				return;
 
-			list<T>::iterator our_iter = begin();
-			list<T>::iterator their_iter = begin();
-			list<T>::iterator our_e = end();
+			list<T, Alloc>::iterator our_iter = begin();
+			list<T, Alloc>::iterator their_iter = begin();
+			list<T, Alloc>::iterator our_e = end();
 
 			while (our_iter != our_e)
 			{
@@ -761,9 +763,9 @@ namespace ft
 			if (&x == this)
 				return;
 
-			list<T>::iterator our_iter = begin();
-			list<T>::iterator their_iter = begin();
-			list<T>::iterator our_e = end();
+			list<T, Alloc>::iterator our_iter = begin();
+			list<T, Alloc>::iterator their_iter = begin();
+			list<T, Alloc>::iterator our_e = end();
 			// std::cout << "Start" << std::endl;
 			while (our_iter != our_e)
 			{
@@ -815,7 +817,7 @@ namespace ft
 		size_type _size;
 
 		// Split the list in two halves
-		void frontBackSplit(list<T> &x)
+		void frontBackSplit(list<T, Alloc> &x)
 		{
 			size_t middle = size() / 2;
 
@@ -828,11 +830,11 @@ namespace ft
 			x.splice(x.begin(), *this, cur, this->end());
 		}
 
-		static void mergeSort(list<T> &l)
+		static void mergeSort(list<T, Alloc> &l)
 		{
 			if (l.size() == 1)
 				return;
-			list<T> right;
+			list<T, Alloc> right;
 
 			l.frontBackSplit(right);
 			mergeSort(l);
