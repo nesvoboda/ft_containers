@@ -6,7 +6,7 @@
 /*   By: ashishae <ashishae@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/24 18:25:06 by ashishae          #+#    #+#             */
-/*   Updated: 2021/06/14 16:59:00 by ashishae         ###   ########.fr       */
+/*   Updated: 2021/06/14 17:04:40 by ashishae         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,8 +49,8 @@ namespace ft
 		list_iterator() : ptr(NULL) {}
 		list_iterator(nodeT *_ptr) : ptr(_ptr) {}
 		list_iterator(list_iterator const &it) : ptr(it.ptr){};
-		template <typename OtherType, typename OtherNodeT>
-		list_iterator(list_iterator<OtherType, OtherNodeT> const &it) : ptr(it.ptr){};
+		// template <typename OtherType, typename OtherNodeT>
+		// list_iterator(list_iterator<OtherType, OtherNodeT> const &it) : ptr(it.ptr){};
 
 		list_iterator &operator=(list_iterator const &operand)
 		{
@@ -155,8 +155,10 @@ namespace ft
 		}
 		value_type *operator->(void) { return _iter.operator->(); };
 
-		bool operator==(rev_iterator other) const { return _iter.operator==(other._iter); }
-		bool operator!=(rev_iterator other) const { return !(*this == other); }
+		template <typename OtherIterator>
+		bool operator==(rev_iterator<OtherIterator> other) const { return _iter.operator==(other.base()); }
+		template <typename OtherIterator>
+		bool operator!=(rev_iterator<OtherIterator> other) const { return !(*this == other); }
 		// reverse_iterator &operator*() const {return _iter.operator*(); return *this;}
 	};
 
