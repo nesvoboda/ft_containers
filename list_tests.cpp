@@ -2098,6 +2098,60 @@ TEST(PrintReverse)
 	printReverse(list_a);
 }
 
+TEST(AmIIdiot)
+{
+	ft::list<int> lst(5);
+	
+	int i = 0;
+	for (ft::list<int>::iterator iter = lst.begin(); iter != lst.end(); iter++)
+		*iter = i++;
+	// std::cout << "here" << std::endl;
+	// printSize(lst, 1);
+	for (ft::list<int>::iterator iter = lst.begin(); iter != lst.end(); iter++)
+	{
+		std::cout << *iter << std::endl;
+	}
+}
+
+TEST(AmIIdiot2)
+{
+	ft::list<int> lst(5);
+	
+	int i = 1;
+	ft::list<int>::reverse_iterator iter = lst.rbegin();
+	ft::list<int>::const_reverse_iterator ite = lst.rend();
+	// for (size_t i = 0; i < 5; i++)
+	// 	*iter++ = i;
+	for (; iter != ite;)
+	{
+		*iter++ = i++;
+	}
+	// std::cout << "here" << std::endl;
+	// printSize(lst, 1);
+	for (ft::list<int>::iterator iter = lst.begin(); iter != lst.end(); iter++)
+	{
+		std::cout << *iter << std::endl;
+	}
+}
+
+
+TEST(FixRiteArrow)
+{
+	const int size = 5;
+	ft::list<int> lst(size);
+	ft::list<int>::reverse_iterator it(lst.rbegin());
+	ft::list<int>::const_reverse_iterator ite(lst.rend());
+
+	for (int i = 1; it != ite; ++i)
+		*it++ = (i * 7);
+	// std::cout << "here" << std::endl;
+	// printSize(lst, 1);
+	for (ft::list<int>::iterator iter = lst.begin(); iter != lst.end(); iter++)
+	{
+		std::cout << *iter << std::endl;
+	}
+}
+
 #include <unistd.h>
 
 int main()

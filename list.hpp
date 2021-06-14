@@ -6,7 +6,7 @@
 /*   By: ashishae <ashishae@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/24 18:25:06 by ashishae          #+#    #+#             */
-/*   Updated: 2021/06/14 17:30:39 by ashishae         ###   ########.fr       */
+/*   Updated: 2021/06/14 18:19:44 by ashishae         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -127,19 +127,19 @@ namespace ft
 		virtual ~rev_iterator(void){};
 		rev_iterator &operator++()
 		{
-			_iter.operator--();
+			_iter = _iter.operator--();
 			return *this;
 		}
 		rev_iterator &operator--()
 		{
-			_iter.operator++();
+			_iter = _iter.operator++();
 			return *this;
 		}
 		value_type &operator*()
 		{
-			iterator i = _iter;
-			i--;
-			return i.operator*();
+			// iterator i = _iter;
+			// i--;
+			return --iterator(_iter).operator*();
 		}
 		rev_iterator operator++(int)
 		{
@@ -156,9 +156,11 @@ namespace ft
 		value_type *operator->(void) { return &this->operator*(); };
 
 		template <typename OtherIterator>
-		bool operator==(rev_iterator<OtherIterator> other) const { return _iter.operator==(other.base()); }
+		bool operator==(const rev_iterator<OtherIterator> &other) const { 
+			return _iter.operator==(other.base()); 
+		}
 		template <typename OtherIterator>
-		bool operator!=(rev_iterator<OtherIterator> other) const { return !(*this == other); }
+		bool operator!=(const rev_iterator<OtherIterator> &other) const { return !(*this == other); }
 		// reverse_iterator &operator*() const {return _iter.operator*(); return *this;}
 	};
 
