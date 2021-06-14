@@ -1994,6 +1994,17 @@ TEST(RelativeOpearatorGreaterOrEqualEmptyEqual)
 	ASSERT_EQ((list_a >= list_b), true);
 }
 
+TEST(RelOpInteresting)
+{
+	ft::list<int> lst(4);
+	ft::list<int> lst2(6);
+
+	ASSERT_EQ((lst < lst2), true);
+	ASSERT_EQ((lst <= lst2), true);
+	ASSERT_EQ((lst > lst2), false);
+	ASSERT_EQ((lst >= lst2), false);
+
+}
 
 #include <unistd.h>
 

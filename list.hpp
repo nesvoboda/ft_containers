@@ -6,7 +6,7 @@
 /*   By: ashishae <ashishae@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/24 18:25:06 by ashishae          #+#    #+#             */
-/*   Updated: 2021/06/14 14:21:54 by ashishae         ###   ########.fr       */
+/*   Updated: 2021/06/14 14:33:01 by ashishae         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -884,7 +884,7 @@ namespace ft
 			}
 			lhs_it++; rhs_it++;
 		}
-		return false;
+		return lhs.size() < rhs.size();
 	};
 
 	// (4)	
@@ -903,7 +903,7 @@ namespace ft
 			}
 			lhs_it++; rhs_it++;
 		}
-		return true;
+		return lhs.size() <= rhs.size();
 	};
 
 	// (5)	
@@ -922,7 +922,7 @@ namespace ft
 			}
 			lhs_it++; rhs_it++;
 		}
-		return false;
+		return lhs.size() > rhs.size();
 	};
 
 	// (6)	
@@ -941,7 +941,7 @@ namespace ft
 			}
 			lhs_it++; rhs_it++;
 		}
-		return true;
+		return (lhs.size() >= rhs.size());
 	};
 
 } // namespace ft
