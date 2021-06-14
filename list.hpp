@@ -6,7 +6,7 @@
 /*   By: ashishae <ashishae@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/24 18:25:06 by ashishae          #+#    #+#             */
-/*   Updated: 2021/06/14 15:17:24 by ashishae         ###   ########.fr       */
+/*   Updated: 2021/06/14 15:19:50 by ashishae         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -299,19 +299,19 @@ namespace ft
 		iterator begin() { return iterator(_start); }
 		iterator end()
 		{
-			listNode<T> *cursor = _start;
-			for (size_t i = 0; i < _size; i++)
-				cursor = cursor->getNext();
-			return iterator(cursor);
+			// listNode<T> *cursor = _start;
+			// for (size_t i = 0; i < _size; i++)
+			// 	cursor = cursor->getNext();			
+			return iterator(_start->getPrev());
 		}
 
 		const_iterator begin() const { return const_iterator(this->_start); }
 		const_iterator end() const
 		{
-			listNode<T> *cursor = _start;
-			for (size_t i = 0; i < _size; i++)
-				cursor = cursor->getNext();
-			return const_iterator(cursor);
+			// listNode<T> *cursor = _start;
+			// for (size_t i = 0; i < _size; i++)
+			// 	cursor = cursor->getNext();
+			return iterator(_start->getPrev());
 		}
 
 		typedef rev_iterator<iterator> reverse_iterator;
@@ -800,7 +800,6 @@ namespace ft
 			if (_size == 0)
 				return;
 			listNode<T> *cur = _start;
-			listNode<T> *old_start = _start;
 
 			listNode<T> *tmp = NULL;
 			listNode<T> *prev = NULL;
