@@ -1722,6 +1722,36 @@ TEST(CopyConstructor)
 	check_container(tester, list_b.begin(), list_b.end());
 }
 
+struct t_cmp {
+	bool	operator()(const double &first, const double &second)
+	{
+		return (int(first) < int(second));
+	}
+};
+
+
+TEST(MergeNew)
+{
+	ft::list<double> list_a;
+
+	// list_a.push_back(1.4);
+	// list_a.push_back(2.2);
+	// list_a.push_back(2.9);
+	list_a.push_back(3.1);
+	// list_a.push_back(3.7);
+	// list_a.push_back(7.1);
+
+	ft::list<double> list_b;
+	list_b.push_back(2.1);
+
+	list_a.merge(list_b, t_cmp());
+	std::cout << "I'm alive" << std::endl;
+
+	for (ft::list<double>::iterator iter = list_a.begin(); iter != list_a.end(); iter++)
+	{
+		std::cout << *iter << std::endl;
+	}
+}
 
 #include <unistd.h>
 

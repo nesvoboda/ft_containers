@@ -6,7 +6,7 @@
 /*   By: ashishae <ashishae@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/24 18:25:06 by ashishae          #+#    #+#             */
-/*   Updated: 2021/06/14 13:14:55 by ashishae         ###   ########.fr       */
+/*   Updated: 2021/06/14 13:35:37 by ashishae         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -764,11 +764,13 @@ namespace ft
 			list<T>::iterator our_iter = begin();
 			list<T>::iterator their_iter = begin();
 			list<T>::iterator our_e = end();
-
+			// std::cout << "Start" << std::endl;
 			while (our_iter != our_e)
 			{
-				while (comp(x.front(), *our_iter))
+				// std::cout << "Cycle" << std::endl;
+				while (x.size() && comp(x.front(), *our_iter))
 				{
+					// std::cout << "Cycle2" << std::endl;
 					this->splice(our_iter, x, x.begin());
 				}
 				our_iter++;
