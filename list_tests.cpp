@@ -2072,6 +2072,32 @@ TEST(NewThingy)
 	}	
 }
 
+template <typename T>
+void	printReverse(ft::list<T> &lst)
+{
+	typename ft::list<T>::iterator it = lst.end(), ite = lst.begin();
+
+	std::cout << "printReverse:" << std::endl;
+	while (it-- != ite)
+		std::cout << "-> " << *it << std::endl;
+	std::cout << "_______________________________________________" << std::endl;
+}
+
+TEST(PrintReverse)
+{
+	ft::list<int> list_a;
+
+	list_a.push_back(1);	
+	list_a.push_back(2);	
+	list_a.push_back(3);
+	list_a.reverse();
+
+	std::cout << list_a.front() << std::endl;
+	std::cout << list_a.back() << std::endl;
+
+	printReverse(list_a);
+}
+
 #include <unistd.h>
 
 int main()

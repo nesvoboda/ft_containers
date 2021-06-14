@@ -6,7 +6,7 @@
 /*   By: ashishae <ashishae@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/24 18:25:06 by ashishae          #+#    #+#             */
-/*   Updated: 2021/06/14 17:04:40 by ashishae         ###   ########.fr       */
+/*   Updated: 2021/06/14 17:30:39 by ashishae         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -153,7 +153,7 @@ namespace ft
 			--(*this);
 			return retval;
 		}
-		value_type *operator->(void) { return _iter.operator->(); };
+		value_type *operator->(void) { return &this->operator*(); };
 
 		template <typename OtherIterator>
 		bool operator==(rev_iterator<OtherIterator> other) const { return _iter.operator==(other.base()); }
@@ -808,19 +808,22 @@ namespace ft
 
 			listNode<T> *tmp = NULL;
 			listNode<T> *prev = NULL;
-			for (size_t i = 0; i < _size; i++)
+			for (size_t i = 0; i < _size+1; i++)
 			{
 				tmp = cur->getNext();
 				cur->setNext(cur->getPrev());
 				cur->setPrev(tmp);
 				prev = cur;
 				cur = tmp;
+				// std::cout << "Prev: " << prev->getValue() << std::endl;
+				// std::cout << "Cur: " << cur->getValue() << std::endl;
 			}
+
 
 			// old_start->setNext(cur); // set END element as last
 			// cur->setPrev(old_start);
 			// prev->setPrev(cur);
-			_start = prev;
+			_start = prev->getNext();
 		}
 
 		// (1)
