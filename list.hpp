@@ -6,7 +6,7 @@
 /*   By: ashishae <ashishae@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/24 18:25:06 by ashishae          #+#    #+#             */
-/*   Updated: 2021/06/14 13:44:12 by ashishae         ###   ########.fr       */
+/*   Updated: 2021/06/14 14:21:54 by ashishae         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -194,11 +194,11 @@ namespace ft
 	class list
 	{
 
-// In order to test private methods, we will have to add specific tests as
-// friend classes
-#ifdef UNIT_TEST
-		friend class ::ListFrontBackSplit;
-#endif
+	// In order to test private methods, we will have to add specific tests as
+	// friend classes
+	#ifdef UNIT_TEST
+			friend class ::ListFrontBackSplit;
+	#endif
 
 	public:
 		typedef T value_type;
@@ -841,6 +841,107 @@ namespace ft
 			mergeSort(right);
 			l.merge(right);
 		}
+	};
+
+	// Relative operators
+	// (1)
+	template <class Type, class Allocator>
+	bool operator== (const list<Type,Allocator>& lhs, const list<Type,Allocator>& rhs)
+	{
+		if (lhs.size() != rhs.size())
+			return false;
+		
+		typename ft::list<Type,Allocator>::const_iterator lhs_it = lhs.begin();
+		typename ft::list<Type,Allocator>::const_iterator rhs_it = rhs.begin();
+		for (size_t i = 0; i < lhs.size(); i++)
+		{
+			if (*lhs_it++ != *rhs_it++)
+				return false;
+		}
+		return true;
+	};
+
+	// (2)	
+	template <class T, class Alloc>
+	bool operator!= (const list<T,Alloc>& lhs, const list<T,Alloc>& rhs)
+	{
+		return (!(lhs == rhs));
+	};
+
+	// (3)	
+	template <class T, class Alloc>
+	bool operator<  (const list<T,Alloc>& lhs, const list<T,Alloc>& rhs)
+	{
+		typename ft::list<T,Alloc>::const_iterator lhs_it = lhs.begin();
+		typename ft::list<T,Alloc>::const_iterator rhs_it = rhs.begin();
+		for (size_t i = 0; i < lhs.size(); i++)
+		{
+			if (*lhs_it != *rhs_it)
+			{
+				if (*lhs_it < *rhs_it)
+					return true;
+				return false;
+			}
+			lhs_it++; rhs_it++;
+		}
+		return false;
+	};
+
+	// (4)	
+	template <class T, class Alloc>
+	bool operator<= (const list<T,Alloc>& lhs, const list<T,Alloc>& rhs)
+	{
+		typename ft::list<T,Alloc>::const_iterator lhs_it = lhs.begin();
+		typename ft::list<T,Alloc>::const_iterator rhs_it = rhs.begin();
+		for (size_t i = 0; i < lhs.size(); i++)
+		{
+			if (*lhs_it != *rhs_it)
+			{
+				if (*lhs_it < *rhs_it)
+					return true;
+				return false;
+			}
+			lhs_it++; rhs_it++;
+		}
+		return true;
+	};
+
+	// (5)	
+	template <class T, class Alloc>
+	bool operator>  (const list<T,Alloc>& lhs, const list<T,Alloc>& rhs)
+	{
+		typename ft::list<T,Alloc>::const_iterator lhs_it = lhs.begin();
+		typename ft::list<T,Alloc>::const_iterator rhs_it = rhs.begin();
+		for (size_t i = 0; i < lhs.size(); i++)
+		{
+			if (*lhs_it != *rhs_it)
+			{
+				if (*lhs_it > *rhs_it)
+					return true;
+				return false;
+			}
+			lhs_it++; rhs_it++;
+		}
+		return false;
+	};
+
+	// (6)	
+	template <class T, class Alloc>
+	bool operator>=  (const list<T,Alloc>& lhs, const list<T,Alloc>& rhs)
+	{
+		typename ft::list<T,Alloc>::const_iterator lhs_it = lhs.begin();
+		typename ft::list<T,Alloc>::const_iterator rhs_it = rhs.begin();
+		for (size_t i = 0; i < lhs.size(); i++)
+		{
+			if (*lhs_it != *rhs_it)
+			{
+				if (*lhs_it > *rhs_it)
+					return true;
+				return false;
+			}
+			lhs_it++; rhs_it++;
+		}
+		return true;
 	};
 
 } // namespace ft

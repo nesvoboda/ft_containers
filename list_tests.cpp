@@ -1753,6 +1753,248 @@ TEST(MergeNew)
 	}
 }
 
+TEST(RelativeOpearatorEqualsEmpty)
+{
+	ft::list<int> list_a;
+	ft::list<int> list_b;
+
+	ASSERT_EQ((list_a == list_b), true);
+}
+
+TEST(RelativeOpearatorEqualsNotEmptyDiffSize)
+{
+	ft::list<int> list_a;
+	list_a.push_back(2);
+	ft::list<int> list_b;
+
+	ASSERT_EQ((list_a == list_b), false);
+}
+
+TEST(RelativeOpearatorEqualsNotEmptySameSize)
+{
+	ft::list<int> list_a;
+	list_a.push_back(2);
+	list_a.push_back(4);
+	ft::list<int> list_b;
+	list_b.push_back(2);
+	list_b.push_back(5);
+
+	ASSERT_EQ((list_a != list_b), true);
+}
+
+TEST(RelativeOpearatorNotEqualsEmpty)
+{
+	ft::list<int> list_a;
+	ft::list<int> list_b;
+
+	ASSERT_EQ((list_a != list_b), false);
+}
+
+TEST(RelativeOpearatorNotEqualsNotEmptyDiffSize)
+{
+	ft::list<int> list_a;
+	list_a.push_back(2);
+	ft::list<int> list_b;
+
+	ASSERT_EQ((list_a != list_b), true);
+}
+
+TEST(RelativeOpearatorNotEqualsNotEmptySameSize)
+{
+	ft::list<int> list_a;
+	list_a.push_back(2);
+	list_a.push_back(4);
+	ft::list<int> list_b;
+	list_b.push_back(2);
+	list_b.push_back(5);
+
+	ASSERT_EQ((list_a == list_b), false);
+}
+
+TEST(RelativeOpearatorLess)
+{
+	ft::list<int> list_a;
+	list_a.push_back(2);
+	list_a.push_back(4);
+	ft::list<int> list_b;
+	list_b.push_back(2);
+	list_b.push_back(5);
+
+	ASSERT_EQ((list_a < list_b), true);
+}
+
+TEST(RelativeOpearatorLessEmpty)
+{
+	ft::list<int> list_a;
+	ft::list<int> list_b;
+
+	ASSERT_EQ((list_a < list_b), false);
+}
+
+TEST(RelativeOpearatorLessEmptyFalse)
+{
+	ft::list<int> list_a;
+	list_a.push_back(2);
+	list_a.push_back(6);
+	ft::list<int> list_b;
+	list_b.push_back(2);
+	list_b.push_back(5);
+
+	ASSERT_EQ((list_a < list_b), false);
+}
+
+TEST(RelativeOpearatorLessEmptyEqual)
+{
+	ft::list<int> list_a;
+	list_a.push_back(2);
+	list_a.push_back(6);
+	ft::list<int> list_b;
+	list_b.push_back(2);
+	list_b.push_back(6);
+
+	ASSERT_EQ((list_a < list_b), false);
+}
+
+
+TEST(RelativeOpearatorLessOrEqualEmpty)
+{
+	ft::list<int> list_a;
+	ft::list<int> list_b;
+
+	ASSERT_EQ((list_a <= list_b), true);
+}
+
+
+TEST(RelativeOpearatorLessOrEqualDiffSize)
+{
+	ft::list<int> list_a;
+	list_a.push_back(2);
+	ft::list<int> list_b;
+
+	std::list<int> slist_a;
+	slist_a.push_back(2);
+	std::list<int> slist_b;
+
+	ASSERT_EQ((list_a <= list_b), (slist_a <= slist_b));
+}
+
+TEST(RelativeOpearatorLessOrEqualFalse)
+{
+	ft::list<int> list_a;
+	list_a.push_back(2);
+	list_a.push_back(6);
+	ft::list<int> list_b;
+	list_b.push_back(2);
+	list_b.push_back(5);
+
+	ASSERT_EQ((list_a <= list_b), false);
+}
+
+TEST(RelativeOpearatorLessOrEqualEmptyEqual)
+{
+	ft::list<int> list_a;
+	list_a.push_back(2);
+	list_a.push_back(6);
+	ft::list<int> list_b;
+	list_b.push_back(2);
+	list_b.push_back(6);
+
+	ASSERT_EQ((list_a <= list_b), true);
+}
+
+
+TEST(RelativeOpearatorGreater)
+{
+	ft::list<int> list_a;
+	list_a.push_back(2);
+	list_a.push_back(4);
+	ft::list<int> list_b;
+	list_b.push_back(2);
+	list_b.push_back(5);
+
+	ASSERT_EQ((list_a > list_b), false);
+}
+
+TEST(RelativeOpearatorGreaterEmpty)
+{
+	ft::list<int> list_a;
+	ft::list<int> list_b;
+
+	ASSERT_EQ((list_a > list_b), false);
+}
+
+TEST(RelativeOpearatorGreaterEmptyFalse)
+{
+	ft::list<int> list_a;
+	list_a.push_back(2);
+	list_a.push_back(6);
+	ft::list<int> list_b;
+	list_b.push_back(2);
+	list_b.push_back(5);
+
+	ASSERT_EQ((list_a > list_b), true);
+}
+
+TEST(RelativeOpearatorGreaterEmptyEqual)
+{
+	ft::list<int> list_a;
+	list_a.push_back(2);
+	list_a.push_back(6);
+	ft::list<int> list_b;
+	list_b.push_back(2);
+	list_b.push_back(6);
+
+	ASSERT_EQ((list_a > list_b), false);
+}
+
+
+TEST(RelativeOpearatorGreaterOrEqualEmpty)
+{
+	ft::list<int> list_a;
+	ft::list<int> list_b;
+
+	ASSERT_EQ((list_a >= list_b), true);
+}
+
+
+TEST(RelativeOpearatorGreaterOrEqualDiffSize)
+{
+	ft::list<int> list_a;
+	list_a.push_back(2);
+	ft::list<int> list_b;
+
+	std::list<int> slist_a;
+	slist_a.push_back(2);
+	std::list<int> slist_b;
+
+	ASSERT_EQ((list_a >= list_b), (slist_a >= slist_b));
+}
+
+TEST(RelativeOpearatorGreaterOrEqualFalse)
+{
+	ft::list<int> list_a;
+	list_a.push_back(2);
+	list_a.push_back(6);
+	ft::list<int> list_b;
+	list_b.push_back(2);
+	list_b.push_back(5);
+
+	ASSERT_EQ((list_a >= list_b), true);
+}
+
+TEST(RelativeOpearatorGreaterOrEqualEmptyEqual)
+{
+	ft::list<int> list_a;
+	list_a.push_back(2);
+	list_a.push_back(6);
+	ft::list<int> list_b;
+	list_b.push_back(2);
+	list_b.push_back(6);
+
+	ASSERT_EQ((list_a >= list_b), true);
+}
+
+
 #include <unistd.h>
 
 int main()
