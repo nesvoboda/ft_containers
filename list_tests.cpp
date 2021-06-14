@@ -2014,6 +2014,64 @@ TEST(STDHasBase)
 	rit.base();
 }
 
+bool compTest(int a, int b)
+{
+	return a > b;
+}
+
+TEST(SortWithPred)
+{
+	ft::list<int> list_a;
+	list_a.push_back(5);
+	list_a.push_back(6);
+	list_a.push_back(7);
+
+	list_a.sort(compTest);
+
+	for (ft::list<int>::iterator iter = list_a.begin(); iter != list_a.end(); iter++)
+	{
+		std::cout << *iter << std::endl;
+	}
+
+	int tester[] = {7, 6, 5};
+	check_container(tester, list_a.begin(), list_a.end());
+}
+
+struct case_insensitive {
+	bool	operator()(const std::string &first, const std::string &second)
+	{
+		unsigned int i = 0;
+
+		while ((i < first.length()) && (i < second.length()))
+		{
+			if (tolower(first[i]) < tolower(second[i]))
+				return true;
+			else if (tolower(first[i]) > tolower(second[i]))
+				return false;
+			++i;
+		}
+		return (first.length() < second.length());
+	}
+};
+
+
+TEST(NewThingy)
+{
+	ft::list<std::string> list_a;
+
+	list_a.push_back("AAA");	
+	list_a.push_back("AAb");	
+	list_a.push_back("AAB");	
+	list_a.push_back("AAa");	
+	list_a.push_back("AAC");	
+	list_a.sort(case_insensitive());
+
+	for (ft::list<std::string>::iterator iter = list_a.begin(); iter != list_a.end(); iter++)
+	{
+		std::cout << *iter << std::endl;
+	}	
+}
+
 #include <unistd.h>
 
 int main()

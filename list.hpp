@@ -6,7 +6,7 @@
 /*   By: ashishae <ashishae@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/24 18:25:06 by ashishae          #+#    #+#             */
-/*   Updated: 2021/06/14 15:19:50 by ashishae         ###   ########.fr       */
+/*   Updated: 2021/06/14 16:59:00 by ashishae         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,9 @@ namespace ft
 		nodeT *internalPtr(void) { return ptr; };
 		list_iterator() : ptr(NULL) {}
 		list_iterator(nodeT *_ptr) : ptr(_ptr) {}
-		list_iterator(const list_iterator &it) : ptr(it.ptr){};
+		list_iterator(list_iterator const &it) : ptr(it.ptr){};
+		template <typename OtherType, typename OtherNodeT>
+		list_iterator(list_iterator<OtherType, OtherNodeT> const &it) : ptr(it.ptr){};
 
 		list_iterator &operator=(list_iterator const &operand)
 		{
@@ -107,7 +109,7 @@ namespace ft
 
 		rev_iterator() : _iter(){};
 
-		rev_iterator(iterator it) : _iter(it){};
+		explicit rev_iterator(iterator it) : _iter(it){};
 		
 		template<typename otherIterator>
 		rev_iterator(const rev_iterator<otherIterator> &it) : _iter(it.base()){};
@@ -151,6 +153,7 @@ namespace ft
 			--(*this);
 			return retval;
 		}
+		value_type *operator->(void) { return _iter.operator->(); };
 
 		bool operator==(rev_iterator other) const { return _iter.operator==(other._iter); }
 		bool operator!=(rev_iterator other) const { return !(*this == other); }
@@ -818,9 +821,17 @@ namespace ft
 			_start = prev;
 		}
 
+		// (1)
 		void sort()
 		{
 			mergeSort(*this);
+		}
+
+		// (2)	
+		template <class Compare>
+		void sort (Compare comp)
+		{
+			mergeSort(*this, comp);
 		}
 
 	private:
@@ -843,7 +854,7 @@ namespace ft
 
 		static void mergeSort(list<T, Alloc> &l)
 		{
-			if (l.size() == 1)
+			if (l.size() <= 1)
 				return;
 			list<T, Alloc> right;
 
@@ -851,6 +862,20 @@ namespace ft
 			mergeSort(l);
 			mergeSort(right);
 			l.merge(right);
+		}
+
+		template <typename Compare>
+		static void mergeSort(list<T, Alloc> &l, Compare comp)
+		{
+			if (l.size() <= 1)
+				return;
+			list<T, Alloc> right;
+
+			l.frontBackSplit(right);
+			
+			mergeSort(l, comp);
+			mergeSort(right, comp);
+			l.merge(right, comp);
 		}
 	};
 
