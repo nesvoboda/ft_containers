@@ -5,6 +5,7 @@
 # include <stdexcept>
 # include <iostream>
 # include <limits>
+# include "revIterator.hpp"
 
 // how many elements allocate for empty list
 # define START_ALLOC 10
@@ -36,6 +37,8 @@ namespace ft
         typedef size_t size_type;
         typedef vectorIterator<T, T> iterator;
         typedef vectorIterator<T, const T> const_iterator;
+        typedef rev_iterator<vectorIterator<T, T> > reverse_iterator;
+        typedef rev_iterator<vectorIterator<T, const T> > const_reverse_iterator;
     
     private:
         /* data */
@@ -156,6 +159,7 @@ namespace ft
         {
         public:
             typedef typename vector<Tt>::size_type size_type;
+            typedef Val value_type;
         
         private:
             Tt *_ptr;
@@ -168,6 +172,7 @@ namespace ft
             vectorIterator &operator=(const vectorIterator &op)
             {
                 _ptr = op._ptr;
+                return (*this);
             }
 
             // vectorIterator(/* args */);

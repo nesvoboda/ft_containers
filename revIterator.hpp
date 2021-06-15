@@ -54,6 +54,31 @@ template <class iterator>
 		}
 		value_type *operator->(void) { return &this->operator*(); };
 
+        // Only for randomAccess
+
+        rev_iterator operator+(int i) const
+        {
+            return rev_iterator(_iter.operator-(i));
+        }
+        rev_iterator operator-(int i) const
+        {
+            return rev_iterator(_iter.operator+(i));
+        }
+
+        rev_iterator& operator +=(int i)
+        {
+            _iter.operator-=(i);
+            return (*this);
+        }
+
+        rev_iterator& operator -=(int i)
+        {
+            _iter.operator+=(i);
+            return (*this);
+        }
+
+        //
+
 		template <typename OtherIterator>
 		bool operator==(const rev_iterator<OtherIterator> &other) const
 		{

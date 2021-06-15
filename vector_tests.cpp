@@ -361,13 +361,271 @@ TEST(VectorConstIteratorMinusEquals)
     ASSERT_EQ(*iter, 42);
 }
 
+/// REVERSE ITERATOR
+
+TEST(VectorReverseIteratorConstructs)
+{
+    ft::vector<int>::reverse_iterator iter;
+}
+
+TEST(VectorReverseIteratorCopyConstructs)
+{
+    ft::vector<int>::reverse_iterator iter;
+    ft::vector<int>::reverse_iterator iter2(iter);
+}
+
+TEST(VectorConstRevIteratorConstructs)
+{
+    ft::vector<int>::const_reverse_iterator iter;
+}
+
+TEST(VectorConstRevIteratorCopyConstructs)
+{
+    ft::vector<int>::const_reverse_iterator iter;
+    ft::vector<int>::const_reverse_iterator iter2(iter);
+}
+
+TEST(VectorRevIteratorConstructsFromElement)
+{
+    ft::vector<int> vector_a(5, 42);
+    ft::vector<int>::reverse_iterator iter(&vector_a[0]);
+}
+
+TEST(VectorConstRevIteratorConstructsFromElement)
+{
+    ft::vector<int> vector_a(5, 42);
+    ft::vector<int>::const_reverse_iterator iter(&vector_a[0]);
+}
+
+TEST(VectorRevIteratorPlusPlus)
+{
+    ft::vector<int> vector_a(1, 42);
+    vector_a.push_back(21);
+    ft::vector<int>::reverse_iterator iter(&vector_a[2]);
+    ASSERT_EQ(*iter, 21);
+    iter++;
+    ASSERT_EQ(*iter, 42);
+}
+
+TEST(VectorRevIteratorPlusPlusInt)
+{
+    ft::vector<int> vector_a(1, 42);
+    vector_a.push_back(21);
+    ft::vector<int>::reverse_iterator iter(&vector_a[2]);
+
+
+    std::vector<int> svector_a(1, 42);
+    svector_a.push_back(21);
+    std::vector<int>::reverse_iterator siter(svector_a.begin()+2);
+
+    ASSERT_EQ(*iter, 21);
+    ASSERT_EQ(*iter, *siter);
+    ++iter;
+    ASSERT_EQ(*iter, 42);
+}
+
+TEST(VectorConstRevIteratorPlusPlus)
+{
+    ft::vector<int> vector_a(1, 42);
+    vector_a.push_back(21);
+    ft::vector<int>::const_reverse_iterator iter(&vector_a[2]);
+    ASSERT_EQ(*iter, 21);
+    iter++;
+    ASSERT_EQ(*iter, 42);
+}
+
+TEST(VectorConstRevIteratorPlusPlusInt)
+{
+    ft::vector<int> vector_a(1, 42);
+    vector_a.push_back(21);
+    ft::vector<int>::const_reverse_iterator iter(&vector_a[2]);
+    ASSERT_EQ(*iter, 21);
+    ++iter;
+    ASSERT_EQ(*iter, 42);
+}
+
+TEST(VectorRevIteratorMinusMinus)
+{
+    ft::vector<int> vector_a(1, 42);
+    vector_a.push_back(21);
+    ft::vector<int>::reverse_iterator iter(&vector_a[2]);
+    ASSERT_EQ(*iter, 21);
+    iter++;
+    ASSERT_EQ(*iter, 42);
+    iter--;
+    ASSERT_EQ(*iter, 21);
+}
+
+TEST(VectorRevIteratorMinusMinusInt)
+{
+    ft::vector<int> vector_a(1, 42);
+    vector_a.push_back(21);
+    ft::vector<int>::reverse_iterator iter(&vector_a[2]);
+    ASSERT_EQ(*iter, 21);
+    ++iter;
+    ASSERT_EQ(*iter, 42);
+    --iter;
+    ASSERT_EQ(*iter, 21);
+}
+
+
+TEST(VectorConstRevIteratorMinusMinus)
+{
+    ft::vector<int> vector_a(1, 42);
+    vector_a.push_back(21);
+    ft::vector<int>::const_reverse_iterator iter(&vector_a[2]);
+    ASSERT_EQ(*iter, 21);
+    iter++;
+    ASSERT_EQ(*iter, 42);
+    iter--;
+    ASSERT_EQ(*iter, 21);
+}
+
+TEST(VectorConstRevIteratorMinusMinusInt)
+{
+    ft::vector<int> vector_a(1, 42);
+    vector_a.push_back(21);
+    ft::vector<int>::const_reverse_iterator iter(&vector_a[2]);
+    ASSERT_EQ(*iter, 21);
+    ++iter;
+    ASSERT_EQ(*iter, 42);
+    --iter;
+    ASSERT_EQ(*iter, 21);
+}
+
+
+TEST(VectorRevIteratorArrow)
+{
+    ft::vector<int> vector_a(1, 42);
+    vector_a.push_back(21);
+    ft::vector<int>::reverse_iterator iter(&vector_a[2]);
+    ASSERT_EQ(*iter, 21);
+    ASSERT_EQ(*(iter.operator->()), 21);
+    ++iter;
+    ASSERT_EQ(*iter, 42);
+    ASSERT_EQ(*(iter.operator->()), 42);
+}
+
+TEST(VectorConstRevIteratorArrow)
+{
+    ft::vector<int> vector_a(1, 42);
+    vector_a.push_back(21);
+    ft::vector<int>::const_reverse_iterator iter(&vector_a[2]);
+    ASSERT_EQ(*iter, 21);
+    ASSERT_EQ(*(iter.operator->()), 21);
+    ++iter;
+    ASSERT_EQ(*iter, 42);
+    ASSERT_EQ(*(iter.operator->()), 42);
+}
+
+TEST(VectorRevIteratorCanAssignAt)
+{
+    ft::vector<int> vector_a(1, 42);
+    vector_a.push_back(21);
+    ft::vector<int>::reverse_iterator iter(&vector_a[2]);
+
+    std::vector<int> svector_a(1, 42);
+    svector_a.push_back(21);
+    std::vector<int>::reverse_iterator siter(svector_a.rbegin());
+
+
+    ASSERT_EQ(*iter, 21);
+    ASSERT_EQ(*iter, *siter);
+    *iter = 42;
+    ASSERT_EQ(vector_a[1], 42);
+}
+
+TEST(VectorRevIteratorArithmeticPlus)
+{
+    ft::vector<int> vector_a(2, 42);
+    vector_a.push_back(21);
+
+    ft::vector<int>::reverse_iterator iter(&vector_a[3]);
+    ASSERT_EQ(*iter, 21);
+    ASSERT_EQ(*(iter + 2), 42);
+}
+
+TEST(VectorRevIteratorArithmeticMinus)
+{
+    ft::vector<int> vector_a(2, 42);
+    vector_a.push_back(21);
+
+    ft::vector<int>::reverse_iterator iter(&vector_a[1]);
+    ASSERT_EQ(*iter, 42);
+    ASSERT_EQ(*(iter - 2), 21);
+}
+
+TEST(VectorConstRevIteratorArithmeticPlus)
+{
+    ft::vector<int> vector_a(2, 42);
+    vector_a.push_back(21);
+
+    ft::vector<int>::const_reverse_iterator iter(&vector_a[3]);
+    ASSERT_EQ(*iter, 21);
+    ASSERT_EQ(*(iter + 2), 42);
+}
+
+TEST(VectorConstRevIteratorArithmeticMinus)
+{
+    ft::vector<int> vector_a(2, 42);
+    vector_a.push_back(21);
+
+    ft::vector<int>::const_reverse_iterator iter(&vector_a[1]);
+    ASSERT_EQ(*iter, 42);
+    ASSERT_EQ(*(iter - 2), 21);
+}
+
+TEST(VectorRevIteratorPlusEquals)
+{
+    ft::vector<int> vector_a(2, 42);
+    vector_a.push_back(21);
+
+    ft::vector<int>::reverse_iterator iter(&vector_a[3]);
+    ASSERT_EQ(*iter, 21);
+    iter += 2;
+    ASSERT_EQ(*iter, 42);
+}
+
+TEST(VectorRevIteratorMinusEquals)
+{
+    ft::vector<int> vector_a(2, 42);
+    vector_a.push_back(21);
+
+    ft::vector<int>::reverse_iterator iter(&vector_a[1]);
+    ASSERT_EQ(*iter, 42);
+    iter -= 2;
+    ASSERT_EQ(*iter, 21);
+}
+
+TEST(VectorConstRevIteratorPlusEquals)
+{
+    ft::vector<int> vector_a(2, 42);
+    vector_a.push_back(21);
+
+    ft::vector<int>::const_reverse_iterator iter(&vector_a[3]);
+    ASSERT_EQ(*iter, 21);
+    iter += 2;
+    ASSERT_EQ(*iter, 42);
+}
+
+TEST(VectorConstRevIteratorMinusEquals)
+{
+    ft::vector<int> vector_a(2, 42);
+    vector_a.push_back(21);
+
+    ft::vector<int>::const_reverse_iterator iter(&vector_a[1]);
+    ASSERT_EQ(*iter, 42);
+    iter -= 2;
+    ASSERT_EQ(*iter, 21);
+}
+
 /*
 TEST(STDMadness)
 {
     std::vector<int> v1(2, 42);
     std::vector<int> v2(2, 21);
 
-    std::vector<int>::iterator it1 = v1.begin();
+    std::vector<int>::reverse_iterator it1 = v1.begin();
     std::vector<int>::iterator it2 = v2.begin();
 
     size_t it3 = v1 - v2;
