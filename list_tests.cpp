@@ -2180,35 +2180,10 @@ TEST(FixRiteArrow)
 
 	for (int i = 1; it != ite; ++i)
 	{
-		std::cout << "ping" << std::endl;
 		*it++ = i;
 	}
-	// std::cout << "here" << std::endl;
-	// printSize(lst, 1);
-	for (ft::list<int>::iterator iter = lst.begin(); iter != lst.end(); iter++)
-	{
-	
-		std::cout << *iter << std::endl;
-	}
-
-	std::cout << "---" << std::endl;
-
-	// const int size = 5;
-	std::list<int> s_lst(size);
-	std::list<int>::reverse_iterator s_it(s_lst.rbegin());
-	std::list<int>::const_reverse_iterator s_ite(s_lst.rend());
-
-	for (int i = 1; s_it != s_ite; ++i)
-	{
-		std::cout << "ping" << std::endl;
-		*s_it++ = i;
-	}
-	// std::cout << "here" << std::endl;
-	// printSize(s_lst, 1);
-	for (std::list<int>::iterator s_iter = s_lst.begin(); s_iter != s_lst.end(); s_iter++)
-	{
-		std::cout << *s_iter << std::endl;
-	}
+	int tester[] = {1, 2, 3, 4, 5};
+	check_container(tester, lst.begin(), lst.end());
 }
 
 #include <unistd.h>
