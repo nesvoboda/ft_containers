@@ -6,7 +6,7 @@
 /*   By: ashishae <ashishae@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/24 18:25:06 by ashishae          #+#    #+#             */
-/*   Updated: 2021/06/15 10:52:59 by ashishae         ###   ########.fr       */
+/*   Updated: 2021/06/15 11:08:59 by ashishae         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -322,17 +322,17 @@ namespace ft
 		}
 
 		typedef rev_iterator<iterator> reverse_iterator;
-		reverse_iterator rbegin() { return reverse_iterator(_start); }
+		reverse_iterator rbegin() { return reverse_iterator(this->end()); }
 		reverse_iterator rend()
 		{
-			return reverse_iterator(this->end());
+			return reverse_iterator(this->begin());
 		}
 
 		typedef rev_iterator<const_iterator> const_reverse_iterator;
-		const_reverse_iterator rbegin() const { return const_reverse_iterator(_start); }
+		const_reverse_iterator rbegin() const { return const_reverse_iterator(this->end()); }
 		const_reverse_iterator rend() const
 		{
-			return const_reverse_iterator(this->end());
+			return const_reverse_iterator(this->begin());
 		}
 
 		// Capacity
