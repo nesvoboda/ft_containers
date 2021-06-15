@@ -11,10 +11,10 @@
 /* ************************************************************************** */
 
 #ifndef LIST_HPP
-#define LIST_HPP
+# define LIST_HPP
 
-#include <iostream>
-#include <memory>
+# include <iostream>
+# include <memory>
 
 class ListFrontBackSplit; // forward declaration for later
 
