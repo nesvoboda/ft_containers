@@ -225,9 +225,8 @@ namespace ft
 		// (1) Default constructor
 		explicit list(const allocator_type &alloc = allocator_type())
 		{
-			// _allocator = alloc;
-			// _start = new listNode<T>(T(), NULL, NULL);
-			_start = createNode(T(), NULL, NULL);
+			_allocator = alloc;
+			_start = new listNode<T>(T(), NULL, NULL);
 			_start->setPrev(_start);
 			_start->setNext(_start);
 			this->_size = 0;
@@ -238,9 +237,11 @@ namespace ft
 		{
 			_allocator = alloc;
 
+			allocator_type<listNode<T> > nodeAlloc;
+
 			// _start = new listNode<T>(val, NULL, NULL);
-			_start = createNode(T(), NULL, NULL);
-			//  listNode<T>(val, NULL, NULL);
+			_start = nodeAlloc.allocate(1)
+			 listNode<T>(val, NULL, NULL);
 			_start->setPrev(_start);
 			_start->setNext(_start);
 			_size = 0;
@@ -256,7 +257,7 @@ namespace ft
 		list(typename ft::enable_if<!std::is_integral<InputIterator>::value, InputIterator>::type first, InputIterator last, const allocator_type &alloc = allocator_type())
 		{
 			_allocator = alloc;
-			_start = createNode(T(), NULL, NULL);
+			_start = new listNode<T>(T(), NULL, NULL);
 			_start->setPrev(_start);
 			_start->setNext(_start);
 			_size = 0;
@@ -267,7 +268,7 @@ namespace ft
 		list(const list &copy)
 		{
 			_allocator = copy._allocator;
-			_start = createNode(T(), NULL, NULL);
+			_start = new listNode<T>(T(), NULL, NULL);
 			_start->setPrev(_start);
 			_start->setNext(_start);
 			_size = 0;
@@ -351,10 +352,7 @@ namespace ft
 		void push_front(const value_type &val)
 		{
 			node_type *endNode = end().ptr;
-			
-			
-			// listNode<T> *new_element = new listNode<T>(val, _start, endNode);
-			listNode<T> *new_element = createNode(val, _start, endNode);
+			listNode<T> *new_element = new listNode<T>(val, _start, endNode);
 			_start->setPrev(new_element);
 			_start = new_element;
 			_size++;
@@ -383,9 +381,8 @@ namespace ft
 			node_type *endNode = end().ptr;
 
 			node_type *prev = endNode->getPrev();
+			node_type *newNode = new node_type(val, endNode, prev);
 
-			node_type *newNode = createNode(val, endNode, prev);
-			// node_type *newNode = new node_type(val, endNode, prev);
 			// If this is the first element, start should be adjusted
 			if (_size == 0)
 			{
@@ -431,9 +428,7 @@ namespace ft
 		{
 			listNode<T> *cur = position.ptr;
 			listNode<T> *prev = cur->getPrev();
-			
-			listNode<T> *newElement = createNode(val, cur, prev);
-			// listNode<T> *newElement = new listNode<T>(val, cur, prev);
+			listNode<T> *newElement = new listNode<T>(val, cur, prev);
 			prev->setNext(newElement);
 			if (cur == _start)
 				_start = newElement; // if adding to the beginning, move start pointer
@@ -823,10 +818,8 @@ namespace ft
 
 	listNode<T> *createNode(T &val, listNode<T> *next, listNode<T> *prev)
 	{
-		allocator_type<listNode<T >> alloc;
-		listNode<T> *res = alloc.allocate(1);
-		alloc.construct(res, listNode<T>(val, next, prev));
-		return res;
+		
+		listNode<T> *res = _allocator.
 	}
 	
 
