@@ -1332,7 +1332,6 @@ TEST(ListMergePred)
 
 	int tester[] = {20, 7, 5, 5, 5, 4, 3, 2, 1};
 	check_container(tester, list_a.begin(), list_a.end());
-
 }
 
 TEST(ListAssign)
@@ -1457,11 +1456,9 @@ TEST(ListMergeInterestingCase)
 
 	list_a.merge(list_b);
 
-
 	int tester[] = {1, 2, 3, 4, 5};
 	check_container(tester, list_a.begin(), list_a.end());
 }
-
 
 TEST(ListFrontBackSplit)
 {
@@ -1507,7 +1504,6 @@ TEST(IteratorLoopback)
 
 	ASSERT_EQ(*(++list_a.end()), 42);
 	ASSERT_EQ(*(++list_a.rend()), 42);
-
 }
 
 TEST(EraseLastElement)
@@ -1573,9 +1569,7 @@ TEST(CopyConstructor)
 
 	ft::list<int> list_b(list_a);
 
-
 	int tester[] = {1, 2, 3};
-	
 
 	list_b = list_a;
 
@@ -1684,7 +1678,6 @@ TEST(RelativeOpearatorLessEmptyEqual)
 	ASSERT_EQ((list_a < list_b), false);
 }
 
-
 TEST(RelativeOpearatorLessOrEqualEmpty)
 {
 	ft::list<int> list_a;
@@ -1692,7 +1685,6 @@ TEST(RelativeOpearatorLessOrEqualEmpty)
 
 	ASSERT_EQ((list_a <= list_b), true);
 }
-
 
 TEST(RelativeOpearatorLessOrEqualDiffSize)
 {
@@ -1730,7 +1722,6 @@ TEST(RelativeOpearatorLessOrEqualEmptyEqual)
 
 	ASSERT_EQ((list_a <= list_b), true);
 }
-
 
 TEST(RelativeOpearatorGreater)
 {
@@ -1776,7 +1767,6 @@ TEST(RelativeOpearatorGreaterEmptyEqual)
 	ASSERT_EQ((list_a > list_b), false);
 }
 
-
 TEST(RelativeOpearatorGreaterOrEqualEmpty)
 {
 	ft::list<int> list_a;
@@ -1784,7 +1774,6 @@ TEST(RelativeOpearatorGreaterOrEqualEmpty)
 
 	ASSERT_EQ((list_a >= list_b), true);
 }
-
 
 TEST(RelativeOpearatorGreaterOrEqualDiffSize)
 {
@@ -1832,7 +1821,6 @@ TEST(RelOpInteresting)
 	ASSERT_EQ((lst <= lst2), true);
 	ASSERT_EQ((lst > lst2), false);
 	ASSERT_EQ((lst >= lst2), false);
-
 }
 
 TEST(STDHasBase)
@@ -1874,7 +1862,6 @@ TEST(FixSplice)
 	ft::list<int>::iterator it = ++(++(++list_a.begin()));
 
 	list_a.splice(list_a.begin(), list_a, it, list_a.end());
-
 
 	int tester[] = {4, 5, 1, 2, 3};
 	check_container(tester, list_a.begin(), list_a.end());

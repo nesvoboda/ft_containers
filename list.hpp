@@ -811,7 +811,6 @@ namespace ft
 			l.merge(right, comp);
 		}
 	};
-	
 
 	// Relative operators
 	// (1)
