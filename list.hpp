@@ -15,6 +15,7 @@
 
 # include <iostream>
 # include <memory>
+# include <limits>
 
 class ListFrontBackSplit; // forward declaration for later
 
@@ -210,17 +211,16 @@ namespace ft
 
 	public:
 		typedef T value_type;
-		// TODO
 		typedef Alloc allocator_type;
 		typedef value_type &reference;
 		typedef listNode<T> node_type;
 		typedef const value_type &const_reference;
 		typedef value_type *pointer;
 		typedef const value_type *const_pointer;
-		typedef ptrdiff_t difference_type;
-		typedef size_t size_type;
 		typedef list_iterator<T, listNode<T> > iterator;
 		typedef list_iterator<const T, listNode<T> > const_iterator;
+		typedef ptrdiff_t difference_type;
+		typedef size_t size_type;
 
 		// (1) Default constructor
 		explicit list(const allocator_type &alloc = allocator_type())
