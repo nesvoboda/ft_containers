@@ -6,7 +6,7 @@
 /*   By: ashishae <ashishae@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/24 18:25:06 by ashishae          #+#    #+#             */
-/*   Updated: 2021/06/14 18:19:44 by ashishae         ###   ########.fr       */
+/*   Updated: 2021/06/15 10:52:59 by ashishae         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -139,7 +139,7 @@ namespace ft
 		{
 			// iterator i = _iter;
 			// i--;
-			return --iterator(_iter).operator*();
+			return (--iterator(_iter)).operator*();
 		}
 		rev_iterator operator++(int)
 		{
@@ -669,7 +669,7 @@ namespace ft
 			their_right->setNext(our_right);
 
 			their_left_prev->setNext(their_right_next);
-			if (x._start == their_left)
+			if (x != (*this) && x._start == their_left)
 				x._start = their_right_next;
 			their_right_next->setPrev(their_left_prev);
 

@@ -2152,6 +2152,45 @@ TEST(FixRiteArrow)
 	}
 }
 
+TEST(FixSlice)
+{
+	ft::list<int> list_a;
+
+	list_a.push_back(1);
+	list_a.push_back(2);
+	list_a.push_back(3);
+	list_a.push_back(4);
+	list_a.push_back(5);
+
+	ft::list<int>::iterator it = ++(++(++list_a.begin()));
+
+	list_a.splice(list_a.begin(), list_a, it, list_a.end());
+
+	for (ft::list<int>::iterator iter = list_a.begin(); iter != list_a.end(); iter++)
+	{
+		std::cout << *iter << std::endl;
+	}
+
+	std::cout << "---" << std::endl;
+
+	std::list<int> slist_as;
+
+	slist_as.push_back(1);
+	slist_as.push_back(2);
+	slist_as.push_back(3);
+	slist_as.push_back(4);
+	slist_as.push_back(5);
+
+	std::list<int>::iterator s_it = ++(++(++slist_as.begin()));
+
+	slist_as.splice(slist_as.begin(), slist_as, s_it, slist_as.end());
+
+	for (std::list<int>::iterator iter = slist_as.begin(); iter != slist_as.end(); iter++)
+	{
+		std::cout << *iter << std::endl;
+	}
+}
+
 #include <unistd.h>
 
 int main()
