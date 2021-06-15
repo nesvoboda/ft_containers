@@ -14,10 +14,19 @@
 
 namespace ft
 {
+    // Stay tuned for the iterator
+    template <typename T, typename Val>
+    class vectorIterator;    
+
     template <typename T, typename Alloc = std::allocator<T> >
     class vector
     {
+
+    
     public:
+        
+
+
         // Member types
         typedef T value_type;
         typedef Alloc allocator_type;
@@ -25,6 +34,8 @@ namespace ft
         typedef const value_type& const_reference;
         typedef value_type* pointer;
         typedef size_t size_type;
+        typedef vectorIterator<T, T> iterator;
+        typedef vectorIterator<T, const T> const_iterator;
     
     private:
         /* data */
@@ -33,8 +44,6 @@ namespace ft
         size_type _capacity;
 
     public:
-
-        // iterator ... TODO
         
         // default (1)	
         explicit vector (const allocator_type& alloc = allocator_type())
@@ -141,6 +150,99 @@ namespace ft
         ~vector() {};
 
     };
+
+    template <typename Tt, typename Val>
+        class vectorIterator
+        {
+        public:
+            typedef typename vector<Tt>::size_type size_type;
+        
+        private:
+            Tt *_ptr;
+        public:
+            vectorIterator(void) : _ptr(NULL) {};
+            vectorIterator(const vectorIterator &copy) : _ptr(copy._ptr) {};
+            vectorIterator(Tt *ptr) : _ptr(ptr) {};
+            // vectorIterator(vector<Tt> *vec, size_type index) : _vec(vec), _index(index) {};
+            // vectorIterator(const vectorIterator &copy) : _vec(copy._vec), _index(copy._index) {};
+            vectorIterator &operator=(const vectorIterator &op)
+            {
+                _ptr = op._ptr;
+            }
+
+            // vectorIterator(/* args */);
+            // ~vectorIterator();
+
+        
+            Val &operator*(void) {
+                return *_ptr;
+            }
+
+            Val *operator->(void) {
+                return _ptr;
+            }
+
+            vectorIterator &operator++()
+            {
+                _ptr++;
+                return *this;
+            }
+            vectorIterator &operator--()
+            {
+                _ptr--;
+                return *this;
+            }
+
+            vectorIterator operator++(int)
+            {
+                vectorIterator retval = *this;
+                ++(*this);
+                return retval;
+            }
+            vectorIterator operator--(int)
+            {
+                vectorIterator retval = *this;
+                --(*this);
+                return retval;
+            }
+
+            vectorIterator operator+(int i) const
+            {
+                vectorIterator<Tt, Val> retval(_ptr+i);
+                return retval;
+            }
+            vectorIterator operator-(int i) const
+            {
+                vectorIterator<Tt, Val> retval(_ptr-i);
+                return retval;
+            }
+
+            vectorIterator& operator +=(int i)
+            {
+                _ptr += i;
+                return (*this);
+            }
+
+            vectorIterator& operator -=(int i)
+            {
+                _ptr -= i;
+                return (*this);
+            }
+
+        };
+
+    template <typename T, typename Val>
+    bool operator==(const vectorIterator<T, Val>& lhs, const vectorIterator<T, Val>& rhs)
+    { 
+        return (lhs._vec == rhs._vec && lhs._index == rhs._index);
+    }
+
+    template <typename T, typename Val>
+    bool operator!=(const vectorIterator<T, Val>& lhs, const vectorIterator<T, Val>& rhs)
+    { 
+        return (!(lhs == rhs));
+    }
+
     
 } // namespace ft
 
