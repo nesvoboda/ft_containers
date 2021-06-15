@@ -1708,11 +1708,8 @@ TEST(CopyConstructor)
 	list_a.push_back(2);
 	list_a.push_back(3);
 
-	list_a.debug();
-
 	ft::list<int> list_b(list_a);
 
-	list_b.debug();
 
 	int tester[] = {1, 2, 3};
 	
@@ -2190,7 +2187,7 @@ TEST(FixRiteArrow)
 	// printSize(lst, 1);
 	for (ft::list<int>::iterator iter = lst.begin(); iter != lst.end(); iter++)
 	{
-		
+	
 		std::cout << *iter << std::endl;
 	}
 
