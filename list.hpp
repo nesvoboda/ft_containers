@@ -237,11 +237,7 @@ namespace ft
 		{
 			_allocator = alloc;
 
-			allocator_type<listNode<T> > nodeAlloc;
-
-			// _start = new listNode<T>(val, NULL, NULL);
-			_start = nodeAlloc.allocate(1)
-			 listNode<T>(val, NULL, NULL);
+			_start = new listNode<T>(val, NULL, NULL);
 			_start->setPrev(_start);
 			_start->setNext(_start);
 			_size = 0;
@@ -815,12 +811,6 @@ namespace ft
 			l.merge(right, comp);
 		}
 	};
-
-	listNode<T> *createNode(T &val, listNode<T> *next, listNode<T> *prev)
-	{
-		
-		listNode<T> *res = _allocator.
-	}
 	
 
 	// Relative operators

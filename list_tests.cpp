@@ -322,18 +322,6 @@ TEST(ListReverse_iteratorMinusMinusOperator)
 	CHECK_EQ(revIter, list_a.rend());
 }
 
-TEST(ListReverseIteratorEndBegin)
-{
-	ft::list<int> list_a((size_t)5, 10);
-	ft::list<int>::reverse_iterator revIterA = list_a.rbegin(); // points to the element after the last
-
-	for (size_t i = 0; i < 5; i++)
-	{
-		revIterA--;
-	}
-	CHECK_EQ(revIterA, list_a.rend());
-}
-
 /*
 TEST(ListAssignmentOperator)
 {
@@ -1190,8 +1178,8 @@ TEST(TestSpliceRangeSameContainer)
 
 	list_a.splice(list_a.end(), list_a, list_a.begin(), ++++list_a.begin());
 
-	ASSERT_EQ(list_a.back(), 5);
-	ASSERT_EQ(list_a.front(), 20);
+	ASSERT_EQ(list_a.back(), 20);
+	ASSERT_EQ(list_a.front(), 5);
 	ASSERT_EQ(list_a.size(), 5);
 
 	list_a.splice(++list_a.begin(), list_a, ----list_a.end(), list_a.end());
@@ -1511,140 +1499,15 @@ TEST(ListFrontBackSplit)
 	}
 }
 
-TEST(ListMli) {
-	ft::list<int> lst(7);
-	ft::list<int> lst_two(4);
-	ft::list<int> lst_three;
-	ft::list<int> lst_four;
-
-	ft::list<int>::iterator it;
-
-	it = lst.begin();
-	for (unsigned long int i = 0; i < lst.size(); ++i)
-		*it++ = (lst.size() - i) * 3;
-
-	it = lst_two.begin();
-	for (unsigned long int i = 0; i < lst_two.size(); ++i)
-		*it++ = (lst_two.size() - i) * 5;
-
-	std::cout << lst.size() << std::endl;
-	std::cout << lst_two.size() << std::endl;
-
-	lst_three.assign(lst.begin(), lst.end());
-	lst.assign(lst_two.begin(), lst_two.end());
-	lst_two.assign(2, 42);
-	lst_four.assign(4, 21);
-
-	std::cout << "\t### After assign(): ###" << std::endl;
-
-	std::cout << lst.size() << std::endl;
-	std::cout << lst_two.size() << std::endl;
-	std::cout << lst_three.size() << std::endl;
-	std::cout << lst_four.size() << std::endl;
-
-	lst_four.assign(6, 84);
-	std::cout << lst_four.size() << std::endl;
-
-	std::cout << "\t### assign() : ###" << std::endl;
-
-	lst.assign(5, 53);
-
-	it = lst_three.begin(); ++it; ++it; ++it;
-	lst_two.assign(lst_three.begin(), it);
-
-	std::cout << lst.size() << std::endl;
-	std::cout << lst_two.size() << std::endl;
-
-	// return (0);
-}
-
-void	checkErase(ft::list<std::string> const &lst,
-					ft::list<std::string>::const_iterator const &it)
+TEST(IteratorLoopback)
 {
-	static int i = 0;
+	ft::list<int> list_a(1, 42);
+	ASSERT_EQ(*(----list_a.begin()), 42);
+	ASSERT_EQ(*(----list_a.rbegin()), 42);
 
-	int j = 0;
-	ft::list<std::string>::const_iterator ite = lst.begin();
-	while (it != ite--)
-		++j;
+	ASSERT_EQ(*(++list_a.end()), 42);
+	ASSERT_EQ(*(++list_a.rend()), 42);
 
-	std::cout << "[" << i++ << "] " << "erase: " << j << std::endl;
-	std::cout << lst.size() << std::endl;
-}
-
-TEST(MliSimple)
-{
-	ft::list<int> list_a;
-
-	list_a.push_back(1);
-	list_a.push_back(2);
-	list_a.push_back(3);
-	// list_a.push_back(4);
-
-
-	ft::list<int>::const_iterator it_a = list_a.begin();
-	ft::list<int>::const_iterator it_b = list_a.erase(++list_a.begin()); // should be pointing to 3;
-
-	for (ft::list<int>::iterator iter = list_a.begin(); iter != list_a.end(); iter++)
-	{
-		std::cout << *iter << std::endl;
-	}	
-
-	std::cout << "Simple bomba" << std::endl;
-
-	size_t j = 0;
-	while (it_a != it_b--)
-	{
-		std::cout << "Tick" << std::endl;
-		++j;
-	}
-
-}
-
-TEST(MliTest1)
-{
-	std::list<int> lst;
-
-	// lst.push_back(1);
-	// lst.push_back(2);
-	// lst.push_back(3);
-	std::cout << *(lst.end()) << std::endl;
-	// std::cout << lst.size() << std::endl;
-
-	std::cout << "BOMBA" << std::endl;
-	// checkErase(lst, lst.erase(++lst.begin())
-	std::list<int>::const_iterator ite = lst.begin();
-	std::list<int>::const_iterator it = ++++lst.begin();
-	while (it != ite--)
-	{
-		std::cout << "Tick" << std::endl;
-
-	}
-}
-
-TEST(MliTest2)
-{
-	ft::list<std::string> lst(10);
-	ft::list<std::string>::iterator ita = lst.begin();
-
-	for (unsigned long int i = 0; i < lst.size(); ++i)
-		*ita++ = std::string((lst.size() - i), i + 65);
-	std::cout << lst.size() << std::endl;
-
-	std::cout << "BOMBA" << std::endl;
-	// checkErase(lst, lst.erase(++lst.begin())
-	ft::list<std::string>::const_iterator ite = lst.begin();
-	ft::list<std::string>::const_iterator it = lst.erase(++lst.begin());
-	int j = 0;
-	while (it != ite--)
-	{
-		std::cout << "Tick" << std::endl;
-		++j;
-	}
-	for (ft::list<std::string>::iterator iter = lst.begin(); iter != lst.end(); iter++)
-	{
-		std::cout << *iter << std::endl;
-	}
 }
 
 TEST(EraseLastElement)
@@ -1717,37 +1580,6 @@ TEST(CopyConstructor)
 	list_b = list_a;
 
 	check_container(tester, list_b.begin(), list_b.end());
-}
-
-struct t_cmp {
-	bool	operator()(const double &first, const double &second)
-	{
-		return (int(first) < int(second));
-	}
-};
-
-
-TEST(MergeNew)
-{
-	ft::list<double> list_a;
-
-	// list_a.push_back(1.4);
-	// list_a.push_back(2.2);
-	// list_a.push_back(2.9);
-	list_a.push_back(3.1);
-	// list_a.push_back(3.7);
-	// list_a.push_back(7.1);
-
-	ft::list<double> list_b;
-	list_b.push_back(2.1);
-
-	list_a.merge(list_b, t_cmp());
-	std::cout << "I'm alive" << std::endl;
-
-	for (ft::list<double>::iterator iter = list_a.begin(); iter != list_a.end(); iter++)
-	{
-		std::cout << *iter << std::endl;
-	}
 }
 
 TEST(RelativeOpearatorEqualsEmpty)
@@ -2025,114 +1857,11 @@ TEST(SortWithPred)
 
 	list_a.sort(compTest);
 
-	for (ft::list<int>::iterator iter = list_a.begin(); iter != list_a.end(); iter++)
-	{
-		std::cout << *iter << std::endl;
-	}
-
 	int tester[] = {7, 6, 5};
 	check_container(tester, list_a.begin(), list_a.end());
 }
 
-struct case_insensitive {
-	bool	operator()(const std::string &first, const std::string &second)
-	{
-		unsigned int i = 0;
-
-		while ((i < first.length()) && (i < second.length()))
-		{
-			if (tolower(first[i]) < tolower(second[i]))
-				return true;
-			else if (tolower(first[i]) > tolower(second[i]))
-				return false;
-			++i;
-		}
-		return (first.length() < second.length());
-	}
-};
-
-
-TEST(NewThingy)
-{
-	ft::list<std::string> list_a;
-
-	list_a.push_back("AAA");	
-	list_a.push_back("AAb");	
-	list_a.push_back("AAB");	
-	list_a.push_back("AAa");	
-	list_a.push_back("AAC");	
-	list_a.sort(case_insensitive());
-
-	for (ft::list<std::string>::iterator iter = list_a.begin(); iter != list_a.end(); iter++)
-	{
-		std::cout << *iter << std::endl;
-	}	
-}
-
-template <typename T>
-void	printReverse(ft::list<T> &lst)
-{
-	typename ft::list<T>::iterator it = lst.end(), ite = lst.begin();
-
-	std::cout << "printReverse:" << std::endl;
-	while (it-- != ite)
-		std::cout << "-> " << *it << std::endl;
-	std::cout << "_______________________________________________" << std::endl;
-}
-
-TEST(PrintReverse)
-{
-	ft::list<int> list_a;
-
-	list_a.push_back(1);	
-	list_a.push_back(2);	
-	list_a.push_back(3);
-	list_a.reverse();
-
-	std::cout << list_a.front() << std::endl;
-	std::cout << list_a.back() << std::endl;
-
-	printReverse(list_a);
-}
-
-TEST(AmIIdiot)
-{
-	ft::list<int> lst(5);
-	
-	int i = 0;
-	for (ft::list<int>::iterator iter = lst.begin(); iter != lst.end(); iter++)
-		*iter = i++;
-	// std::cout << "here" << std::endl;
-	// printSize(lst, 1);
-	for (ft::list<int>::iterator iter = lst.begin(); iter != lst.end(); iter++)
-	{
-		std::cout << *iter << std::endl;
-	}
-}
-
-TEST(AmIIdiot2)
-{
-	ft::list<int> lst(5);
-	
-	int i = 1;
-	ft::list<int>::reverse_iterator iter = lst.rbegin();
-	ft::list<int>::const_reverse_iterator ite = lst.rend();
-	// for (size_t i = 0; i < 5; i++)
-	// 	*iter++ = i;
-	for (; iter != ite;)
-	{
-		*iter++ = i++;
-	}
-	// std::cout << "here" << std::endl;
-	// printSize(lst, 1);
-	for (ft::list<int>::iterator iter = lst.begin(); iter != lst.end(); iter++)
-	{
-		std::cout << *iter << std::endl;
-	}
-}
-
-
-TEST(FixSlice)
+TEST(FixSplice)
 {
 	ft::list<int> list_a;
 
@@ -2146,29 +1875,9 @@ TEST(FixSlice)
 
 	list_a.splice(list_a.begin(), list_a, it, list_a.end());
 
-	for (ft::list<int>::iterator iter = list_a.begin(); iter != list_a.end(); iter++)
-	{
-		std::cout << *iter << std::endl;
-	}
 
-	std::cout << "---" << std::endl;
-
-	std::list<int> slist_as;
-
-	slist_as.push_back(1);
-	slist_as.push_back(2);
-	slist_as.push_back(3);
-	slist_as.push_back(4);
-	slist_as.push_back(5);
-
-	std::list<int>::iterator s_it = ++(++(++slist_as.begin()));
-
-	slist_as.splice(slist_as.begin(), slist_as, s_it, slist_as.end());
-
-	for (std::list<int>::iterator iter = slist_as.begin(); iter != slist_as.end(); iter++)
-	{
-		std::cout << *iter << std::endl;
-	}
+	int tester[] = {4, 5, 1, 2, 3};
+	check_container(tester, list_a.begin(), list_a.end());
 }
 
 TEST(FixRiteArrow)
@@ -2182,7 +1891,7 @@ TEST(FixRiteArrow)
 	{
 		*it++ = i;
 	}
-	int tester[] = {1, 2, 3, 4, 5};
+	int tester[] = {5, 4, 3, 2, 1};
 	check_container(tester, lst.begin(), lst.end());
 }
 
