@@ -84,6 +84,36 @@ void run_tests()
 		}                                                                                                                       \
 	}
 
+bool exception_thrown = false;
+#define ASSERT_EXCEPTION(expression, exceptionType)                                                                                        \
+	{                                                                                                                                      \
+		failureLine = __LINE__;                                                                                                            \
+		failureFile = __FILE__;                                                                                                            \
+		exception_thrown = false;                                                                                                          \
+		try                                                                                                                                \
+		{                                                                                                                                  \
+			expression;                                                                                                                    \
+		}                                                                                                                                  \
+		catch (const exceptionType &e)                                                                                                     \
+		{                                                                                                                                  \
+			exception_thrown = true;                                                                                                       \
+		}                                                                                                                                  \
+		catch (...)                                                                                                                        \
+		{                                                                                                                                  \
+			std::cout << "Expected " << #expression << " to throw " << #exceptionType << ", but it threw another exception." << std::endl; \
+			std::cout << "In file: " << failureFile << ", line " << failureLine << std::endl;                                              \
+			lastTestFailed = true;                                                                                                         \
+			return;                                                                                                                        \
+		}                                                                                                                                  \
+		if (!exception_thrown)                                                                                                             \
+		{                                                                                                                                  \
+			std::cout << "Expected " << #expression << " to throw " << #exceptionType << ", but it didn't." << std::endl;                  \
+			std::cout << "In file: " << failureFile << ", line " << failureLine << std::endl;                                              \
+			lastTestFailed = true;                                                                                                         \
+			return;                                                                                                                        \
+		}                                                                                                                                  \
+	}
+
 // For the objects that don't have << overloaded
 #define CHECK_NEQ(expected, actual)                                                                   \
 	{                                                                                                 \
