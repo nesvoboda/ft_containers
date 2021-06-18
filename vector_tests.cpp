@@ -58,6 +58,62 @@ TEST(VectorPushBack)
     ASSERT_EQ(vector_a.size(), 6);
 }
 
+TEST(VectorPushBackReserve)
+{
+    ft::vector<int> v_a;
+    std::vector<int> sv_a;
+
+    v_a.push_back(1);
+    sv_a.push_back(1);
+
+    ASSERT_EQ(v_a.capacity(), sv_a.capacity());
+
+    v_a.push_back(2);
+    sv_a.push_back(2);
+
+    ASSERT_EQ(v_a.capacity(), sv_a.capacity());
+
+    v_a.push_back(3);
+    sv_a.push_back(3);
+
+    ASSERT_EQ(v_a.capacity(), sv_a.capacity());
+
+    v_a.push_back(4);
+    sv_a.push_back(4);
+
+    ASSERT_EQ(v_a.capacity(), sv_a.capacity());
+
+    v_a.push_back(5);
+    sv_a.push_back(5);
+
+    ASSERT_EQ(v_a.capacity(), sv_a.capacity());
+
+    v_a.push_back(6);
+    sv_a.push_back(6);
+
+    ASSERT_EQ(v_a.capacity(), sv_a.capacity());
+
+    v_a.push_back(7);
+    sv_a.push_back(7);
+
+    ASSERT_EQ(v_a.capacity(), sv_a.capacity());
+
+    v_a.push_back(8);
+    sv_a.push_back(8);
+
+    ASSERT_EQ(v_a.capacity(), sv_a.capacity());
+
+    v_a.push_back(9);
+    sv_a.push_back(9);
+
+    ASSERT_EQ(v_a.capacity(), sv_a.capacity());
+
+    v_a.push_back(10);
+    sv_a.push_back(10);
+
+    ASSERT_EQ(v_a.capacity(), sv_a.capacity());
+}
+
 TEST(VectorPopBack)
 {
     ft::vector<int> vector_a(5, 42);

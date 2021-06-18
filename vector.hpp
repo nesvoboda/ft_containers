@@ -164,7 +164,7 @@ namespace ft
             if (_capacity < x.capacity())
             {
                 delete[] _base;
-                _capacity = x.capacity();
+                _capacity = x.size();
                 _base = new T[_capacity];
                 _size = 0;
                 for (vector::const_iterator it = x.begin(); it != x.end(); it++)
@@ -359,7 +359,7 @@ namespace ft
                 if (_capacity == 0)
                     reserve(1);
                 else
-                    reserve(_capacity * RESERVE_FACTOR);
+                    reserve(_capacity*2);
             }
             _base[_size] = val;
             _size++;
@@ -546,10 +546,16 @@ namespace ft
                 vectorIterator<Tt, Val> retval(_ptr+i);
                 return retval;
             }
+
             vectorIterator operator-(int i) const
             {
                 vectorIterator<Tt, Val> retval(_ptr-i);
                 return retval;
+            }
+
+            size_type operator-(vectorIterator vi) const
+            {
+                return _ptr - vi.base();
             }
 
             vectorIterator& operator +=(int i)
