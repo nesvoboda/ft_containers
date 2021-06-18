@@ -35,6 +35,30 @@ namespace ft
 		b = buf;
 	}
 
+    template<typename T>
+    T min(T a, T b)
+    {
+        return a < b ? a : b;
+    }
+
+    template <typename InputIterator>
+    size_t distance(InputIterator a, InputIterator b)
+    {
+        size_t s = 0;
+        while (a != b)
+        {
+            a++;
+            s++;
+        }
+        return s;
+    }
+
+    template<typename T, typename T1>
+    T min(T a, T1 b)
+    {
+        return a < b ? a : b;
+    }
+
     // Stay tuned for the iterator
     template <typename T, typename Val>
     class vectorIterator;    
@@ -78,16 +102,17 @@ namespace ft
         // default (1)	
         explicit vector (const allocator_type& alloc = allocator_type())
         {
-            _base = new T[START_ALLOC];
+            _base = new T[1];
             _size = 0;
-            _capacity = START_ALLOC;
+            _capacity = 0;
             _alloc = alloc;
+
         }
         // fill (2)	
         explicit vector (size_type n, const value_type& val = value_type(),
                  const allocator_type& alloc = allocator_type())
         {
-            _capacity = n * RESERVE_FACTOR;
+            _capacity = n;
             _base = new T[_capacity];
             for (size_type i = 0; i < n; i++)
                 _base[i] = val;
@@ -179,7 +204,7 @@ namespace ft
 
         size_type max_size() const
         {
-            return std::numeric_limits<size_type>::max();
+            return min(_alloc.max_size(), (unsigned long)std::numeric_limits<difference_type>::max());
         }
 
         void resize (size_type n, value_type val = value_type()) {
@@ -251,28 +276,68 @@ namespace ft
         const_reference back() const { return *(_base + _size - 1); };
 
         // Modifiers
+          template <class Iterator>
+            struct iterator_traits {
+                typedef typename Iterator::iterator_category iterator_category;
+                // typedef typename Iterator::value_type        value_type;
+                // typedef typename Iterator::difference_type   difference_type;
+                // typedef typename Iterator::pointer           pointer;
+                // typedef typename Iterator::reference         reference;
+        };
 
         // range (1)	
         template <class InputIterator>
         void assign (typename ft::enable_if<!std::is_integral<InputIterator>::value, InputIterator>::type first, InputIterator last)
         {
-            delete[] _base;
-            _capacity = START_ALLOC;
-            _base = new T[_capacity];
-            _size = 0;
-            for (InputIterator it = first; it != last; it++)
+            size_t their_len = ft::distance(first, last);
+            // std::cout << "Their len: " << their_len << std::endl;
+            if (their_len > _capacity)
             {
-                push_back(*it);
+                delete[] _base;
+                _capacity = their_len;
+                _base = new T[their_len];
+                _size = 0;
+                
+                for (InputIterator it = first; it != last; it++)
+                {
+                    _base[_size++] = *it;
+                }
             }
+            else {
+                _size = 0;
+                for (InputIterator it = first; it != last; it++)
+                {
+                    _base[_size++] = *it;
+                }
+            }
+
+            
         }
 
         // fill (2)	
         void assign (size_type n, const value_type& val)
         {
+            // if (n > _capacity)
+            // {
+            //     delete[] _base;
+            //     _capacity = n * RESERVE_FACTOR;
+            //     _base = new T[_capacity];
+            //     for (size_type i = 0; i < n; i++)
+            //         _base[i] = val;
+            //     _size = n;
+            // }
+            // else
+            // {
+            //     for (size_type i = 0; i < n; i++)
+            //         _base[i] = val;
+            //     _size = n;
+            // }
+
+
             if (n > _capacity)
             {
                 delete[] _base;
-                _capacity = n * RESERVE_FACTOR;
+                _capacity = n;
                 _base = new T[_capacity];
                 for (size_type i = 0; i < n; i++)
                     _base[i] = val;
@@ -290,7 +355,10 @@ namespace ft
         {
             if (_capacity == _size)
             {
-                reserve(_capacity * RESERVE_FACTOR);
+                if (_capacity == 0)
+                    reserve(1);
+                else
+                    reserve(_capacity * RESERVE_FACTOR);
             }
             _base[_size] = val;
             _size++;
@@ -304,11 +372,13 @@ namespace ft
         // single element (1)	
         iterator insert (iterator position, const value_type& val)
         {
+            size_type target_index = position.base() - _base;
+
             if (_size == _capacity)
             {
                 reserve((_size + 1) * RESERVE_FACTOR);
             }
-            size_type target_index = position.base() - _base;
+
             for (size_type z = _size; z != target_index; z--)
             {
                 _base[z] = _base[z-1];
@@ -321,12 +391,14 @@ namespace ft
         // fill (2)	
         void insert (iterator position, size_type n, const value_type& val)
         {
-            if ((_size+n) > _capacity)
+            size_type target_index = position.base() - _base;
+
+            if ((_size+n) >= _capacity)
             {
                 reserve((_size + n) * RESERVE_FACTOR);
             }
 
-            size_type target_index = position.base() - _base;
+            // size_type target_index = position.base() - _base;
             for (size_type z = _size+n-1; z != target_index+n-1; z--)
             {
                 _base[z] = _base[z-n];
@@ -343,7 +415,7 @@ namespace ft
         {
             for (InputIterator iter = first; iter != last; iter++)
             {
-                insert(position, *iter);
+                position = insert(position, *iter);
             }
         }
 

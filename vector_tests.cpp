@@ -4,6 +4,9 @@
 TEST(VectorConstructor)
 {
     ft::vector<int> vector_a;
+    std::vector<int> svector_a;
+
+    ASSERT_EQ(vector_a.capacity(), svector_a.capacity());
 }
 
 TEST(VectorFillConstructor5)
@@ -69,23 +72,28 @@ TEST(VectorPopBack)
 TEST(VectorCapacity)
 {
     ft::vector<int> vector_a(5, 42);
-    
-    ASSERT_EQ(vector_a.capacity(), 10);
     std::vector<int> svector_a(5, 42);
-    std::cout << svector_a.capacity() << std::endl;
-    svector_a.push_back(3);
-    std::cout << svector_a.capacity() << std::endl;
+    
+    ASSERT_EQ(vector_a.capacity(), svector_a.capacity());
+    // std::cout << svector_a.capacity() << std::endl;
+    // std::cout << svector_a.capacity() << std::endl;
 }
 
 TEST(VectorReserve)
 {
     ft::vector<int> vector_a(5, 42);
+    std::vector<int> svector_a(5, 42);
     
-    ASSERT_EQ(vector_a.capacity(), 10);
+    ASSERT_EQ(vector_a.capacity(), svector_a.capacity());
     vector_a.reserve(3);
-    ASSERT_EQ(vector_a.capacity(), 10);
+    svector_a.reserve(3);
+    ASSERT_EQ(vector_a.capacity(), svector_a.capacity());
     vector_a.reserve(20);
-    ASSERT_EQ(vector_a.capacity(), 20);
+    svector_a.reserve(20);
+    ASSERT_EQ(vector_a.capacity(), svector_a.capacity());
+
+    int tester[] = {42, 42, 42, 42, 42};
+    check_container(tester, vector_a.begin(), vector_a.begin());
 }
 
 
@@ -906,7 +914,7 @@ TEST(VectorInsertEnd)
 
 
 
-
+/////////////////////
 
 TEST(VectorInsertFillMiddle)
 {
@@ -914,6 +922,16 @@ TEST(VectorInsertFillMiddle)
     v_a.push_back(1);
     v_a.push_back(2);
     v_a.push_back(3);
+
+    int tester_a[] = {1, 2, 3};
+
+    check_container(tester_a, v_a.begin(), v_a.end());
+
+    std::cout << "Test: insert" << std::endl;
+    std::cout << "Actual address of first element: " << &v_a.front() << std::endl;
+    std::cout << "Actual value of first element: " << v_a.front() << std::endl;
+    std::cout << "Actual value of begin: " << *(++v_a.begin()) << std::endl;
+    std::cout << "Actual adress of begin: " << (++v_a.begin()).base() << std::endl;
 
     v_a.insert(++v_a.begin(), 3, 7);
 
@@ -1180,6 +1198,14 @@ TEST(VectorSmallerOrEqual)
     v_b.push_back(1);
     ASSERT_EQ((v_a <= v_b), false);
     ASSERT_EQ((v_b <= v_a), true);
+}
+
+TEST(VectorMaxSize)
+{
+    ft::vector<int> vec_a;
+    std::vector<int> svec_a;
+
+    ASSERT_EQ(vec_a.max_size(), svec_a.max_size());
 }
 
 /*

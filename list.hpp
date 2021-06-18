@@ -855,5 +855,11 @@ namespace ft
 		return (lhs.size() >= rhs.size());
 	};
 
+	template <class T, class Alloc>
+	void swap (list<T,Alloc>& x, list<T,Alloc>& y)
+	{
+		x.swap(y);
+	}
+
 } // namespace ft
 #endif
