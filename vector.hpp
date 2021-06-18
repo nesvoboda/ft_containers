@@ -15,6 +15,18 @@
 
 namespace ft
 {
+
+    template <bool B, class T = void>
+	struct enable_if
+	{
+	};
+
+	template <class T>
+	struct enable_if<true, T>
+	{
+		typedef T type;
+	};
+
     // Stay tuned for the iterator
     template <typename T, typename Val>
     class vectorIterator;    
@@ -22,6 +34,8 @@ namespace ft
     template <typename T, typename Alloc = std::allocator<T> >
     class vector
     {
+
+        
 
     
     public:
@@ -73,7 +87,7 @@ namespace ft
         // copy (4)	
         // vector (const vector& x);
 
-
+        // Element access
         reference operator[] (size_type n)
         {
             return _base[n];
@@ -97,6 +111,14 @@ namespace ft
                 throw std::out_of_range("oopsie");
             return _base[n];
         }
+
+        reference front() { return *_base; };
+        const_reference front() const { return *_base; };
+
+        reference back() { return *(_base + _size - 1); };
+        const_reference back() const { return *(_base + _size - 1); };
+
+        // Capacity
 
         size_type size() const
         {
@@ -131,6 +153,42 @@ namespace ft
             }
         }
 
+        // Modifiers
+
+        // range (1)	
+        template <class InputIterator>
+        void assign (typename ft::enable_if<!std::is_integral<InputIterator>::value, InputIterator>::type first, InputIterator last)
+        {
+            delete[] _base;
+            _capacity = START_ALLOC;
+            _base = new T[_capacity];
+            _size = 0;
+            for (InputIterator it = first; it != last; it++)
+            {
+                push_back(*it);
+            }
+        }
+
+        // fill (2)	
+        void assign (size_type n, const value_type& val)
+        {
+            if (n > _capacity)
+            {
+                delete[] _base;
+                _capacity = n * RESERVE_FACTOR;
+                _base = new T[_capacity];
+                for (size_type i = 0; i < n; i++)
+                    _base[i] = val;
+                _size = n;
+            }
+            else
+            {
+                for (size_type i = 0; i < n; i++)
+                    _base[i] = val;
+                _size = n;
+            }
+        }
+
         void push_back (const value_type& val)
         {
             if (_capacity == _size)
@@ -154,6 +212,9 @@ namespace ft
         // Iterators
         iterator begin() { return iterator(_base); }
         const_iterator begin() const { return const_iterator(_base); }
+
+        iterator end() { return iterator(_base + _size); }
+        const_iterator end() const { return const_iterator(_base + _size); }
 
         reverse_iterator rbegin() { return reverse_iterator(_base + _size); } ;
         const_reverse_iterator rbegin() const { return const_reverse_iterator(_base + _size); };
@@ -185,6 +246,8 @@ namespace ft
                 _ptr = op._ptr;
                 return (*this);
             }
+
+            Tt *base() const { return _ptr; };
 
             // vectorIterator(/* args */);
             // ~vectorIterator();
@@ -245,12 +308,15 @@ namespace ft
                 return (*this);
             }
 
+            template <typename T1, typename Val1>
+            friend class vectorIterator; // we have to befriend other iterators to be able to compare with them
+
         };
 
     template <typename T, typename Val>
     bool operator==(const vectorIterator<T, Val>& lhs, const vectorIterator<T, Val>& rhs)
     { 
-        return (lhs._vec == rhs._vec && lhs._index == rhs._index);
+        return (lhs.base() == rhs.base());
     }
 
     template <typename T, typename Val>

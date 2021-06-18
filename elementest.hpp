@@ -153,3 +153,14 @@ bool exception_thrown = false;
 			lastTestFailed = true;                                                                                   \
 		}                                                                                                            \
 	}
+
+template <typename T, typename iterator>
+void check_container(T comparator[], iterator first, iterator last)
+{
+	size_t i = 0;
+	for (iterator iter = first; iter != last; iter++)
+	{
+		ASSERT_EQ(*iter, comparator[i]);
+		i++;
+	}
+}

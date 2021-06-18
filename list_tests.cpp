@@ -908,17 +908,6 @@ TEST(ListSpliceSingleElementToEmptyFromMiddle)
 	ASSERT_EQ(list_b.size(), 4);
 }
 
-template <typename T, typename iterator>
-void check_container(T comparator[], iterator first, iterator last)
-{
-	size_t i = 0;
-	for (iterator iter = first; iter != last; iter++)
-	{
-		ASSERT_EQ(*iter, comparator[i]);
-		i++;
-	}
-}
-
 TEST(ListSpliceSingleElementToNotEmptyFromBeginning)
 {
 	ft::list<int> list_a((size_t)3, 20);

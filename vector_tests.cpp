@@ -674,6 +674,87 @@ TEST(VectorRend)
 
 }
 
+TEST(VectorFront)
+{
+    ft::vector<int> vector_a;
+    vector_a.push_back(4);
+    vector_a.push_back(2);
+
+    std::vector<int> svector_a;
+    svector_a.push_back(4);
+    svector_a.push_back(2);
+
+    ASSERT_EQ(vector_a.front(),svector_a.front());
+
+    const int& a = vector_a.front();
+    const int& b = svector_a.front();
+
+    ASSERT_EQ(a, b);
+}
+
+TEST(VectorBack)
+{
+    ft::vector<int> vector_a;
+    vector_a.push_back(4);
+    vector_a.push_back(2);
+
+    std::vector<int> svector_a;
+    svector_a.push_back(4);
+    svector_a.push_back(2);
+
+    ASSERT_EQ(vector_a.back(), svector_a.back());
+
+    const int& a = vector_a.back();
+    const int& b = svector_a.back();
+
+    ASSERT_EQ(a, b);
+}
+
+TEST(VectorEnd)
+{
+    ft::vector<int> vector_a;
+    vector_a.push_back(4);
+    vector_a.push_back(2);
+
+    std::vector<int> svector_a;
+    svector_a.push_back(4);
+    svector_a.push_back(2);
+
+    ASSERT_EQ(*(--vector_a.end()), *(--svector_a.end()));
+}
+
+TEST(VectorAssign1)
+{
+    ft::vector<int> vector_a;
+    vector_a.push_back(4);
+    vector_a.push_back(2);
+    
+    ASSERT_EQ(vector_a.size(), 2);
+
+    vector_a.assign(5, 10);
+
+    ASSERT_EQ(vector_a.size(), 5);
+    int tester[] = {10, 10, 10, 10, 10};
+    check_container(tester, vector_a.begin(), vector_a.end());
+}
+
+TEST(VectorAssign2)
+{
+    ft::vector<int> vector_a;
+    vector_a.push_back(4);
+    vector_a.push_back(2);
+    
+    ASSERT_EQ(vector_a.size(), 2);
+
+    std::vector<int> b(4, 42);
+
+    vector_a.assign(b.begin(), b.end());
+
+    ASSERT_EQ(vector_a.size(), 4);
+    int tester[] = {42, 42, 42, 42};
+    check_container(tester, vector_a.begin(), vector_a.end());
+}
+
 /*
 TEST(STDMadness)
 {
