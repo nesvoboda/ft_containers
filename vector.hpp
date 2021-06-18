@@ -126,13 +126,14 @@ namespace ft
                  const allocator_type& alloc = allocator_type())
         {
             _alloc = alloc;
-            _capacity = START_ALLOC;
-            _base = new T[_capacity];
+            _capacity = 0;
+            _base = new T[1];
             _size = 0;
-            for (InputIterator it = first; it != last; it++)
-            {
-                push_back(*it);
-            } 
+            // for (InputIterator it = first; it != last; it++)
+            // {
+            //     push_back(*it);
+            // } 
+            assign(first, last);
         }
 
         // copy (4)	
@@ -413,10 +414,26 @@ namespace ft
         template <class InputIterator>
             void insert (iterator position, typename ft::enable_if<!std::is_integral<InputIterator>::value, InputIterator>::type first, InputIterator last)
         {
-            for (InputIterator iter = first; iter != last; iter++)
+            size_type target_index = position.base() - _base;
+
+            size_type n = ft::distance(first, last);
+
+            if ((_size+n) >= _capacity)
             {
-                position = insert(position, *iter);
+                reserve((_size + n));
             }
+
+            // size_type target_index = position.base() - _base;
+            for (size_type z = _size+n-1; z != target_index+n-1; z--)
+            {
+                _base[z] = _base[z-n];
+            }
+            // _base[target_index] = val;
+            // for (size_type x = target_index; x != target_index+n; x++)
+            //     _base[x] = val;
+            for (InputIterator iter = first; iter != last; iter++)
+                _base[target_index++] = *iter;
+            _size += n;
         }
 
         iterator erase(iterator position)
