@@ -505,6 +505,11 @@ namespace ft
 
             Tt *base() const { return _ptr; };
 
+            operator vectorIterator<Tt, const Val>(void) const
+            {
+                return vectorIterator<Tt, const Val>(this->_ptr);
+            }
+
             // vectorIterator(/* args */);
             // ~vectorIterator();
 
