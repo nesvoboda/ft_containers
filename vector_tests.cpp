@@ -755,6 +755,433 @@ TEST(VectorAssign2)
     check_container(tester, vector_a.begin(), vector_a.end());
 }
 
+TEST(VectorRangeConst)
+{
+    std::vector<int> base;
+    base.push_back(1);
+    base.push_back(5);
+    base.push_back(4);
+    base.push_back(3);
+
+    ft::vector<int> vector_a(base.begin(), base.end());
+    
+    
+    ASSERT_EQ(vector_a.size(), 4);
+
+    int tester[] = {1, 5, 4, 3};
+    check_container(tester, vector_a.begin(), vector_a.end());
+}
+
+TEST(VectorCopy)
+{
+    ft::vector<int> v_a;
+
+    v_a.push_back(21);
+    v_a.push_back(42);
+    v_a.push_back(1337);
+
+    ft::vector<int> v_b(v_a);
+
+    int tester[] = {21, 42, 1337};
+    check_container(tester, v_b.begin(), v_b.end());
+}
+
+TEST(VectorCopyAssignment)
+{
+     ft::vector<int> v_a;
+
+    v_a.push_back(21);
+    v_a.push_back(42);
+    v_a.push_back(1337);
+
+    ft::vector<int> v_b;
+
+    v_b.push_back(1);
+
+    v_b = v_a;
+
+    int tester[] = {21, 42, 1337};
+    check_container(tester, v_b.begin(), v_b.end());
+}
+
+TEST(VectorCopyAssignment2)
+{
+     ft::vector<int> v_a;
+
+    v_a.push_back(21);
+    v_a.push_back(42);
+    v_a.push_back(1337);
+    v_a.push_back(1337);
+    v_a.push_back(1337);
+    v_a.push_back(1337);
+    v_a.push_back(1337);
+    v_a.push_back(1337);
+    v_a.push_back(1337);
+    v_a.push_back(1337);
+    v_a.push_back(1337);
+    v_a.push_back(1337);
+
+    ft::vector<int> v_b;
+
+    v_b.push_back(1);
+
+    v_b = v_a;
+
+    int tester[] = {21, 42, 1337, 1337, 1337, 1337, 1337, 1337, 1337, 1337, 1337, 1337};
+    check_container(tester, v_b.begin(), v_b.end());
+}
+
+TEST(VectorResize)
+{
+    ft::vector<int> v_a;
+
+    v_a.resize(5, 42);
+
+    ASSERT_EQ(v_a.size(), 5);
+
+    int tester[] = {42, 42, 42, 42, 42};
+    check_container(tester, v_a.begin(), v_a.end());
+
+    v_a.resize(2, 21);
+
+    int tester2[] = {42, 42};
+    check_container(tester2, v_a.begin(), v_a.end());
+}
+
+TEST(VectorInsertMiddle)
+{
+    ft::vector<int> v_a;
+    v_a.push_back(1);
+    v_a.push_back(2);
+    v_a.push_back(3);
+
+    ft::vector<int>::iterator it = v_a.insert(++v_a.begin(), 21);
+
+    int tester[] = {1, 21, 2, 3};
+
+    check_container(tester, v_a.begin(), v_a.end());
+    ASSERT_EQ(*it, 21);
+}
+
+TEST(VectorInsertBegin)
+{
+    ft::vector<int> v_a;
+    v_a.push_back(1);
+    v_a.push_back(2);
+    v_a.push_back(3);
+
+    ft::vector<int>::iterator it = v_a.insert(v_a.begin(), 21);
+
+    int tester[] = {21, 1, 2, 3};
+
+    check_container(tester, v_a.begin(), v_a.end());
+
+    ASSERT_EQ(*it, 21);
+}
+
+
+TEST(VectorInsertEnd)
+{
+    ft::vector<int> v_a;
+    v_a.push_back(1);
+    v_a.push_back(2);
+    v_a.push_back(3);
+
+    ft::vector<int>::iterator it = v_a.insert(v_a.end(), 21);
+
+    int tester[] = {1, 2, 3, 21};
+
+    check_container(tester, v_a.begin(), v_a.end());
+    ASSERT_EQ(*it, 21);
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+TEST(VectorInsertFillMiddle)
+{
+    ft::vector<int> v_a;
+    v_a.push_back(1);
+    v_a.push_back(2);
+    v_a.push_back(3);
+
+    v_a.insert(++v_a.begin(), 3, 7);
+
+    int tester[] = {1, 7, 7, 7, 2, 3};
+
+    check_container(tester, v_a.begin(), v_a.end());
+}
+
+TEST(VectorInsertFillBegin)
+{
+    ft::vector<int> v_a;
+    v_a.push_back(1);
+    v_a.push_back(2);
+    v_a.push_back(3);
+
+    v_a.insert(v_a.begin(), 3, 7);
+
+    int tester[] = {7, 7, 7, 1, 2, 3};
+
+    check_container(tester, v_a.begin(), v_a.end());
+}
+
+
+TEST(VectorInsertFillEnd)
+{
+    ft::vector<int> v_a;
+    v_a.push_back(1);
+    v_a.push_back(2);
+    v_a.push_back(3);
+
+    v_a.insert(v_a.end(), 3, 7);
+
+    int tester[] = {1, 2, 3, 7, 7, 7};
+
+    check_container(tester, v_a.begin(), v_a.end());
+}
+
+
+
+
+
+TEST(VectorEraseMiddle)
+{
+    ft::vector<int> v_a;
+    v_a.push_back(1);
+    v_a.push_back(2);
+    v_a.push_back(3);
+
+    ft::vector<int>::iterator iter = v_a.erase(++v_a.begin());
+    ASSERT_EQ(*iter, 3);
+
+    int tester[] = {1, 3};
+
+    check_container(tester, v_a.begin(), v_a.end());
+}
+
+TEST(VectorEraseBegin)
+{
+    ft::vector<int> v_a;
+    v_a.push_back(1);
+    v_a.push_back(2);
+    v_a.push_back(3);
+
+    ft::vector<int>::iterator iter = v_a.erase(v_a.begin());
+
+    int tester[] = {2, 3};
+    ASSERT_EQ(*iter, 2);
+
+    check_container(tester, v_a.begin(), v_a.end());
+}
+
+
+TEST(VectorEraseEnd)
+{
+    ft::vector<int> v_a;
+    v_a.push_back(1);
+    v_a.push_back(2);
+    v_a.push_back(3);
+
+    ft::vector<int>::iterator iter = v_a.erase(--v_a.end());
+    CHECK_EQ(iter, v_a.end());
+
+    int tester[] = {1, 2};
+
+    check_container(tester, v_a.begin(), v_a.end());
+}
+
+
+
+
+
+TEST(VectorEraseRangeMiddle)
+{
+    ft::vector<int> v_a;
+    v_a.push_back(1);
+    v_a.push_back(2);
+    v_a.push_back(3);
+    v_a.push_back(4);
+    v_a.push_back(5);
+
+    ft::vector<int>::iterator iter = v_a.erase(++v_a.begin(), ++++++v_a.begin());
+    ASSERT_EQ(*iter, 4);
+
+    int tester[] = {1, 4, 5};
+
+    check_container(tester, v_a.begin(), v_a.end());
+}
+
+TEST(VectorEraseRangeBegin)
+{
+    ft::vector<int> v_a;
+    v_a.push_back(1);
+    v_a.push_back(2);
+    v_a.push_back(3);
+    v_a.push_back(4);
+    v_a.push_back(5);
+
+    ft::vector<int>::iterator iter = v_a.erase(v_a.begin(), ++++v_a.begin());
+
+    int tester[] = {3, 4, 5};
+    ASSERT_EQ(*iter, 3);
+
+    check_container(tester, v_a.begin(), v_a.end());
+}
+
+
+TEST(VectorEraseRangeEnd)
+{
+    ft::vector<int> v_a;
+    v_a.push_back(1);
+    v_a.push_back(2);
+    v_a.push_back(3);
+    v_a.push_back(4);
+    v_a.push_back(5);
+
+    ft::vector<int>::iterator iter = v_a.erase(----v_a.end(), v_a.end());
+    CHECK_EQ(iter, v_a.end());
+
+    int tester[] = {1, 2, 3};
+
+    check_container(tester, v_a.begin(), v_a.end());
+}
+
+TEST(VectorSwap)
+{
+    ft::vector<int> v_a;
+    v_a.push_back(1);
+    v_a.push_back(2);
+    v_a.push_back(3);
+    v_a.push_back(4);
+    v_a.push_back(5);
+
+    ft::vector<int> v_b;
+    v_b.push_back(6);
+    v_b.push_back(7);
+    v_b.push_back(8);
+
+    v_a.swap(v_b);
+
+    int tester[] = {1, 2, 3, 4, 5};
+    int tester2[] = {6, 7, 8};
+
+    check_container(tester, v_b.begin(), v_b.end());
+    check_container(tester2, v_a.begin(), v_a.end());
+}
+
+TEST(VectorEquals)
+{
+    ft::vector<int> v_a;
+    ft::vector<int> v_b;
+
+    ASSERT_EQ((v_a == v_b), true);
+    
+    v_a.push_back(1);
+    ASSERT_EQ((v_a == v_b), false);
+
+    v_b.push_back(1);
+    ASSERT_EQ((v_a == v_b), true);
+}
+
+TEST(VectorGreater)
+{
+    ft::vector<int> v_a;
+    ft::vector<int> v_b;
+
+    ASSERT_EQ((v_a > v_b), false);
+    ASSERT_EQ((v_b > v_a), false);
+    
+    v_a.push_back(1);
+    ASSERT_EQ((v_a > v_b), true);
+    ASSERT_EQ((v_b > v_a), false);
+
+    v_b.push_back(1);
+    ASSERT_EQ((v_a > v_b), false);
+    ASSERT_EQ((v_b > v_a), false);
+
+    v_a.push_back(2);
+    v_b.push_back(1);
+    ASSERT_EQ((v_a > v_b), true);
+    ASSERT_EQ((v_b > v_a), false);
+}
+
+TEST(VectorSmaller)
+{
+    ft::vector<int> v_a;
+    ft::vector<int> v_b;
+
+    ASSERT_EQ((v_a < v_b), false);
+    ASSERT_EQ((v_b < v_a), false);
+    
+    v_a.push_back(1);
+    ASSERT_EQ((v_a < v_b), false);
+    ASSERT_EQ((v_b < v_a), true);
+
+    v_b.push_back(1);
+    ASSERT_EQ((v_a < v_b), false);
+    ASSERT_EQ((v_b < v_a), false);
+
+    v_a.push_back(2);
+    v_b.push_back(1);
+    ASSERT_EQ((v_a < v_b), false);
+    ASSERT_EQ((v_b < v_a), true);
+}
+
+TEST(VectorGreaterOrEq)
+{
+    ft::vector<int> v_a;
+    ft::vector<int> v_b;
+
+    ASSERT_EQ((v_a >= v_b), true);
+    ASSERT_EQ((v_b >= v_a), true);
+    
+    v_a.push_back(1);
+    ASSERT_EQ((v_a >= v_b), true);
+    ASSERT_EQ((v_b >= v_a), false);
+
+    v_b.push_back(1);
+    ASSERT_EQ((v_a >= v_b), true);
+    ASSERT_EQ((v_b >= v_a), true);
+
+    v_a.push_back(2);
+    v_b.push_back(1);
+    ASSERT_EQ((v_a >= v_b), true);
+    ASSERT_EQ((v_b >= v_a), false);
+}
+
+TEST(VectorSmallerOrEqual)
+{
+    ft::vector<int> v_a;
+    ft::vector<int> v_b;
+
+    ASSERT_EQ((v_a <= v_b), true);
+    ASSERT_EQ((v_b <= v_a), true);
+    
+    v_a.push_back(1);
+    ASSERT_EQ((v_a <= v_b), false);
+    ASSERT_EQ((v_b <= v_a), true);
+
+    v_b.push_back(1);
+    ASSERT_EQ((v_a <= v_b), true);
+    ASSERT_EQ((v_b <= v_a), true);
+
+    v_a.push_back(2);
+    v_b.push_back(1);
+    ASSERT_EQ((v_a <= v_b), false);
+    ASSERT_EQ((v_b <= v_a), true);
+}
+
 /*
 TEST(STDMadness)
 {
