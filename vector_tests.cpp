@@ -619,6 +619,61 @@ TEST(VectorConstRevIteratorMinusEquals)
     ASSERT_EQ(*iter, 21);
 }
 
+TEST(VectorBegin)
+{
+    ft::vector<int> vector_a;
+    vector_a.push_back(4);
+    vector_a.push_back(2);
+
+    ft::vector<int>::iterator it = vector_a.begin();
+
+    ASSERT_EQ(*it, 4);
+
+    const ft::vector<int> vector_b(2, 4);
+
+    ft::vector<int>::const_iterator it2 = vector_b.begin();
+    ASSERT_EQ(*it2, 4);
+}
+
+TEST(VectorRbegin)
+{
+    {
+        ft::vector<int> vector_a;
+        vector_a.push_back(4);
+        vector_a.push_back(2);
+
+        std::vector<int> svector_a;
+        svector_a.push_back(4);
+        svector_a.push_back(2);
+
+        ASSERT_EQ(*(vector_a.rbegin()), *(svector_a.rbegin()));   
+    }
+
+    {
+        const ft::vector<int> vector_a(2, 44);
+
+        const std::vector<int> svector_a(2, 44);
+
+        ASSERT_EQ(*(vector_a.rbegin()), *(svector_a.rbegin()));
+    }
+
+}
+
+TEST(VectorRend)
+{
+    ft::vector<int> vector_a;
+    vector_a.push_back(4);
+    vector_a.push_back(2);
+
+    std::vector<int> svector_a;
+    svector_a.push_back(4);
+    svector_a.push_back(2);
+
+    ASSERT_EQ(*(--vector_a.rend()), *(--svector_a.rend()));
+
+
+}
+
 /*
 TEST(STDMadness)
 {

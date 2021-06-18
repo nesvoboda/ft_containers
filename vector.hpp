@@ -66,6 +66,14 @@ namespace ft
             _size = n;
         }
 
+                // range (3)	
+        // template <class InputIterator>
+        // vector (InputIterator first, InputIterator last,
+        //          const allocator_type& alloc = allocator_type());
+        // copy (4)	
+        // vector (const vector& x);
+
+
         reference operator[] (size_type n)
         {
             return _base[n];
@@ -143,12 +151,15 @@ namespace ft
             _size = 0;
         }
 
-        // range (3)	
-        // template <class InputIterator>
-        // vector (InputIterator first, InputIterator last,
-        //          const allocator_type& alloc = allocator_type());
-        // copy (4)	
-        // vector (const vector& x);
+        // Iterators
+        iterator begin() { return iterator(_base); }
+        const_iterator begin() const { return const_iterator(_base); }
+
+        reverse_iterator rbegin() { return reverse_iterator(_base + _size); } ;
+        const_reverse_iterator rbegin() const { return const_reverse_iterator(_base + _size); };
+
+        reverse_iterator rend() { return reverse_iterator(_base); };
+        const_reverse_iterator rend() const { return const_reverse_iterator(_base); };
 
         ~vector() {};
 
