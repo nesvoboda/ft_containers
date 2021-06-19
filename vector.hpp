@@ -418,10 +418,21 @@ namespace ft
 
             size_type n = ft::distance(first, last);
 
-            if ((_size+n) >= _capacity)
+            if ((_size+n) > _capacity)
             {
                 reserve((_size + n));
             }
+
+			// while ((_size+n) > _capacity)
+            // {
+			// 	if (_size == 0 || _capacity == 1)
+			// 	{
+			// 		std::cout << "Here" << std::endl;
+			// 		reserve(2);
+			// 	}
+			// 	else
+			// 		reserve(_size * 2);
+            // }
 
             // size_type target_index = position.base() - _base;
             for (size_type z = _size+n-1; z != target_index+n-1; z--)
@@ -487,6 +498,7 @@ namespace ft
         {
         public:
             typedef typename vector<Tt>::size_type size_type;
+            typedef ptrdiff_t difference_type;
             typedef Val value_type;
         
         private:
@@ -546,10 +558,9 @@ namespace ft
                 return retval;
             }
 
-            vectorIterator operator+(int i) const
+            vectorIterator operator+(difference_type i) const
             {
-                vectorIterator<Tt, Val> retval(_ptr+i);
-                return retval;
+                return vectorIterator(_ptr+i);
             }
 
             vectorIterator operator-(int i) const
@@ -558,7 +569,7 @@ namespace ft
                 return retval;
             }
 
-            size_type operator-(vectorIterator vi) const
+            ptrdiff_t operator-(vectorIterator vi) const
             {
                 return _ptr - vi.base();
             }
@@ -575,13 +586,32 @@ namespace ft
                 return (*this);
             }
 
+			Val& operator[](size_t b)
+			{
+				return (*(_ptr + b));
+			}
+
             template <typename T1, typename Val1>
             friend class vectorIterator; // we have to befriend other iterators to be able to compare with them
+			
 
         };
 
+	template <typename Tt, typename Val>
+	vectorIterator<Tt,Val>	operator+(typename vectorIterator<Tt,Val>::difference_type n, const vectorIterator<Tt,Val> &rhs)
+	{
+		// return rhs.operator+
+		return vectorIterator<Tt,Val>(rhs.base() + n);
+	};
+
     template <typename T, typename Val>
     bool operator==(const vectorIterator<T, Val>& lhs, const vectorIterator<T, Val>& rhs)
+    { 
+        return (lhs.base() == rhs.base());
+    }
+
+	template <typename T, typename Val, typename OtherVal>
+    bool operator==(const vectorIterator<T, Val>& lhs, const vectorIterator<T, OtherVal>& rhs)
     { 
         return (lhs.base() == rhs.base());
     }
