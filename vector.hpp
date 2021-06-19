@@ -430,8 +430,15 @@ namespace ft
 
             if ((_size+n) > _capacity)
             {
-                reserve((_size + n));
+                // reserve((_size + n));
+				if ((_size+n) > _capacity * 2)
+					reserve((_size+n));
+				else if ((_size+n) > _capacity)
+					reserve(_capacity * 2);
             }
+			///////////////////
+
+			
 
 			// while ((_size+n) > _capacity)
             // {
