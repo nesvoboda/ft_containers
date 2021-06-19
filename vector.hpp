@@ -239,7 +239,7 @@ namespace ft
                 {
                     newBase[i] = _base[i];
                 }
-                delete _base;
+                delete[] _base;
                 _base = newBase;
                 _capacity = newCapacity;
             }
@@ -354,7 +354,7 @@ namespace ft
 
         void push_back (const value_type& val)
         {
-            if (_capacity == _size)
+            if (_capacity <= _size)
             {
                 if (_capacity == 0)
                     reserve(1);
