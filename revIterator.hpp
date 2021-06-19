@@ -8,6 +8,7 @@ template <class iterator>
 
 	public:
 		typedef typename iterator::value_type value_type;
+		typedef typename iterator::difference_type difference_type;
 
 		rev_iterator() : _iter(){};
 
@@ -15,15 +16,24 @@ template <class iterator>
 
 		template <typename otherIterator>
 		rev_iterator(const rev_iterator<otherIterator> &it) : _iter(it.base()){};
-
+		
+		
+		// Befriending other reverse iterator to be able to compare with them
+		template <typename otherIter>
+		friend class rev_iterator;
+		
+		
 		rev_iterator(rev_iterator<iterator> const &it) : _iter(it._iter){};
 		rev_iterator &operator=(const rev_iterator &operand)
 		{
 			_iter = operand._iter;
 			return (*this);
 		}
-		iterator base() const { return _iter; }
+		iterator base() const { return _iter; };
 		virtual ~rev_iterator(void){};
+
+		iterator base(void) { return _iter; };
+
 		rev_iterator &operator++()
 		{
 			_iter = _iter.operator--();
@@ -40,6 +50,17 @@ template <class iterator>
 			// i--;
 			return (--iterator(_iter)).operator*();
 		}
+		value_type& operator[](size_t b)
+		{
+			// return (--iterator(_iter)).operator[](b)
+			return *(this->operator+(b));
+		}
+
+		// rev_iterator operator+(typename iterator::difference_type i) const
+		// {
+		// 	return rev_iterator(_iter+i);
+		// }
+
 		rev_iterator operator++(int)
 		{
 			rev_iterator retval = *this;
@@ -64,6 +85,11 @@ template <class iterator>
         {
             return rev_iterator(_iter.operator+(i));
         }
+		difference_type operator-(const rev_iterator &rhs) const
+		{
+			// return _iter.operator-(rhs);
+			return rhs.base().operator-((this->base()));
+		}
 
         rev_iterator& operator +=(int i)
         {
@@ -82,11 +108,20 @@ template <class iterator>
 		template <typename OtherIterator>
 		bool operator==(const rev_iterator<OtherIterator> &other) const
 		{
-			return _iter.operator==(other.base());
+			// return _iter.operator==(other.base());
+			return _iter == other._iter;
 		}
 		template <typename OtherIterator>
 		bool operator!=(const rev_iterator<OtherIterator> &other) const { return !(*this == other); }
 		// reverse_iterator &operator*() const {return _iter.operator*(); return *this;}
+	};
+
+	template <typename iterator>
+	rev_iterator<iterator>	operator+(typename rev_iterator<iterator>::difference_type n, const rev_iterator<iterator> &rhs)
+	{
+		// return rhs.operator+
+		// return vectorIterator<Tt,Val>(rhs.base() + n);
+		return rhs.operator+(n);
 	};
 
 #endif

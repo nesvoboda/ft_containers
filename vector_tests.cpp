@@ -1264,6 +1264,19 @@ TEST(VectorMaxSize)
     ASSERT_EQ(vec_a.max_size(), svec_a.max_size());
 }
 
+TEST(VectorReverseIteratorValueAssignment)
+{
+	ft::vector<int> v(5);
+
+	ft::vector<int>::reverse_iterator it = v.rbegin();
+
+	for(int i = 0; i < 5; i++)
+	{
+		std::cout << "i: " << i << std::endl;
+		it[i] = i;
+	}
+}
+
 /*
 TEST(STDMadness)
 {

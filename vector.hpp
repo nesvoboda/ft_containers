@@ -576,6 +576,19 @@ namespace ft
                 return retval;
             }
 
+			// difference_type operator-(const vectorIterator &rhs) const
+            // {
+            //     // vectorIterator<Tt, Val> retval(_ptr-i);
+            //     return _ptr - rhs.base();
+            // }
+
+			// template <typename otherVal>
+			// difference_type operator-(const vectorIterator<Tt, otherVal> &rhs) const
+            // {
+            //     // vectorIterator<Tt, Val> retval(_ptr-i);
+            //     return _ptr - rhs.base();
+            // }
+
             ptrdiff_t operator-(vectorIterator vi) const
             {
                 return _ptr - vi.base();
