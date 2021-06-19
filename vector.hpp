@@ -216,8 +216,18 @@ namespace ft
             }
             if (n > _size)
             {
-                if (n > _capacity)
-                    reserve(n * RESERVE_FACTOR);
+                // while (n > _capacity)
+				// {
+				// 	if (_capacity == 0)
+				// 		reserve(_size);
+				// 	else
+				// 		reserve(_capacity * RESERVE_FACTOR);
+				// }
+				if (n > _capacity * 2)
+					reserve(n);
+				else if (n > _capacity)
+					reserve(_capacity * 2);
+
                 while (_size != n)
                 {
                     _base[_size++] = val;
