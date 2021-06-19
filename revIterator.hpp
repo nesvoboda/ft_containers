@@ -103,6 +103,7 @@ template <class iterator>
             return (*this);
         }
 
+
         //
 
 		template <typename OtherIterator>
@@ -114,6 +115,55 @@ template <class iterator>
 		template <typename OtherIterator>
 		bool operator!=(const rev_iterator<OtherIterator> &other) const { return !(*this == other); }
 		// reverse_iterator &operator*() const {return _iter.operator*(); return *this;}
+	
+		bool operator< (const rev_iterator &rhs) const
+		{
+			return base() > rhs.base();
+		}
+
+		template <typename OtherIterator>
+		bool operator< (const rev_iterator<OtherIterator> &rhs) const
+		{
+			return base() > rhs.base();
+		}
+
+		bool operator> (const rev_iterator &rhs) const
+		{
+			return base() < rhs.base();
+		}
+
+		template <typename OtherIterator>
+		bool operator> (const rev_iterator<OtherIterator> &rhs) const
+		{
+			return base() < rhs.base();
+		}
+
+		
+
+
+
+
+		bool operator<= (const rev_iterator &rhs) const
+		{
+			return base() >= rhs.base();
+		}
+
+		template <typename OtherIterator>
+		bool operator<= (const rev_iterator<OtherIterator> &rhs) const
+		{
+			return base() >= rhs.base();
+		}
+
+		bool operator>= (const rev_iterator &rhs) const
+		{
+			return base() <= rhs.base();
+		}
+
+		template <typename OtherIterator>
+		bool operator>= (const rev_iterator<OtherIterator> &rhs) const
+		{
+			return base() <= rhs.base();
+		}
 	};
 
 	template <typename iterator>
