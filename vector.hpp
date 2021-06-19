@@ -377,7 +377,7 @@ namespace ft
 
             if (_size == _capacity)
             {
-                reserve((_size + 1) * RESERVE_FACTOR);
+                reserve((_size) * RESERVE_FACTOR);
             }
 
             for (size_type z = _size; z != target_index; z--)
@@ -396,7 +396,7 @@ namespace ft
 
             if ((_size+n) >= _capacity)
             {
-                reserve((_size + n) * RESERVE_FACTOR);
+                reserve((_size + n));
             }
 
             // size_type target_index = position.base() - _base;
