@@ -617,6 +617,54 @@ namespace ft
         return (lhs.base() == rhs.base());
     }
 
+	template <typename T, typename Val>
+    bool operator<(const vectorIterator<T, Val>& lhs, const vectorIterator<T, Val>& rhs)
+    { 
+        return (lhs.base() < rhs.base());
+    }
+
+	template <typename T, typename Val, typename OtherVal>
+    bool operator<(const vectorIterator<T, Val>& lhs, const vectorIterator<T, OtherVal>& rhs)
+    { 
+        return (lhs.base() < rhs.base());
+    }
+
+	template <typename T, typename Val>
+    bool operator>(const vectorIterator<T, Val>& lhs, const vectorIterator<T, Val>& rhs)
+    { 
+        return (lhs.base() > rhs.base());
+    }
+
+	template <typename T, typename Val, typename OtherVal>
+    bool operator>(const vectorIterator<T, Val>& lhs, const vectorIterator<T, OtherVal>& rhs)
+    { 
+        return (lhs.base() > rhs.base());
+    }
+
+	template <typename T, typename Val>
+    bool operator<=(const vectorIterator<T, Val>& lhs, const vectorIterator<T, Val>& rhs)
+    { 
+        return (lhs.base() <= rhs.base());
+    }
+
+	template <typename T, typename Val, typename OtherVal>
+    bool operator<=(const vectorIterator<T, Val>& lhs, const vectorIterator<T, OtherVal>& rhs)
+    { 
+        return (lhs.base() <= rhs.base());
+    }
+
+	template <typename T, typename Val>
+    bool operator>=(const vectorIterator<T, Val>& lhs, const vectorIterator<T, Val>& rhs)
+    { 
+        return (lhs.base() >= rhs.base());
+    }
+
+	template <typename T, typename Val, typename OtherVal>
+    bool operator>=(const vectorIterator<T, Val>& lhs, const vectorIterator<T, OtherVal>& rhs)
+    { 
+        return (lhs.base() >= rhs.base());
+    }
+
 	template <typename T, typename Val, typename OtherVal>
     bool operator==(const vectorIterator<T, Val>& lhs, const vectorIterator<T, OtherVal>& rhs)
     { 
@@ -685,6 +733,8 @@ namespace ft
     {
         return !(lhs > rhs);
     }
+
+
     // (5)	
     template <class T, class Alloc>
     bool operator>  (const vector<T,Alloc>& lhs, const vector<T,Alloc>& rhs)
