@@ -515,6 +515,13 @@ namespace ft
                 return (*this);
             }
 
+			// template <typename OtherVal>
+			// vectorIterator &operator=(const vectorIterator<Tt, OtherVal> &op)
+            // {
+            //     _ptr = op._ptr;
+            //     return (*this);
+            // }
+
             Tt *base() const { return _ptr; };
 
             operator vectorIterator<Tt, const Val>(void) const
@@ -618,6 +625,12 @@ namespace ft
 
     template <typename T, typename Val>
     bool operator!=(const vectorIterator<T, Val>& lhs, const vectorIterator<T, Val>& rhs)
+    { 
+        return (!(lhs == rhs));
+    }
+
+	template <typename T, typename Val, typename OtherVal>
+    bool operator!=(const vectorIterator<T, Val>& lhs, const vectorIterator<T, OtherVal>& rhs)
     { 
         return (!(lhs == rhs));
     }
