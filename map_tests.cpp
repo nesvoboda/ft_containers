@@ -1,6 +1,7 @@
 #include "elementest.hpp"
 #include "map.hpp"
 #include <utility>
+#include <map>
 
 ///////////////////////////////////////////////////////////////////////////////
 // PAIR 
@@ -136,6 +137,19 @@ TEST(PairLessMoreWhenNotEqualReverseOrder)
 
 	ASSERT_EQ((p1 > p2), (sp1 > sp2));
 	ASSERT_EQ((p1 >= p2), (sp1 >= sp2));
+}
+
+TEST(MapInsertEmpty)
+{
+	ft::map<std::string, int> m1;
+	std::map<std::string, int> sm1;
+
+	ft::pair<std::string, int> val1("42", 42);
+	std::pair<std::string, int> sval1("42", 42);
+
+	m1.insert(val1);
+	sm1.insert(sval1);
+
 }
 
 
