@@ -147,10 +147,63 @@ TEST(MapInsertEmpty)
 	ft::pair<std::string, int> val1("42", 42);
 	std::pair<std::string, int> sval1("42", 42);
 
-	m1.insert(val1);
-	sm1.insert(sval1);
+	ft::pair<ft::map<std::string, int>::iterator, bool> r1 = m1.insert(val1);
+	std::pair<std::map<std::string, int>::iterator, bool> sr1 = sm1.insert(sval1);
 
+	ASSERT_EQ(r1.second, sr1.second);
+	ASSERT_EQ(m1.size(), sm1.size());
 }
+
+TEST(MapInsertNotEmptyDifferent)
+{
+	ft::map<std::string, int> m1;
+	std::map<std::string, int> sm1;
+
+	ft::pair<std::string, int> val1("42", 42);
+	std::pair<std::string, int> sval1("42", 42);
+
+	ft::pair<ft::map<std::string, int>::iterator, bool> r1 = m1.insert(val1);
+	std::pair<std::map<std::string, int>::iterator, bool> sr1 = sm1.insert(sval1);
+
+	ASSERT_EQ(r1.second, sr1.second);
+	ASSERT_EQ(m1.size(), sm1.size());
+
+	ft::pair<std::string, int> val2("21", 42);
+	std::pair<std::string, int> sval2("21", 42);
+
+	ft::pair<ft::map<std::string, int>::iterator, bool> r2 = m1.insert(val2);
+	std::pair<std::map<std::string, int>::iterator, bool> sr2 = sm1.insert(sval2);
+
+
+	ASSERT_EQ(r2.second, sr2.second);
+	ASSERT_EQ(m1.size(), sm1.size());
+}
+
+TEST(MapInsertNotEmptySame)
+{
+	ft::map<std::string, int> m1;
+	std::map<std::string, int> sm1;
+
+	ft::pair<std::string, int> val1("42", 42);
+	std::pair<std::string, int> sval1("42", 42);
+
+	ft::pair<ft::map<std::string, int>::iterator, bool> r1 = m1.insert(val1);
+	std::pair<std::map<std::string, int>::iterator, bool> sr1 = sm1.insert(sval1);
+
+	ASSERT_EQ(r1.second, sr1.second);
+	ASSERT_EQ(m1.size(), sm1.size());
+
+	ft::pair<std::string, int> val2("42", 42);
+	std::pair<std::string, int> sval2("42", 42);
+
+	ft::pair<ft::map<std::string, int>::iterator, bool> r2 = m1.insert(val2);
+	std::pair<std::map<std::string, int>::iterator, bool> sr2 = sm1.insert(sval2);
+
+
+	ASSERT_EQ(r2.second, sr2.second);
+	ASSERT_EQ(m1.size(), sm1.size());
+}
+
 
 
 int main(void)

@@ -39,6 +39,7 @@ namespace ft
 	template <class T1, class T2>
 	bool operator== (const pair<T1,T2>& lhs, const pair<T1,T2>& rhs)
 	{ return lhs.first==rhs.first && lhs.second==rhs.second; }
+
 	// (2)	
 	template <class T1, class T2>
 	bool operator!= (const pair<T1,T2>& lhs, const pair<T1,T2>& rhs)
@@ -61,15 +62,16 @@ namespace ft
 	bool operator>= (const pair<T1,T2>& lhs, const pair<T1,T2>& rhs)
 	{ return !(lhs<rhs); }
 
-	template <class Val>
+	template <class Key, class Val>
 	struct BSTNode {
 		BSTNode *left;
 		BSTNode *right;
 		BSTNode *parent;
+		Key key;
 		Val value;
 
-		BSTNode(BSTNode *_left, BSTNode *_right, BSTNode *_parent, const Val &_value) : 
-			left(_left), right(_right), parent(_parent), value(_value) {};
+		BSTNode(BSTNode *_left, BSTNode *_right, BSTNode *_parent, const Key &_key, const Val &_value) : 
+			left(_left), right(_right), parent(_parent), key(_key), value(_value) {};
 	};
 
 	template <class T, class ptrT>
@@ -79,14 +81,35 @@ namespace ft
 
 		mapIterator() : _ptr(NULL) {};
 		mapIterator(BSTNode<ptrT> *ptr) : _ptr(ptr) {};
+		T &operator*(void) { return _ptr->value };
 	};
 
-	// template <class Val>
-	// class BST {
-		
-	// 	private:
-	// 	BSTNode *head;
-	// }
+
+	// creating a base BST class to hold all logic. It will be easier to test the behavior this way.
+
+	// For now, the design choices are as follows:
+	// Empty tree contains an empty element for iterators to preserve validity.
+	template <class Key, class Val>
+	class BST {
+
+		BST(void) : _head(new BSTNode(NULL, NULL, NULL, Key(), Val())) {
+			
+		}
+
+
+		pair <BSTNode *, bool> insert(BSTNode **target, const Key &key, const Val &val)
+		{
+			if 
+		}
+
+		pair<BSTNode *,bool> insert (const Key &key, const Val& val)
+		{
+
+		}
+
+		private:
+		BSTNode *head;
+	}
 
 
 	template <class Key,										// map::key_type
@@ -124,15 +147,62 @@ namespace ft
 		// map(const map &copy) {}; // TODO
 		// map &operator=(const map &operand); // TODO
 
+		void print_valtype(value_type val)
+		{
+			std::cout << "[key: " << val.first << ", val: " << val.second << "]";
+		}
+
+		void print_node(BSTNode<value_type> bstnode)
+		{
+			std::cout << "[BSTNode left: " << bstnode.left << ", right: " << bstnode.right << ", key: " << bstnode.value.first << ", val: " << bstnode.value.second << "]";
+		}
+
+		pair<iterator, bool> insert(BSTNode<value_type> **start, const value_type& val)
+		{
+			std::cout << "Inserting " << std::endl;
+			// print_node(**start);
+			// print_valtype(val);
+
+			if (*start == NULL)
+			{
+				*start = new BSTNode<value_type>(NULL, NULL, NULL, val);
+				_size += 1;
+				return pair<iterator, bool>(iterator(*start), true);
+			}
+			if (val.first < (*start)->value.first)
+			{
+				return insert(&((*start)->left), val);
+			}
+			if (val.first > (*start)->value.first)
+			{
+				return insert(&((*start)->right), val);
+			}
+			return pair<iterator, bool>(iterator(*start), false);
+		}
+
 		pair<iterator,bool> insert (const value_type& val)
 		{
-			if (_head == NULL)
-			{
-				_head = new BSTNode<value_type>(NULL, NULL, NULL, val);
-				_size += 1;
-				return pair<iterator, bool>(iterator(_head), true);
-			}
-			return pair<iterator, bool>(iterator(), true);
+			// if (_head == NULL)
+			// {
+				// _head = new BSTNode<value_type>(NULL, NULL, NULL, val);
+				// _size += 1;
+				// return pair<iterator, bool>(iterator(_head), true);
+			// }
+			// return pair<iterator, bool>(iterator(), true);
+			return insert(&_head, val);
+		}
+
+		// iterator begin() {
+		// 	if (_head == NULL)
+		// };
+
+
+		const_iterator begin() const;
+
+
+		size_type size() const
+		{
+			return _size;
 		}
 
 	private:
