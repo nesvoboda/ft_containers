@@ -48,33 +48,14 @@ namespace ft
 	// 	private:
 	// 	BSTNode *head;
 	// }
-	
-
-	// A node that contains a key-value pair, and returns the key for comparison
-	template <typename Key, typename Value>
-	struct KVNode
-	{
-	public:
-		KVNode *left;
-		KVNode *right;
-		KVNode *parent;
-		ft::pair<Key, Value> content;
-		bool fake; // for the end-element
-
-		KVNode(KVNode *_left, KVNode *_right, KVNode *_parent, ft::pair<Key, Value> _content, bool _fake = false) :
-			left(_left), right(_right), parent(_parent), content(_content), fake(_fake) {};
-
-		Key comparable(void) const {return content.first();};
-
-	};
 
 	template <class IteratorValue, class Key, class ContainerValue>
 	class mapIterator {
 	public:
-		KVNode<Key, ContainerValue> *_ptr;
+		ABSTNode<Key, ContainerValue> *_ptr;
 
 		mapIterator() : _ptr(NULL) {};
-		mapIterator(KVNode<Key, ContainerValue> *ptr) : _ptr(ptr) {};
+		mapIterator(ABSTNode<Key, ContainerValue> *ptr) : _ptr(ptr) {};
 		IteratorValue &operator*(void) { return _ptr->value; };
 	};
 
@@ -86,7 +67,6 @@ namespace ft
 			  >
 	class map
 	{
-
 	public:
 
 		// Member types 
@@ -109,7 +89,7 @@ namespace ft
 		typedef size_t size_type; //	an unsigned integral type that can represent any non-negative value of difference_type	usually the same as size_t
 
 
-		map() : _base(BSTree<KVNode<key_type, mapped_type>, value_type>()), _size(0) {};
+		map() : _size(0) {};
 		~map() {};
 		// map(const map &copy) {}; // TODO
 		// map &operator=(const map &operand); // TODO
@@ -124,10 +104,12 @@ namespace ft
 		// 	std::cout << "[BSTNode left: " << bstnode.left << ", right: " << bstnode.right << ", key: " << bstnode.value.first << ", val: " << bstnode.value.second << "]";
 		// }
 
-		// pair<iterator,bool> insert (const value_type& val)
-		// {
+		pair<iterator,bool> insert (const value_type& val)
+		{
+			ft::pair<node_type *, bool> ret = _base.insert(val);
 
-		// }
+			return(pair<iterator, bool>(iterator(ret.first), ret.second));
+		}
 
 		// iterator begin() {
 		// 	if (_head == NULL)
@@ -144,8 +126,9 @@ namespace ft
 
 	private:
 		// BSTNode<value_type> *_head;
-		BSTree<KVNode<key_type, mapped_type>, value_type> _base;
+		BSTree<key_type, mapped_type, key_compare> _base;
 		size_type _size;
+		typedef ABSTNode<key_type, mapped_type> node_type;
 
 	};
 
