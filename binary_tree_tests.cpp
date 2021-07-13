@@ -6,23 +6,23 @@
 
 TEST(BTreeConstruct)
 {
-	BSTree<ABSTNode<int>, int> bt;
+	BSTree<int, bool> bt;
 
 	// the empty tree has a single 'end' node to accomodate end iterators
 	// in the future.
 	ASSERT_EQ(bt._head->left, NULL);
 	ASSERT_EQ(bt._head->right, NULL);
 	ASSERT_EQ(bt._head->parent, NULL);
-	ASSERT_EQ(bt._head->content, 0);
+	ASSERT_EQ(bt._head->key, 0);
 
 	ASSERT_EQ(bt._size, 0);
 }
 
 TEST(BTreeInsertToEmpty)
 {
-	BSTree<ABSTNode<int>, int> bt;
+	BSTree<int, bool> bt;
 
-	ft::pair<ABSTNode<int> *, bool> ret = bt.insert(5);
+	ft::pair<ABSTNode<int, bool> *, bool> ret = bt.insert(ft::pair<int, bool>(5, true));
 
 	ASSERT_EQ(bt._size, 1);
 
@@ -32,9 +32,9 @@ TEST(BTreeInsertToEmpty)
 	ASSERT_EQ(bt._head->left, NULL);
 	ASSERT_NEQ(bt._head->right, NULL);
 	ASSERT_EQ(bt._head->parent, NULL);
-	ASSERT_EQ(bt._head->content, 5);
+	ASSERT_EQ(bt._head->key, 5);
 
-	ABSTNode<int> *endElement = bt._head->right;
+	ABSTNode<int, bool> *endElement = bt._head->right;
 
 	ASSERT_EQ(endElement->left, NULL);
 	ASSERT_EQ(endElement->right, NULL);
@@ -44,26 +44,26 @@ TEST(BTreeInsertToEmpty)
 
 TEST(BTreeInsertToNotEmptyGreater)
 {
-	BSTree<ABSTNode<int>, int> bt;
+	BSTree<int, bool> bt;
 
-	bt.insert(5);
-	ft::pair<ABSTNode<int> *, bool> ret = bt.insert(6);
+	bt.insert(ft::pair<int, bool>(5, true));
+	ft::pair<ABSTNode<int, bool> *, bool> ret = bt.insert(ft::pair<int, bool>(6, true));
 
 	ASSERT_EQ(bt._size, 2);
 
 	ASSERT_EQ(bt._head->left, NULL);
 	ASSERT_NEQ(bt._head->right, NULL);
 	ASSERT_EQ(bt._head->parent, NULL);
-	ASSERT_EQ(bt._head->content, 5);
+	ASSERT_EQ(bt._head->key, 5);
 
-	ABSTNode<int> *newElement = bt._head->right;
+	ABSTNode<int, bool> *newElement = bt._head->right;
 	ASSERT_EQ(ret.first, newElement);
 	ASSERT_EQ(ret.second, true);
 	ASSERT_EQ(newElement->left, NULL);
 	ASSERT_NEQ(newElement->right, NULL);
-	ASSERT_EQ(newElement->content, 6);
+	ASSERT_EQ(newElement->key, 6);
 
-	ABSTNode<int> *endElement = bt._head->right->right;
+	ABSTNode<int, bool> *endElement = bt._head->right->right;
 
 	ASSERT_EQ(endElement->left, NULL);
 	ASSERT_EQ(endElement->right, NULL);
@@ -73,28 +73,28 @@ TEST(BTreeInsertToNotEmptyGreater)
 
 TEST(BTreeInsertToNotEmptyLess)
 {
-	BSTree<ABSTNode<int>, int> bt;
+	BSTree<int, bool> bt;
 
-	bt.insert(5);
-	ft::pair<ABSTNode<int> *, bool> ret = bt.insert(2);
+	bt.insert(ft::pair<int, bool>(5, true));
+	ft::pair<ABSTNode<int, bool> *, bool> ret = bt.insert(ft::pair<int, bool>(2, true));
 
 	ASSERT_EQ(bt._size, 2);
 
 	ASSERT_NEQ(bt._head->left, NULL);
 	ASSERT_NEQ(bt._head->right, NULL);
 	ASSERT_EQ(bt._head->parent, NULL);
-	ASSERT_EQ(bt._head->content, 5);
+	ASSERT_EQ(bt._head->key, 5);
 
-	ABSTNode<int> *newElement = bt._head->left;
+	ABSTNode<int, bool> *newElement = bt._head->left;
 	ASSERT_EQ(ret.first, newElement);
 	ASSERT_EQ(ret.second, true);
 	ASSERT_EQ(newElement->left, NULL);
 	ASSERT_EQ(newElement->right, NULL);
 	ASSERT_NEQ(newElement->parent, NULL);
 	ASSERT_EQ(newElement->parent, bt._head);
-	ASSERT_EQ(newElement->content, 2);
+	ASSERT_EQ(newElement->key, 2);
 
-	ABSTNode<int> *endElement = bt._head->right;
+	ABSTNode<int, bool> *endElement = bt._head->right;
 
 	ASSERT_EQ(endElement->left, NULL);
 	ASSERT_EQ(endElement->right, NULL);
@@ -104,10 +104,10 @@ TEST(BTreeInsertToNotEmptyLess)
 
 TEST(BTreeInsertExisting)
 {
-	BSTree<ABSTNode<int>, int> bt;
+	BSTree<int, bool> bt;
 
-	bt.insert(5);
-	ft::pair<ABSTNode<int> *, bool> ret = bt.insert(5);
+	bt.insert(ft::pair<int, bool>(5, true));
+	ft::pair<ABSTNode<int, bool> *, bool> ret = bt.insert(ft::pair<int, bool>(5, true));
 
 	ASSERT_EQ(bt._size, 1);
 
@@ -117,9 +117,9 @@ TEST(BTreeInsertExisting)
 	ASSERT_EQ(bt._head->left, NULL);
 	ASSERT_NEQ(bt._head->right, NULL);
 	ASSERT_EQ(bt._head->parent, NULL);
-	ASSERT_EQ(bt._head->content, 5);
+	ASSERT_EQ(bt._head->key, 5);
 
-	ABSTNode<int> *endElement = bt._head->right;
+	ABSTNode<int, bool> *endElement = bt._head->right;
 
 	ASSERT_EQ(endElement->left, NULL);
 	ASSERT_EQ(endElement->right, NULL);
@@ -130,15 +130,15 @@ TEST(BTreeInsertExisting)
 
 TEST(BtreeDetectEndElement)
 {
-	BSTree<ABSTNode<int>, int> bt;
-	bt.insert(5);
-	bt.insert(2);
-	bt.insert(3);
-	bt.insert(4);
+	BSTree<int, bool> bt;
+	bt.insert(ft::pair<int, bool>(5, true));
+	bt.insert(ft::pair<int, bool>(2, true));
+	bt.insert(ft::pair<int, bool>(3, true));
+	bt.insert(ft::pair<int, bool>(4, true));
 
-	ASSERT_EQ(bt._head->left->content, 2);
-	ASSERT_EQ(bt._head->left->right->content, 3);
-	ASSERT_EQ(bt._head->left->right->right->content, 4);
+	ASSERT_EQ(bt._head->left->key, 2);
+	ASSERT_EQ(bt._head->left->right->key, 3);
+	ASSERT_EQ(bt._head->left->right->right->key, 4);
 }
 
 // TEST(AmICrazy)
