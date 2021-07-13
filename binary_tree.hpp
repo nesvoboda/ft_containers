@@ -15,31 +15,6 @@ public:
 	ABSTNode(ABSTNode *_left, ABSTNode *_right, ABSTNode *_parent, Content _content, bool _fake = false) :
 		left(_left), right(_right), parent(_parent), content(_content), fake(_fake) {};
 
-	// I plan to use this operator to compare nodes
-	// and later overload it depending on how I use it.
-	// template <typename Content>
-	bool operator<(const ABSTNode<Content> &b) const
-	{
-		return (content < b.content);
-	}
-
-	// template <typename Content>
-	bool operator>(const ABSTNode<Content> &b) const
-	{
-		return (content > b.content);
-	}
-
-	// template <typename Content>
-	bool operator<(const Content &b) const
-	{
-		return (content < b);
-	}
-
-	// template <typename Content>
-	bool operator>(const Content &b) const
-	{
-		return (content > b);
-	}
 };
 
 // class IntNode : public ABSTNode<int>
@@ -48,7 +23,7 @@ public:
 // };
 
 // A generic binary search tree
-template <typename NodeType, typename Content>
+template <typename NodeType, typename Content, typename Compare = ft::less<Content> >
 class BSTree
 {
 public:
@@ -60,29 +35,30 @@ public:
 	
 	node_type *_head;
 	size_t _size;
+	Compare _comp;
 
 	/////////////////
-	BSTree() : _head(new NodeType(NULL, NULL, NULL, Content(), true)), _size(0) {};
+	BSTree() : _head(new NodeType(NULL, NULL, NULL, Content(), true)), _size(0), _comp(Compare()) {};
 
-	pair<node_type *,bool> insert (node_type *target, const Content& val)
+	ft::pair<node_type *,bool> insert (node_type *target, const Content& val)
 	{
-		if (val < target->content)
+		if (_comp(val, target->content))
 		{
 			if (target->left == NULL)
 			{
 				target->left = new NodeType(NULL, NULL, target, val);
 				_size += 1;
-				return pair<node_type *, bool>(target->left, true);
+				return ft::pair<node_type *, bool>(target->left, true);
 			}
 			return insert(target->left, val);
 		}
-		if (val > target->content)
+		if (_comp(target->content, val))
 		{
 			if (target->right == NULL)
 			{
 				target->right = new NodeType(NULL, NULL, target, val);
 				_size += 1;
-				return pair<node_type *, bool>(target->right, true);
+				return ft::pair<node_type *, bool>(target->right, true);
 			}
 
 			if (target->right->fake)
@@ -91,15 +67,15 @@ public:
 				target->right = new NodeType(NULL, tmp, target, val);
 				tmp->parent = target->right; // reattach end element to the new element
 				_size += 1;
-				return (pair<node_type *, bool>(target->right, true));
+				return (ft::pair<node_type *, bool>(target->right, true));
 			}
 
 			return insert(target->right, val);
 		}
-		return pair<node_type *, bool>(target, false);
+		return ft::pair<node_type *, bool>(target, false);
 	}
 
-	pair<node_type *,bool> insert (const Content& val)
+	ft::pair<node_type *,bool> insert (const Content& val)
 	{
 		if (_size == 0)
 		{
@@ -107,7 +83,7 @@ public:
 			_head = new NodeType(NULL, tmp, NULL, val);
 			tmp->parent = _head;
 			_size += 1;
-			return pair<node_type *, bool>(_head, true);
+			return ft::pair<node_type *, bool>(_head, true);
 		}
 		return insert(_head, val);
 	}
