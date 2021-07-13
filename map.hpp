@@ -89,7 +89,7 @@ namespace ft
 		typedef size_t size_type; //	an unsigned integral type that can represent any non-negative value of difference_type	usually the same as size_t
 
 
-		map() : _size(0) {};
+		map() {};
 		~map() {};
 		// map(const map &copy) {}; // TODO
 		// map &operator=(const map &operand); // TODO
@@ -121,13 +121,18 @@ namespace ft
 
 		size_type size() const
 		{
-			return _size;
+			return _base._size;
+		}
+
+		bool empty() const
+		{
+			return (size() == 0);
 		}
 
 	private:
 		// BSTNode<value_type> *_head;
 		BSTree<key_type, mapped_type, key_compare> _base;
-		size_type _size;
+		// size_type _size;
 		typedef ABSTNode<key_type, mapped_type> node_type;
 
 	};
