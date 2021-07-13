@@ -219,6 +219,23 @@ TEST(MapEmpty)
 }
 
 
+TEST(MapBrackets)
+{
+	ft::map<std::string, int> m1;
+	std::map<std::string, int> sm1;
+
+	m1["42"] = 21;
+	sm1["42"] = 21;
+
+	ASSERT_EQ(m1["42"], sm1["42"]);
+
+	m1["42"] = 42;
+	sm1["42"] = 42;
+
+	ASSERT_EQ(m1["42"], sm1["42"]);
+}
+
+
 int main(void)
 {
 	run_tests();

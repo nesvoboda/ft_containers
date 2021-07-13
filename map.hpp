@@ -56,7 +56,7 @@ namespace ft
 
 		mapIterator() : _ptr(NULL) {};
 		mapIterator(ABSTNode<Key, ContainerValue> *ptr) : _ptr(ptr) {};
-		IteratorValue &operator*(void) { return _ptr->value; };
+		IteratorValue &operator*(void) { return _ptr->data; };
 	};
 
 
@@ -73,7 +73,7 @@ namespace ft
 
 		typedef Key key_type; //	The first template parameter (Key)	
 		typedef T mapped_type; //	The second template parameter (T)	
-		typedef pair<const key_type,mapped_type> value_type;
+		typedef ft::pair<const key_type,mapped_type> value_type;
 		typedef Compare key_compare; //	The third template parameter (Compare)	defaults to: less<key_type>
 		typedef Compare value_compare; // TODO doublecheck	Nested function class to compare elements	see value_comp
 		typedef Alloc allocator_type; //	The fourth template parameter (Alloc)	defaults to: allocator<value_type>
@@ -81,7 +81,7 @@ namespace ft
 		typedef typename allocator_type::const_reference const_reference;//	allocator_type::const_reference	for the default allocator: const value_type&
 		typedef typename allocator_type::pointer pointer; //	allocator_type::pointer	for the default allocator: value_type*
 		typedef typename allocator_type::const_pointer const_pointer;//	allocator_type::const_pointer	for the default allocator: const value_type*
-		typedef mapIterator<mapped_type, key_type, mapped_type> iterator; //	a bidirectional iterator to value_type	convertible to const_iterator
+		typedef mapIterator<value_type, const key_type, mapped_type> iterator; //	a bidirectional iterator to value_type	convertible to const_iterator
 		// const_iterator	a bidirectional iterator to const value_type	TODO
 		// reverse_iterator	reverse_iterator<iterator>	TODO
 		// const_reverse_iterator	reverse_iterator<const_iterator>	TODO
@@ -129,11 +129,18 @@ namespace ft
 			return (size() == 0);
 		}
 
+		mapped_type& operator[] (const key_type& k)
+		{
+			// ft::pair<iterator, bool> ret = insert(ft::pair<key_type, mapped_type>(k, mapped_type()));
+			// return (*(ret.first)).second;
+			return (*((this->insert(ft::pair<key_type, mapped_type>(k,mapped_type()))).first)).second;
+		}
+
 	private:
 		// BSTNode<value_type> *_head;
-		BSTree<key_type, mapped_type, key_compare> _base;
+		BSTree<const key_type, mapped_type, key_compare> _base;
 		// size_type _size;
-		typedef ABSTNode<key_type, mapped_type> node_type;
+		typedef ABSTNode<const key_type, mapped_type> node_type;
 
 	};
 
