@@ -22,16 +22,6 @@ namespace ft
 	// 		left(_left), right(_right), parent(_parent), key(_key), value(_value) {};
 	// };
 
-	// template <class T, class ptrT>
-	// class mapIterator {
-	// public:
-	// 	BSTNode<ptrT> *_ptr;
-
-	// 	mapIterator() : _ptr(NULL) {};
-	// 	mapIterator(BSTNode<ptrT> *ptr) : _ptr(ptr) {};
-	// 	T &operator*(void) { return _ptr->value };
-	// };
-
 
 	// creating a base BST class to hold all logic. It will be easier to test the behavior this way.
 
@@ -78,6 +68,16 @@ namespace ft
 
 	};
 
+	template <class IteratorValue, class Key, class ContainerValue>
+	class mapIterator {
+	public:
+		KVNode<Key, ContainerValue> *_ptr;
+
+		mapIterator() : _ptr(NULL) {};
+		mapIterator(KVNode<Key, ContainerValue> *ptr) : _ptr(ptr) {};
+		IteratorValue &operator*(void) { return _ptr->value; };
+	};
+
 
 	template <class Key,										// map::key_type
 			  class T,											// map::mapped_type
@@ -101,7 +101,7 @@ namespace ft
 		typedef typename allocator_type::const_reference const_reference;//	allocator_type::const_reference	for the default allocator: const value_type&
 		typedef typename allocator_type::pointer pointer; //	allocator_type::pointer	for the default allocator: value_type*
 		typedef typename allocator_type::const_pointer const_pointer;//	allocator_type::const_pointer	for the default allocator: const value_type*
-		// typedef mapIterator<T, value_type> iterator; //	a bidirectional iterator to value_type	convertible to const_iterator
+		typedef mapIterator<mapped_type, key_type, mapped_type> iterator; //	a bidirectional iterator to value_type	convertible to const_iterator
 		// const_iterator	a bidirectional iterator to const value_type	TODO
 		// reverse_iterator	reverse_iterator<iterator>	TODO
 		// const_reverse_iterator	reverse_iterator<const_iterator>	TODO
@@ -122,10 +122,6 @@ namespace ft
 		// void print_node(BSTNode<value_type> bstnode)
 		// {
 		// 	std::cout << "[BSTNode left: " << bstnode.left << ", right: " << bstnode.right << ", key: " << bstnode.value.first << ", val: " << bstnode.value.second << "]";
-		// }
-
-		// pair<iterator, bool> insert(BSTNode<value_type> **start, const value_type& val)
-		// {
 		// }
 
 		// pair<iterator,bool> insert (const value_type& val)
