@@ -22,7 +22,7 @@ TEST(BTreeInsertToEmpty)
 {
 	BSTree<ABSTNode<int>, int> bt;
 
-	pair<ABSTNode<int> *, bool> ret = bt.insert(5);
+	ft::pair<ABSTNode<int> *, bool> ret = bt.insert(5);
 
 	ASSERT_EQ(bt._size, 1);
 
@@ -47,7 +47,7 @@ TEST(BTreeInsertToNotEmptyGreater)
 	BSTree<ABSTNode<int>, int> bt;
 
 	bt.insert(5);
-	pair<ABSTNode<int> *, bool> ret = bt.insert(6);
+	ft::pair<ABSTNode<int> *, bool> ret = bt.insert(6);
 
 	ASSERT_EQ(bt._size, 2);
 
@@ -76,7 +76,7 @@ TEST(BTreeInsertToNotEmptyLess)
 	BSTree<ABSTNode<int>, int> bt;
 
 	bt.insert(5);
-	pair<ABSTNode<int> *, bool> ret = bt.insert(2);
+	ft::pair<ABSTNode<int> *, bool> ret = bt.insert(2);
 
 	ASSERT_EQ(bt._size, 2);
 
@@ -107,7 +107,7 @@ TEST(BTreeInsertExisting)
 	BSTree<ABSTNode<int>, int> bt;
 
 	bt.insert(5);
-	pair<ABSTNode<int> *, bool> ret = bt.insert(5);
+	ft::pair<ABSTNode<int> *, bool> ret = bt.insert(5);
 
 	ASSERT_EQ(bt._size, 1);
 
@@ -128,7 +128,7 @@ TEST(BTreeInsertExisting)
 
 }
 
-TEST(BtreeDetect)
+TEST(BtreeDetectEndElement)
 {
 	BSTree<ABSTNode<int>, int> bt;
 	bt.insert(5);
@@ -145,7 +145,7 @@ TEST(BtreeDetect)
 // {
 // 	std::map<std::string, int> map1;
 
-// 	map1.insert(std::pair<std::string, int>("hehe", 5));
+// 	map1.insert(std::ft::pair<std::string, int>("hehe", 5));
 // 	std::map<std::string, int>::iterator it1 = map1.end();
 
 // 	it1++;

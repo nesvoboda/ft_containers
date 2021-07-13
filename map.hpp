@@ -10,17 +10,17 @@ namespace ft
 {
 
 
-	template <class Key, class Val>
-	struct BSTNode {
-		BSTNode *left;
-		BSTNode *right;
-		BSTNode *parent;
-		Key key;
-		Val value;
+	// template <class Key, class Val>
+	// struct BSTNode {
+	// 	BSTNode *left;
+	// 	BSTNode *right;
+	// 	BSTNode *parent;
+	// 	Key key;
+	// 	Val value;
 
-		BSTNode(BSTNode *_left, BSTNode *_right, BSTNode *_parent, const Key &_key, const Val &_value) : 
-			left(_left), right(_right), parent(_parent), key(_key), value(_value) {};
-	};
+	// 	BSTNode(BSTNode *_left, BSTNode *_right, BSTNode *_parent, const Key &_key, const Val &_value) : 
+	// 		left(_left), right(_right), parent(_parent), key(_key), value(_value) {};
+	// };
 
 	// template <class T, class ptrT>
 	// class mapIterator {
@@ -58,6 +58,25 @@ namespace ft
 	// 	private:
 	// 	BSTNode *head;
 	// }
+	
+
+	// A node that contains a key-value pair, and returns the key for comparison
+	template <typename Key, typename Value>
+	struct KVNode
+	{
+	public:
+		KVNode *left;
+		KVNode *right;
+		KVNode *parent;
+		ft::pair<Key, Value> content;
+		bool fake; // for the end-element
+
+		KVNode(KVNode *_left, KVNode *_right, KVNode *_parent, ft::pair<Key, Value> _content, bool _fake = false) :
+			left(_left), right(_right), parent(_parent), content(_content), fake(_fake) {};
+
+		Key comparable(void) const {return content.first();};
+
+	};
 
 
 	template <class Key,										// map::key_type
@@ -90,62 +109,36 @@ namespace ft
 		typedef size_t size_type; //	an unsigned integral type that can represent any non-negative value of difference_type	usually the same as size_t
 
 
-		map() : _head(NULL), _size(0) {};
+		map() : _base(BSTree<KVNode<key_type, mapped_type>, value_type>()), _size(0) {};
 		~map() {};
 		// map(const map &copy) {}; // TODO
 		// map &operator=(const map &operand); // TODO
 
-		void print_valtype(value_type val)
-		{
-			std::cout << "[key: " << val.first << ", val: " << val.second << "]";
-		}
+		// void print_valtype(value_type val)
+		// {
+		// 	std::cout << "[key: " << val.first << ", val: " << val.second << "]";
+		// }
 
-		void print_node(BSTNode<value_type> bstnode)
-		{
-			std::cout << "[BSTNode left: " << bstnode.left << ", right: " << bstnode.right << ", key: " << bstnode.value.first << ", val: " << bstnode.value.second << "]";
-		}
+		// void print_node(BSTNode<value_type> bstnode)
+		// {
+		// 	std::cout << "[BSTNode left: " << bstnode.left << ", right: " << bstnode.right << ", key: " << bstnode.value.first << ", val: " << bstnode.value.second << "]";
+		// }
 
-		pair<iterator, bool> insert(BSTNode<value_type> **start, const value_type& val)
-		{
-			std::cout << "Inserting " << std::endl;
-			// print_node(**start);
-			// print_valtype(val);
+		// pair<iterator, bool> insert(BSTNode<value_type> **start, const value_type& val)
+		// {
+		// }
 
-			if (*start == NULL)
-			{
-				*start = new BSTNode<value_type>(NULL, NULL, NULL, val);
-				_size += 1;
-				return pair<iterator, bool>(iterator(*start), true);
-			}
-			if (val.first < (*start)->value.first)
-			{
-				return insert(&((*start)->left), val);
-			}
-			if (val.first > (*start)->value.first)
-			{
-				return insert(&((*start)->right), val);
-			}
-			return pair<iterator, bool>(iterator(*start), false);
-		}
+		// pair<iterator,bool> insert (const value_type& val)
+		// {
 
-		pair<iterator,bool> insert (const value_type& val)
-		{
-			// if (_head == NULL)
-			// {
-				// _head = new BSTNode<value_type>(NULL, NULL, NULL, val);
-				// _size += 1;
-				// return pair<iterator, bool>(iterator(_head), true);
-			// }
-			// return pair<iterator, bool>(iterator(), true);
-			return insert(&_head, val);
-		}
+		// }
 
 		// iterator begin() {
 		// 	if (_head == NULL)
 		// };
 
 
-		const_iterator begin() const;
+		// const_iterator begin() const;
 
 
 		size_type size() const
@@ -154,7 +147,8 @@ namespace ft
 		}
 
 	private:
-		BSTNode<value_type> *_head;
+		// BSTNode<value_type> *_head;
+		BSTree<KVNode<key_type, mapped_type>, value_type> _base;
 		size_type _size;
 
 	};

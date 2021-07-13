@@ -1,4 +1,7 @@
 
+#ifndef BINARY_TREE_HPP
+# define BINARY_TREE_HPP
+
 #include "map_util.hpp"
 
 // What a bst node should have
@@ -14,6 +17,8 @@ public:
 
 	ABSTNode(ABSTNode *_left, ABSTNode *_right, ABSTNode *_parent, Content _content, bool _fake = false) :
 		left(_left), right(_right), parent(_parent), content(_content), fake(_fake) {};
+
+	Content comparable(void) const {return content;};
 
 };
 
@@ -42,7 +47,7 @@ public:
 
 	ft::pair<node_type *,bool> insert (node_type *target, const Content& val)
 	{
-		if (_comp(val, target->content))
+		if (_comp(val, target->comparable()))
 		{
 			if (target->left == NULL)
 			{
@@ -52,7 +57,7 @@ public:
 			}
 			return insert(target->left, val);
 		}
-		if (_comp(target->content, val))
+		if (_comp(target->comparable(), val))
 		{
 			if (target->right == NULL)
 			{
@@ -107,3 +112,5 @@ public:
 	}
 
 };
+
+#endif

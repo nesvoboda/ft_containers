@@ -1,3 +1,6 @@
+#ifndef MAP_UTIL_HPP
+# define MAP_UTIL_HPP
+
 namespace ft
 {
 	template <class T>
@@ -68,3 +71,5 @@ namespace ft
 		return !(lhs < rhs);
 	}
 }
+
+#endif
