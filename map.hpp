@@ -3,64 +3,12 @@
 
 #include <memory>
 
+#include "map_util.hpp"
+#include "binary_tree.hpp"
+
 namespace ft
 {
 
-	template <class T>
-	struct less
-	{
-		bool operator()(const T &lhs, const T &rhs) const
-		{
-			return lhs < rhs; // assumes that the implementation uses a flat address space
-		}
-	};
-
-	template <class T1, class T2>
-	struct pair
-	{
-		typedef T1 first_type;
-		typedef T2 second_type;
-
-		T1 first;
-		T2 second;
-
-		// (1) default constructor
-		pair() : first(T1()), second(T2()){};
-
-		// (2) copy / move constructor (and implicit conversion)
-		template <class U, class V>
-		pair(const pair<U, V> &pr) : first(pr.first), second(pr.second){};
-
-		// (3) initialization constructor
-		pair(const first_type &a, const second_type &b) : first(a), second(b){};
-	};
-
-	// (1)	
-	template <class T1, class T2>
-	bool operator== (const pair<T1,T2>& lhs, const pair<T1,T2>& rhs)
-	{ return lhs.first==rhs.first && lhs.second==rhs.second; }
-
-	// (2)	
-	template <class T1, class T2>
-	bool operator!= (const pair<T1,T2>& lhs, const pair<T1,T2>& rhs)
-	{ return !(lhs==rhs); }
-
-	// (3)	
-	template <class T1, class T2>
-	bool operator<  (const pair<T1,T2>& lhs, const pair<T1,T2>& rhs)
-	{ return lhs.first<rhs.first || (!(rhs.first<lhs.first) && lhs.second<rhs.second); }
-	// (4)	
-	template <class T1, class T2>
-	bool operator<= (const pair<T1,T2>& lhs, const pair<T1,T2>& rhs)
-	{ return !(rhs<lhs); }
-	// (5)	
-	template <class T1, class T2>
-	bool operator>  (const pair<T1,T2>& lhs, const pair<T1,T2>& rhs)
-	{ return rhs<lhs; }
-	// (6)	
-	template <class T1, class T2>
-	bool operator>= (const pair<T1,T2>& lhs, const pair<T1,T2>& rhs)
-	{ return !(lhs<rhs); }
 
 	template <class Key, class Val>
 	struct BSTNode {
@@ -74,42 +22,42 @@ namespace ft
 			left(_left), right(_right), parent(_parent), key(_key), value(_value) {};
 	};
 
-	template <class T, class ptrT>
-	class mapIterator {
-	public:
-		BSTNode<ptrT> *_ptr;
+	// template <class T, class ptrT>
+	// class mapIterator {
+	// public:
+	// 	BSTNode<ptrT> *_ptr;
 
-		mapIterator() : _ptr(NULL) {};
-		mapIterator(BSTNode<ptrT> *ptr) : _ptr(ptr) {};
-		T &operator*(void) { return _ptr->value };
-	};
+	// 	mapIterator() : _ptr(NULL) {};
+	// 	mapIterator(BSTNode<ptrT> *ptr) : _ptr(ptr) {};
+	// 	T &operator*(void) { return _ptr->value };
+	// };
 
 
 	// creating a base BST class to hold all logic. It will be easier to test the behavior this way.
 
 	// For now, the design choices are as follows:
 	// Empty tree contains an empty element for iterators to preserve validity.
-	template <class Key, class Val>
-	class BST {
+	// template <class Key, class Val>
+	// class BST {
 
-		BST(void) : _head(new BSTNode(NULL, NULL, NULL, Key(), Val())) {
+	// 	BST(void) : _head(new BSTNode(NULL, NULL, NULL, Key(), Val())) {
 			
-		}
+	// 	}
 
 
-		pair <BSTNode *, bool> insert(BSTNode **target, const Key &key, const Val &val)
-		{
-			if 
-		}
+	// 	pair <BSTNode *, bool> insert(BSTNode **target, const Key &key, const Val &val)
+	// 	{
+	// 		if 
+	// 	}
 
-		pair<BSTNode *,bool> insert (const Key &key, const Val& val)
-		{
+	// 	pair<BSTNode *,bool> insert (const Key &key, const Val& val)
+	// 	{
 
-		}
+	// 	}
 
-		private:
-		BSTNode *head;
-	}
+	// 	private:
+	// 	BSTNode *head;
+	// }
 
 
 	template <class Key,										// map::key_type
@@ -134,7 +82,7 @@ namespace ft
 		typedef typename allocator_type::const_reference const_reference;//	allocator_type::const_reference	for the default allocator: const value_type&
 		typedef typename allocator_type::pointer pointer; //	allocator_type::pointer	for the default allocator: value_type*
 		typedef typename allocator_type::const_pointer const_pointer;//	allocator_type::const_pointer	for the default allocator: const value_type*
-		typedef mapIterator<T, value_type> iterator; //	a bidirectional iterator to value_type	convertible to const_iterator
+		// typedef mapIterator<T, value_type> iterator; //	a bidirectional iterator to value_type	convertible to const_iterator
 		// const_iterator	a bidirectional iterator to const value_type	TODO
 		// reverse_iterator	reverse_iterator<iterator>	TODO
 		// const_reverse_iterator	reverse_iterator<const_iterator>	TODO
