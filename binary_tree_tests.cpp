@@ -279,7 +279,7 @@ TEST(BTreeEraseTwoChildren)
 	//2           8     12
 
 	bt.erase(head->left); // 4
-	ASSERT_EQ(bt._size, 5);
+	ASSERT_EQ(bt._size, 6);
 
 	ASSERT_EQ(bt._head->data.first, 5);
 	ASSERT_EQ(bt._head->parent, NULL);

@@ -206,9 +206,7 @@ public:
 			_size -= 1;
 			return;
 		}
-
-		// one child
-		if (target->left == NULL || target->right == NULL)
+		else if (target->left == NULL || target->right == NULL) // one child
 		{
 			if (target->left == NULL) // if target has a right child
 			{
@@ -225,20 +223,17 @@ public:
 				else
 					target->parent->right = target->left;
 			}
-			delete target;
-			_size -= 1;
+			
+		}
+		else
+		{
+			node_type *successor = target->immediateSuccessor();
+			swap(target, successor);
+			erase(target);
 			return;
 		}
-
-		node_type *successor = target->immediateSuccessor();
-		swap(target, successor);
-		erase(target);
-
+		delete target;
 		_size -= 1;
-
-		// swap with immediate successor
-		// delete immediate successor
-
 	}
 /*
 	size_t contains(node_type *target, const Content& val)
