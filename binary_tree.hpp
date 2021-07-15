@@ -3,6 +3,7 @@
 # define BINARY_TREE_HPP
 
 #include "map_util.hpp"
+#include <unistd.h>
 
 // What a bst node should have
 // template <typename Content>
@@ -32,14 +33,41 @@ public:
 	ABSTNode *left;
 	ABSTNode *right;
 	ABSTNode *parent;
-	// Content content;
-	Key key;
-	Value value;
+	// // Content content;
+	// Key key;
+	// Value value;
+	ft::pair<Key, Value> data;
 
 	bool fake; // for the end-element
 
 	ABSTNode(ABSTNode *_left, ABSTNode *_right, ABSTNode *_parent, Key _key, Value _value, bool _fake = false) :
-		left(_left), right(_right), parent(_parent), key(_key), value(_value), fake(_fake) {};
+		left(_left), right(_right), parent(_parent), data(ft::pair<Key, Value>(_key, _value)), fake(_fake) {};
+
+	ABSTNode *immediateSuccessor(void)
+	{
+		if (this->right == NULL)
+			return NULL;
+		ABSTNode *cur =this->right;
+
+		while (cur->left != NULL)
+		{
+			cur = cur->left;
+		}
+		return cur;
+	}
+
+	ABSTNode *immediatePredecessor(void)
+	{
+		if (this->left == NULL)
+			return NULL;
+		ABSTNode *cur =this->left;
+
+		while (cur->right != NULL)
+		{
+			cur = cur->right;
+		}
+		return cur;
+	}
 
 	// Content toCompare(void) const {return content;};
 
@@ -72,7 +100,7 @@ public:
 
 	ft::pair<node_type *,bool> insert (node_type *target, const value_type &val)
 	{
-		if (_comp(val.first, target->key))
+		if (_comp(val.first, target->data.first))
 		{
 			if (target->left == NULL)
 			{
@@ -82,7 +110,7 @@ public:
 			}
 			return insert(target->left, val);
 		}
-		if (_comp(target->key, val.first))
+		if (_comp(target->data.first, val.first))
 		{
 			if (target->right == NULL)
 			{
@@ -116,6 +144,101 @@ public:
 			return ft::pair<node_type *, bool>(_head, true);
 		}
 		return insert(_head, val);
+	}
+
+	void swap(node_type *a, node_type *b)
+	{
+		node_type *aParent = a->parent;
+		node_type *bParent = b->parent;
+
+		if (aParent)
+		{
+			if (a == aParent->left)
+				aParent->left = b;
+			else
+				aParent->right = b;
+		}
+
+		if (bParent)
+		{
+			if (b == bParent->left)
+				bParent->left = a;
+			else
+				bParent->right = a;
+		}
+
+		a->parent = bParent;
+		b->parent = aParent;
+
+		node_type *aLeft = a->left;
+		node_type *aRight = a->right;
+		
+		node_type *bLeft = b->left;
+		node_type *bRight = b->right;
+
+		if (aLeft)
+			aLeft->parent = b;
+		b->left = aLeft;
+
+		if (aRight)
+			aRight->parent = b;
+		b->right = aRight;
+
+		if (bLeft)
+			bLeft->parent = a;
+		a->left = bLeft;
+
+		if (bRight)
+			bRight->parent = a;
+		a->right = bRight;
+	}
+	
+	void erase(node_type *target)
+	{
+		// leaf node
+		if (target->left == NULL && target->right == NULL)
+		{
+			if (target == target->parent->left) // if target is someone's left child
+				target->parent->left = NULL;
+			else
+				target->parent->right = NULL;
+			delete target;
+			_size -= 1;
+			return;
+		}
+
+		// one child
+		if (target->left == NULL || target->right == NULL)
+		{
+			if (target->left == NULL) // if target has a right child
+			{
+				if (target == target->parent->left) // if target is someone's left child
+					target->parent->left = target->right;
+				else
+					target->parent->right = target->right;
+				
+			}
+			else // if target has a left child
+			{
+				if (target == target->parent->left) // if target is someone's left child
+					target->parent->left = target->left;
+				else
+					target->parent->right = target->left;
+			}
+			delete target;
+			_size -= 1;
+			return;
+		}
+
+		node_type *successor = target->immediateSuccessor();
+		swap(target, successor);
+		erase(target);
+
+		_size -= 1;
+
+		// swap with immediate successor
+		// delete immediate successor
+
 	}
 /*
 	size_t contains(node_type *target, const Content& val)
