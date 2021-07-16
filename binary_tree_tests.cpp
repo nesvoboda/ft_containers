@@ -174,27 +174,27 @@ TEST(BTreeEraseLeaf)
 {
 	BSTree<int, bool> bt;
 
-	bt.insert(ft::pair<int, bool>(5, true));
+	bt.insert(ft::pair<int, bool>(6, true));
 
 	ABSTNode<int, bool> *head = bt._head;
 
 	head->left = new ABSTNode<int, bool>(NULL, NULL, head, 4, true);
 	head->left->left = new ABSTNode<int, bool>(NULL, NULL, head->left, 2, true);
-	head->left->right = new ABSTNode<int, bool>(NULL, NULL, head->left, 3, true);
+	head->left->right = new ABSTNode<int, bool>(NULL, NULL, head->left, 5, true);
 
 	head->right = new ABSTNode<int, bool>(NULL, NULL, head, 10, true);
 	head->right->left = new ABSTNode<int, bool>(NULL, NULL, head->right, 8, true);
 	head->right->right = new ABSTNode<int, bool>(NULL, NULL, head->right, 12, true);
 	bt._size += 6;
 
-	//         5
+	//         6
 	//   4          10
-	//2     3     8     12
+	//2     5     8     12
 
 	bt.erase(head->right->left); // 8
 	ASSERT_EQ(bt._size, 6);
 
-	ASSERT_EQ(bt._head->data.first, 5);
+	ASSERT_EQ(bt._head->data.first, 6);
 	ASSERT_EQ(bt._head->parent, NULL);
 
 	ASSERT_EQ(bt._head->left->data.first, 4);
@@ -203,7 +203,7 @@ TEST(BTreeEraseLeaf)
 	ASSERT_EQ(bt._head->left->left->data.first, 2);
 	ASSERT_EQ(bt._head->left->left->parent, bt._head->left);
 
-	ASSERT_EQ(bt._head->left->right->data.first, 3);
+	ASSERT_EQ(bt._head->left->right->data.first, 5);
 	ASSERT_EQ(bt._head->left->right->parent, bt._head->left);
 	
 	ASSERT_EQ(bt._head->right->data.first, 10);
@@ -219,7 +219,7 @@ TEST(BTreeEraseOneChild)
 {
 	BSTree<int, bool> bt;
 
-	bt.insert(ft::pair<int, bool>(5, true));
+	bt.insert(ft::pair<int, bool>(6, true));
 
 	ABSTNode<int, bool> *head = bt._head;
 
@@ -232,14 +232,14 @@ TEST(BTreeEraseOneChild)
 	head->right->right = new ABSTNode<int, bool>(NULL, NULL, head->right, 12, true);
 	bt._size += 5;
 
-	//         5
+	//         6
 	//   4          10
 	//2           8     12
 
 	bt.erase(head->left); // 8
 	ASSERT_EQ(bt._size, 5);
 
-	ASSERT_EQ(bt._head->data.first, 5);
+	ASSERT_EQ(bt._head->data.first, 6);
 
 	ASSERT_EQ(bt._head->left->data.first, 2);
 	ASSERT_EQ(bt._head->left->left, NULL);
@@ -255,36 +255,36 @@ TEST(BTreeEraseTwoChildren)
 {
 	BSTree<int, bool> bt;
 
-	bt.insert(ft::pair<int, bool>(5, true));
+	bt.insert(ft::pair<int, bool>(6, true));
 
 	ABSTNode<int, bool> *head = bt._head;
 
 	head->left = new ABSTNode<int, bool>(NULL, NULL, head, 4, true);
 	head->left->left = new ABSTNode<int, bool>(NULL, NULL, head->left, 2, true);
-	head->left->right = new ABSTNode<int, bool>(NULL, NULL, head->left, 3, true);
+	head->left->right = new ABSTNode<int, bool>(NULL, NULL, head->left, 5, true);
 
 	head->right = new ABSTNode<int, bool>(NULL, NULL, head, 10, true);
 	head->right->left = new ABSTNode<int, bool>(NULL, NULL, head->right, 8, true);
 	head->right->right = new ABSTNode<int, bool>(NULL, NULL, head->right, 12, true);
 	bt._size += 6;
 
-	//         5
+	//         6
 	//   4          10
-	//2     3     8     12
+	//2     5     8     12
 
 	// we want
 
-	//         5
-	//   3          10
+	//         6
+	//   5          10
 	//2           8     12
 
 	bt.erase(head->left); // 4
 	ASSERT_EQ(bt._size, 6);
 
-	ASSERT_EQ(bt._head->data.first, 5);
+	ASSERT_EQ(bt._head->data.first, 6);
 	ASSERT_EQ(bt._head->parent, NULL);
 
-	ASSERT_EQ(bt._head->left->data.first, 3);
+	ASSERT_EQ(bt._head->left->data.first, 5);
 	ASSERT_EQ(bt._head->left->parent, bt._head);
 
 	ASSERT_EQ(bt._head->left->left->data.first, 2);
@@ -301,6 +301,133 @@ TEST(BTreeEraseTwoChildren)
 
 	ASSERT_EQ(bt._head->right->left->data.first, 8);
 	ASSERT_EQ(bt._head->right->left->parent, bt._head->right);
+}
+
+TEST(BinaryTreeCopy)
+{
+	BSTree<int, bool> bt;
+
+	bt.insert(ft::pair<int, bool>(6, true));
+
+	ABSTNode<int, bool> *head = bt._head;
+
+	head->left = new ABSTNode<int, bool>(NULL, NULL, head, 4, true);
+	head->left->left = new ABSTNode<int, bool>(NULL, NULL, head->left, 2, true);
+	head->left->right = new ABSTNode<int, bool>(NULL, NULL, head->left, 5, true);
+
+	head->right = new ABSTNode<int, bool>(NULL, NULL, head, 10, true);
+	head->right->left = new ABSTNode<int, bool>(NULL, NULL, head->right, 8, true);
+	head->right->right = new ABSTNode<int, bool>(NULL, NULL, head->right, 12, true);
+	bt._size += 6;
+
+	//         6
+	//   4          10
+	//2     5     8     12
+
+	BSTree<int, bool> bt2 = bt;
+
+
+	ASSERT_EQ(bt2._size, 7);
+
+	ASSERT_EQ(bt2._head->data.first, 6);
+	ASSERT_EQ(bt2._head->parent, NULL);
+
+	ASSERT_EQ(bt2._head->left->data.first, 4);
+	ASSERT_EQ(bt2._head->left->parent, bt2._head);
+
+	ASSERT_EQ(bt2._head->left->left->data.first, 2);
+	ASSERT_EQ(bt2._head->left->left->parent, bt2._head->left);
+
+
+	ASSERT_NEQ(bt2._head->left->right, NULL);
+	ASSERT_EQ(bt2._head->left->right->parent, bt2._head->left);
+	
+	ASSERT_EQ(bt2._head->right->data.first, 10);
+	ASSERT_EQ(bt2._head->right->parent, bt2._head);
+
+	ASSERT_EQ(bt2._head->right->right->data.first, 12);
+	ASSERT_EQ(bt2._head->right->right->parent, bt2._head->right);
+
+	// ASSERT_EQ(bt2._head->right->left->data.first, 8);
+	// ASSERT_EQ(bt2._head->right->left->parent, bt2._head->right);
+
+	// std::cout << "bt head: " << bt._head << std::endl;
+	// std::cout << "bt2 head: " << bt2._head << std::endl;
+}
+
+
+TEST(BinaryTreeSwapContent)
+{
+	BSTree<int, bool> bt;
+
+	bt.insert(ft::pair<int, bool>(6, true));
+
+	ABSTNode<int, bool> *head = bt._head;
+
+	head->left = new ABSTNode<int, bool>(NULL, NULL, head, 4, true);
+	head->left->left = new ABSTNode<int, bool>(NULL, NULL, head->left, 2, true);
+	head->left->right = new ABSTNode<int, bool>(NULL, NULL, head->left, 5, true);
+
+	head->right = new ABSTNode<int, bool>(NULL, NULL, head, 10, true);
+	head->right->left = new ABSTNode<int, bool>(NULL, NULL, head->right, 8, true);
+	head->right->right = new ABSTNode<int, bool>(NULL, NULL, head->right, 12, true);
+	bt._size += 6;
+
+	//         6
+	//   4          10
+	//2     5     8     12
+
+	BSTree<int, bool> bt2;
+
+	bt2.insert(ft::pair<int, bool>(7, true));
+
+	ABSTNode<int, bool> *head2 = bt2._head;
+
+	head2->left = new ABSTNode<int, bool>(NULL, NULL, head2, 5, true);
+	head2->left->left = new ABSTNode<int, bool>(NULL, NULL, head2->left, 4, true);
+	head2->left->right = new ABSTNode<int, bool>(NULL, NULL, head2->left, 6, true);
+
+	head2->right = new ABSTNode<int, bool>(NULL, NULL, head2, 11, true);
+	head2->right->left = new ABSTNode<int, bool>(NULL, NULL, head2->right, 9, true);
+	head2->right->right = new ABSTNode<int, bool>(NULL, NULL, head2->right, 13, true);
+	bt2._size += 6;
+
+
+	//         7
+	//   5          11
+	//3     6     9     13
+
+
+
+	bt.swap_content(bt2);
+
+
+	ASSERT_EQ(bt2._size, 7);
+
+	ASSERT_EQ(bt2._head->data.first, 6);
+	ASSERT_EQ(bt2._head->parent, NULL);
+
+	ASSERT_EQ(bt2._head->left->data.first, 4);
+	ASSERT_EQ(bt2._head->left->parent, bt2._head);
+
+	ASSERT_EQ(bt2._head->left->left->data.first, 2);
+	ASSERT_EQ(bt2._head->left->left->parent, bt2._head->left);
+
+
+	ASSERT_NEQ(bt2._head->left->right, NULL);
+	ASSERT_EQ(bt2._head->left->right->parent, bt2._head->left);
+	
+	ASSERT_EQ(bt2._head->right->data.first, 10);
+	ASSERT_EQ(bt2._head->right->parent, bt2._head);
+
+	ASSERT_EQ(bt2._head->right->right->data.first, 12);
+	ASSERT_EQ(bt2._head->right->right->parent, bt2._head->right);
+
+	// ASSERT_EQ(bt2._head->right->left->data.first, 8);
+	// ASSERT_EQ(bt2._head->right->left->parent, bt2._head->right);
+
+	// std::cout << "bt head: " << bt._head << std::endl;
+	// std::cout << "bt2 head: " << bt2._head << std::endl;
 }
 
 

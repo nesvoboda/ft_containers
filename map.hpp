@@ -6,6 +6,7 @@
 #include "map_util.hpp"
 #include "binary_tree.hpp"
 #include "revIterator.hpp"
+#include "util.hpp"
 
 namespace ft
 {
@@ -80,7 +81,7 @@ namespace ft
 
 			if (!successor)
 			{
-				if (_ptr == _ptr->parent->right)
+				if (_ptr == _ptr->parent->left)
 					_ptr = _ptr->parent;
 			}
 			else
@@ -94,7 +95,7 @@ namespace ft
 
 			if (!successor)
 			{
-				if (_ptr == _ptr->parent->right)
+				if (_ptr == _ptr->parent->left)
 					_ptr = _ptr->parent;
 			}
 			else
@@ -299,6 +300,15 @@ namespace ft
 				erase(first++);
 			}
 		}
+
+		void swap (map& x)
+		{
+			_base.swap_content(x._base);
+			// swap_val(_base._head, x._base._head);
+			// swap_val(_base._size, x._base._size);
+		}
+
+
 
 	private:
 		// BSTNode<value_type> *_head;

@@ -653,6 +653,71 @@ TEST(MapEraseRange)
 
 }
 
+
+TEST(MapSwap)
+{
+	ft::map<int, bool> m1;
+	ft::map<int, bool> m2;
+	std::map<int, bool> sm1;
+	std::map<int, bool> sm2;
+
+	ft::map<int, bool>::iterator it0 = m1.begin();
+
+	m1.insert(ft::pair<int, bool>(5, true));
+	m1.insert(ft::pair<int, bool>(6, true));
+	m1.insert(ft::pair<int, bool>(7, true));
+	m1.insert(ft::pair<int, bool>(8, true));
+	m1.insert(ft::pair<int, bool>(9, true));
+
+	m2.insert(ft::pair<int, bool>(-5, true));
+	m2.insert(ft::pair<int, bool>(40, true));
+	m2.insert(ft::pair<int, bool>(-92, true));
+
+
+	sm1.insert(std::pair<int, bool>(5, true));
+	sm1.insert(std::pair<int, bool>(6, true));
+	sm1.insert(std::pair<int, bool>(7, true));
+	sm1.insert(std::pair<int, bool>(8, true));
+	sm1.insert(std::pair<int, bool>(9, true));
+
+	sm2.insert(std::pair<int, bool>(-5, true));
+	sm2.insert(std::pair<int, bool>(40, true));
+	sm2.insert(std::pair<int, bool>(-92, true));
+
+
+	
+	m1.swap(m2);
+	sm1.swap(sm2);
+
+
+	ft::map<int, bool>::iterator it2 = m2.begin();
+	std::map<int, bool>::iterator sit2 = sm2.begin();
+
+	ft::map<int, bool>::iterator it1 = m1.begin();
+	std::map<int, bool>::iterator sit1 = sm1.begin();
+
+	// std::cout << "it1 parent " << (it1++)._ptr->parent->data.first << std::endl;
+	// std::cout << "it1 parent " << it1._ptr->parent->data.first << std::endl;
+
+	while (sit1 != sm1.end())
+	{
+		ASSERT_EQ((it1++)->first, (sit1++)->first);
+		// std::cout << (sit1++)->first << std::endl;
+	// 	// std::cout << (it1++)->first << std::endl;
+	}
+
+	while (sit2 != sm2.end())
+	{
+		ASSERT_EQ((it2++)->first, (sit2++)->first);
+	// 	// std::cout << (sit2++)->first << std::endl;
+	}
+	// ASSERT_EQ(it2->first, sit2->first);
+	// CHECK_EQ(it2, m1.end());
+	// CHECK_EQ(it0, m1.end());
+
+}
+
+
 int main(void)
 {
 	run_tests();

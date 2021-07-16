@@ -98,6 +98,36 @@ public:
 	/////////////////
 	BSTree() : _head(new node_type(NULL, NULL, NULL, Key(), Value(), true)), _size(0), _comp(Compare()) {};
 
+	BSTree(const BSTree &rhs) : _head(new node_type(NULL, NULL, NULL, Key(), Value(), true)), _size(0), _comp(Compare()) {
+		clone_node(rhs._head);
+	};
+
+	void clone_node(node_type *other)
+	{
+		std::cout << "Cloning " << other->data.first << std::endl;
+		if (!other->fake)
+		{
+			insert(other->data);
+		}
+		else
+			std::cout << "Ouch, fake node" << std::endl;
+
+		if (other->left)
+			clone_node(other->left);
+		if (other->right)
+			clone_node(other->right);
+	}
+
+	BSTree &operator=(const BSTree &rhs)
+	{
+		free_node(_head);
+		_head = new node_type(NULL, NULL, NULL, Key(), Value(), true);
+		_size = 0;
+		clone_node(rhs._head);
+	};
+
+	~BSTree() { free_node(_head); _head = NULL;};
+
 	ft::pair<node_type *,bool> insert (node_type *target, const value_type &val)
 	{
 		if (_comp(val.first, target->data.first))
@@ -144,6 +174,17 @@ public:
 			return ft::pair<node_type *, bool>(_head, true);
 		}
 		return insert(_head, val);
+	}
+
+	void swap_content(BSTree &other)
+	{
+		node_type *tmp = _head;
+		_head = other._head;
+		other._head = tmp;
+
+		size_t t = other._size;
+		_size = other._size;
+		other._size = t;
 	}
 
 	void swap(node_type *a, node_type *b)
@@ -202,9 +243,6 @@ public:
 				target->parent->left = NULL;
 			else
 				target->parent->right = NULL;
-			delete target;
-			_size -= 1;
-			return;
 		}
 		else if (target->left == NULL || target->right == NULL) // one child
 		{
@@ -214,7 +252,7 @@ public:
 					target->parent->left = target->right;
 				else
 					target->parent->right = target->right;
-				
+				target->right->parent = target->parent;
 			}
 			else // if target has a left child
 			{
@@ -222,6 +260,7 @@ public:
 					target->parent->left = target->left;
 				else
 					target->parent->right = target->left;
+				target->left->parent = target->parent;
 			}
 			
 		}
@@ -234,6 +273,17 @@ public:
 		}
 		delete target;
 		_size -= 1;
+	}
+
+
+	void free_node(node_type *target)
+	{
+		if (target->left)
+			free_node(target->left);
+		if (target->right)
+			free_node(target->right);
+		// std::cout << "Ran on: " << target->data.first << std::endl;
+		delete target;
 	}
 /*
 	size_t contains(node_type *target, const Content& val)

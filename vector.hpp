@@ -5,7 +5,9 @@
 #include <stdexcept>
 #include <iostream>
 #include <limits>
+
 #include "revIterator.hpp"
+#include "util.hpp"
 
 // how many elements allocate for empty list
 #define START_ALLOC 10
@@ -26,20 +28,6 @@ namespace ft
 	{
 		typedef T type;
 	};
-
-	template <typename T>
-	void swap_val(T &a, T &b)
-	{
-		T buf = a;
-		a = b;
-		b = buf;
-	}
-
-	template <typename T>
-	T min(T a, T b)
-	{
-		return a < b ? a : b;
-	}
 
 	template <typename InputIterator>
 	size_t distance(InputIterator a, InputIterator b)
