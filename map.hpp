@@ -308,6 +308,11 @@ namespace ft
 			// swap_val(_base._size, x._base._size);
 		}
 
+		void clear()
+		{
+			_base.clear();
+		}
+
 
 
 	private:

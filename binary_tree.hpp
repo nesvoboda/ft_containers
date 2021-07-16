@@ -104,13 +104,10 @@ public:
 
 	void clone_node(node_type *other)
 	{
-		std::cout << "Cloning " << other->data.first << std::endl;
 		if (!other->fake)
 		{
 			insert(other->data);
 		}
-		else
-			std::cout << "Ouch, fake node" << std::endl;
 
 		if (other->left)
 			clone_node(other->left);
@@ -118,11 +115,16 @@ public:
 			clone_node(other->right);
 	}
 
-	BSTree &operator=(const BSTree &rhs)
+	void clear(void)
 	{
 		free_node(_head);
 		_head = new node_type(NULL, NULL, NULL, Key(), Value(), true);
 		_size = 0;
+	}
+
+	BSTree &operator=(const BSTree &rhs)
+	{
+		clear();
 		clone_node(rhs._head);
 	};
 

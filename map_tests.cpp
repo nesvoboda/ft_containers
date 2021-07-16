@@ -717,6 +717,48 @@ TEST(MapSwap)
 
 }
 
+TEST(BinaryTreeClear)
+{
+	ft::map<int, bool> m1;
+
+	std::map<int, bool> sm1;
+
+
+	ft::map<int, bool>::iterator it0 = m1.begin();
+
+	m1.insert(ft::pair<int, bool>(5, true));
+	m1.insert(ft::pair<int, bool>(6, true));
+	m1.insert(ft::pair<int, bool>(7, true));
+	m1.insert(ft::pair<int, bool>(8, true));
+	m1.insert(ft::pair<int, bool>(9, true));
+
+	sm1.insert(std::pair<int, bool>(5, true));
+	sm1.insert(std::pair<int, bool>(6, true));
+	sm1.insert(std::pair<int, bool>(7, true));
+	sm1.insert(std::pair<int, bool>(8, true));
+	sm1.insert(std::pair<int, bool>(9, true));
+
+	m1.clear();
+	sm1.clear();
+
+	ASSERT_EQ(m1.size(), sm1.size());
+	ASSERT_EQ(m1.empty(), sm1.empty());
+
+	m1.insert(ft::pair<int, bool>(-21, true));
+	sm1.insert(std::pair<int, bool>(-21, true));
+
+	ASSERT_EQ(m1.size(), sm1.size());
+	ASSERT_EQ(m1.empty(), sm1.empty());
+
+	ft::map<int, bool>::iterator it1 = m1.begin();
+	std::map<int, bool>::iterator sit1 = sm1.begin();
+
+	while (sit1 != sm1.end())
+	{
+		ASSERT_EQ((it1++)->first, (sit1++)->first);
+	}
+}
+
 
 int main(void)
 {
