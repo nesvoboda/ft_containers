@@ -5,6 +5,7 @@
 
 #include "map_util.hpp"
 #include "binary_tree.hpp"
+#include "revIterator.hpp"
 
 namespace ft
 {
@@ -51,12 +52,87 @@ namespace ft
 
 	template <class IteratorValue, class Key, class ContainerValue>
 	class mapIterator {
+		typedef ABSTNode<Key, ContainerValue> node_type;
 	public:
-		ABSTNode<Key, ContainerValue> *_ptr;
+		typedef IteratorValue value_type;
+		typedef ptrdiff_t difference_type;
+		ABSTNode<Key, ContainerValue> *_ptr; //REMOVE BEFORE FLIGHT
 
 		mapIterator() : _ptr(NULL) {};
 		mapIterator(ABSTNode<Key, ContainerValue> *ptr) : _ptr(ptr) {};
+		mapIterator(const mapIterator &other) : _ptr(other._ptr) {};
+		~mapIterator() {};
+		
+		mapIterator &operator= (const mapIterator &other) { _ptr = other._ptr; return (*this); };
+
 		IteratorValue &operator*(void) { return _ptr->data; };
+		IteratorValue *operator->(void) const { return &(_ptr->data); };
+
+		bool operator==(const mapIterator &rhs) const { return _ptr == rhs._ptr; };
+		bool operator!=(const mapIterator &rhs) const { return _ptr != rhs._ptr; };
+
+		operator mapIterator<const IteratorValue, Key, ContainerValue>(void) const {
+			return mapIterator<const IteratorValue, Key, ContainerValue>(_ptr);
+		}
+
+		mapIterator& operator++() {
+			node_type *successor = _ptr->immediateSuccessor();
+
+			if (!successor)
+			{
+				if (_ptr == _ptr->parent->right)
+					_ptr = _ptr->parent;
+			}
+			else
+				_ptr = successor;
+			return (*this);
+		};
+
+		mapIterator operator++(int) {
+			node_type *old = _ptr;
+			node_type *successor = _ptr->immediateSuccessor();
+
+			if (!successor)
+			{
+				if (_ptr == _ptr->parent->right)
+					_ptr = _ptr->parent;
+			}
+			else
+				_ptr = successor;
+			return (mapIterator(old));
+		};
+
+		mapIterator& operator--() {
+			node_type *successor = _ptr->immediatePredecessor();
+
+			if (!successor)
+			{
+				if (_ptr == _ptr->parent->right)
+					_ptr = _ptr->parent;
+			}
+			else
+				_ptr = successor;
+			return (*this);
+		};
+
+		mapIterator operator--(int) {
+			node_type *old = _ptr;
+			node_type *successor = _ptr->immediatePredecessor();
+
+			if (!successor)
+			{
+				if (_ptr == _ptr->parent->right)
+					_ptr = _ptr->parent;
+			}
+			else
+				_ptr = successor;
+			return (mapIterator(old));
+		};
+
+		// We need this to be able to access the underlying pointer (for instance,
+		// to erase an element). Map iterator doesn't have base() in std.
+		template <class, class, class, class>
+		friend class map;
 	};
 
 
@@ -82,9 +158,9 @@ namespace ft
 		typedef typename allocator_type::pointer pointer; //	allocator_type::pointer	for the default allocator: value_type*
 		typedef typename allocator_type::const_pointer const_pointer;//	allocator_type::const_pointer	for the default allocator: const value_type*
 		typedef mapIterator<value_type, const key_type, mapped_type> iterator; //	a bidirectional iterator to value_type	convertible to const_iterator
-		// const_iterator	a bidirectional iterator to const value_type	TODO
-		// reverse_iterator	reverse_iterator<iterator>	TODO
-		// const_reverse_iterator	reverse_iterator<const_iterator>	TODO
+		typedef mapIterator<const value_type, const key_type, mapped_type> const_iterator;	//a bidirectional iterator to const value_type	TODO
+		typedef rev_iterator<iterator> reverse_iterator;	// reverse_iterator<iterator>	TODO
+		typedef rev_iterator<const_iterator> const_reverse_iterator; // const_reverse_iterator	reverse_iterator<const_iterator>	TODO
 		typedef ptrdiff_t difference_type;// TODO implement in iter traits	a signed integral type, identical to: iterator_traits<iterator>::difference_type	usually the same as ptrdiff_t
 		typedef size_t size_type; //	an unsigned integral type that can represent any non-negative value of difference_type	usually the same as size_t
 
@@ -111,6 +187,63 @@ namespace ft
 			return(pair<iterator, bool>(iterator(ret.first), ret.second));
 		}
 
+		iterator begin()
+		{
+			node_type *cur = _base._head;
+			while (cur->left != NULL)
+			{
+				cur = cur->left;
+			}
+			return iterator(cur);
+		}
+		const_iterator begin() const
+		{
+			node_type *cur = _base._head;
+			while (cur->left != NULL)
+			{
+				cur = cur->left;
+			}
+			return const_iterator(cur);
+		}
+
+		iterator end()
+		{
+			node_type *cur = _base._head;
+			while (cur->right != NULL)
+			{
+				cur = cur->right;
+			}
+			return iterator(cur);
+		}
+
+		const_iterator end() const
+		{
+			node_type *cur = _base._head;
+			while (cur->right != NULL)
+			{
+				cur = cur->right;
+			}
+			return iterator(cur);
+		}
+
+		reverse_iterator rend()
+		{
+			return reverse_iterator(begin());
+		}
+		const_reverse_iterator rend() const
+		{
+			return const_reverse_iterator(begin());
+		}
+
+		reverse_iterator rbegin()
+		{
+			return reverse_iterator(end());
+		}
+		const_reverse_iterator rbegin() const
+		{
+			return const_reverse_iterator(end());
+		}
+
 		// iterator begin() {
 		// 	if (_head == NULL)
 		// };
@@ -134,6 +267,37 @@ namespace ft
 			// ft::pair<iterator, bool> ret = insert(ft::pair<key_type, mapped_type>(k, mapped_type()));
 			// return (*(ret.first)).second;
 			return (*((this->insert(ft::pair<key_type, mapped_type>(k,mapped_type()))).first)).second;
+		}
+
+		void erase (iterator position)
+		{
+			_base.erase(position._ptr);
+		}
+
+		size_type erase (const key_type& k)
+		{
+			iterator b = begin();
+			size_type ret = 0;
+
+			while (b != end())
+			{
+				if (b->first == k)
+				{
+					erase(b++);
+					ret++;
+				}
+				else
+					b++;
+			}
+			return ret;
+		}
+
+		void erase (iterator first, iterator last)
+		{
+			while (first != last)
+			{
+				erase(first++);
+			}
 		}
 
 	private:
