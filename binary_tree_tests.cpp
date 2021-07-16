@@ -457,6 +457,36 @@ TEST(BinaryTreeClear)
 	ASSERT_EQ(bt._size, 1);
 }
 
+TEST(BinaryTreeFind)
+{
+	BSTree<int, bool> bt;
+
+	bt.insert(ft::pair<int, bool>(6, true));
+
+	ABSTNode<int, bool> *head = bt._head;
+
+	head->left = new ABSTNode<int, bool>(NULL, NULL, head, 4, true);
+	head->left->left = new ABSTNode<int, bool>(NULL, NULL, head->left, 2, true);
+	head->left->right = new ABSTNode<int, bool>(NULL, NULL, head->left, 5, true);
+
+	head->right = new ABSTNode<int, bool>(NULL, NULL, head, 10, true);
+	head->right->left = new ABSTNode<int, bool>(NULL, NULL, head->right, 8, true);
+	head->right->right = new ABSTNode<int, bool>(NULL, NULL, head->right, 12, true);
+	bt._size += 6;
+
+	// bt.clear();
+
+	ASSERT_EQ(bt.find(4)->data.first, 4);
+	ASSERT_EQ(bt.find(2)->data.first, 2);
+	ASSERT_EQ(bt.find(5)->data.first, 5);
+	ASSERT_EQ(bt.find(10)->data.first, 10);
+	ASSERT_EQ(bt.find(8)->data.first, 8);
+	ASSERT_EQ(bt.find(12)->data.first, 12);
+	ASSERT_EQ(bt.find(6)->data.first, 6);
+	ASSERT_EQ(bt.find(42), NULL);
+}
+
+
 // TEST(AmICrazy)
 // {
 // 	std::map<std::string, int> map1;

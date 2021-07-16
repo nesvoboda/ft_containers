@@ -364,6 +364,15 @@ namespace ft
 				return const_iterator(ret);
 		}
 
+		size_type count (const key_type& k) const
+		{
+			node_type *ret = _base.find(k);
+			if (ret == NULL)
+				return 0;
+			else
+				return 1;
+		}
+
 	private:
 		// BSTNode<value_type> *_head;
 		BSTree<const key_type, mapped_type, key_compare> _base;

@@ -287,6 +287,30 @@ public:
 		// std::cout << "Ran on: " << target->data.first << std::endl;
 		delete target;
 	}
+
+	node_type *find(node_type *target, const Key &k) const
+	{
+		if (target == NULL || target->fake)
+			return NULL;
+
+		if (_comp(k, target->data.first))
+		{
+			return find(target->left, k);
+		}
+		else if (_comp(target->data.first, k))
+		{
+			return find(target->right, k);
+		}
+		else
+		{
+			return target;
+		}
+	}
+
+	node_type *find (const Key& k) const
+	{
+		return find(_head, k);
+	}
 /*
 	size_t contains(node_type *target, const Content& val)
 	{
