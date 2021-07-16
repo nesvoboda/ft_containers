@@ -760,6 +760,34 @@ TEST(BinaryTreeClear)
 }
 
 
+TEST(BinaryTreeFind)
+{
+	ft::map<int, bool> m1;
+
+	std::map<int, bool> sm1;
+
+
+	ft::map<int, bool>::iterator it0 = m1.begin();
+
+	m1.insert(ft::pair<int, bool>(5, true));
+	m1.insert(ft::pair<int, bool>(6, true));
+	m1.insert(ft::pair<int, bool>(7, true));
+	m1.insert(ft::pair<int, bool>(8, true));
+	m1.insert(ft::pair<int, bool>(9, true));
+
+	sm1.insert(std::pair<int, bool>(5, true));
+	sm1.insert(std::pair<int, bool>(6, true));
+	sm1.insert(std::pair<int, bool>(7, true));
+	sm1.insert(std::pair<int, bool>(8, true));
+	sm1.insert(std::pair<int, bool>(9, true));
+
+	ASSERT_EQ(m1.find(6)->first, sm1.find(6)->first);
+
+	CHECK_EQ(m1.find(-42), m1.end());
+
+}
+
+
 int main(void)
 {
 	run_tests();

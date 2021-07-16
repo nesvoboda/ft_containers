@@ -344,6 +344,26 @@ namespace ft
 			return value_compare(_base._comp);
 		}
 
+		iterator find (const key_type& k)
+		{
+			node_type *ret = _base.find(k);
+
+			if (ret == NULL)
+				return end();
+			else
+				return iterator(ret);
+		}
+
+		const_iterator find (const key_type& k) const
+		{
+			node_type *ret = _base.find(k);
+
+			if (ret == NULL)
+				return end();
+			else
+				return const_iterator(ret);
+		}
+
 	private:
 		// BSTNode<value_type> *_head;
 		BSTree<const key_type, mapped_type, key_compare> _base;
