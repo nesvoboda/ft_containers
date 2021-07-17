@@ -867,8 +867,128 @@ TEST(BinaryTreeUpperBound)
 	ASSERT_EQ(m1.upper_bound(8)->first, sm1.upper_bound(8)->first)
 }
 
+TEST(MapCopy)
+{
+	ft::map<int, bool> m1;
+	std::map<int, bool> sm1;
+
+	m1.insert(ft::pair<int, bool>(5, true));
+	m1.insert(ft::pair<int, bool>(6, true));
+	m1.insert(ft::pair<int, bool>(7, true));
+	m1.insert(ft::pair<int, bool>(8, true));
+	m1.insert(ft::pair<int, bool>(9, true));
+
+	sm1.insert(std::pair<int, bool>(5, true));
+	sm1.insert(std::pair<int, bool>(6, true));
+	sm1.insert(std::pair<int, bool>(7, true));
+	sm1.insert(std::pair<int, bool>(8, true));
+	sm1.insert(std::pair<int, bool>(9, true));
+
+	ft::map<int, bool> m2(m1);
+	std::map<int, bool> sm2(sm1);
+
+	ft::map<int,bool>::iterator mit = m2.begin();
+
+	for (std::map<int, bool>::iterator it = sm2.begin(); it != sm2.end(); it++)
+	{
+		ASSERT_EQ((it)->first, (mit++)->first);
+	}
+
+	CHECK_EQ(mit, m2.end());
+
+}
+
+TEST(MapAssign)
+{
+	ft::map<int, bool> m1;
+	std::map<int, bool> sm1;
+
+	m1.insert(ft::pair<int, bool>(5, true));
+	m1.insert(ft::pair<int, bool>(6, true));
+	m1.insert(ft::pair<int, bool>(7, true));
+	m1.insert(ft::pair<int, bool>(8, true));
+	m1.insert(ft::pair<int, bool>(9, true));
+
+	sm1.insert(std::pair<int, bool>(5, true));
+	sm1.insert(std::pair<int, bool>(6, true));
+	sm1.insert(std::pair<int, bool>(7, true));
+	sm1.insert(std::pair<int, bool>(8, true));
+	sm1.insert(std::pair<int, bool>(9, true));
+
+	ft::map<int, bool> m2;
+	std::map<int, bool> sm2;
+
+	m2.insert(ft::pair<int, bool>(-5, true));
+	m2.insert(ft::pair<int, bool>(-6, true));
+	m2.insert(ft::pair<int, bool>(-7, true));
+	m2.insert(ft::pair<int, bool>(-8, true));
+	m2.insert(ft::pair<int, bool>(-9, true));
+
+	sm2.insert(std::pair<int, bool>(-5, true));
+	sm2.insert(std::pair<int, bool>(-6, true));
+	sm2.insert(std::pair<int, bool>(-7, true));
+	sm2.insert(std::pair<int, bool>(-8, true));
+	sm2.insert(std::pair<int, bool>(-9, true));
+
+	m2 = m1;
+	sm2 = sm1;
+
+	ft::map<int,bool>::iterator mit = m2.begin();
+
+	for (std::map<int, bool>::iterator it = sm2.begin(); it != sm2.end(); it++)
+	{
+		ASSERT_EQ((it)->first, (mit++)->first);
+	}
+
+	CHECK_EQ(mit, m2.end());
+
+	ft::map<int,bool>::iterator mit1 = m1.begin();
+
+	for (std::map<int, bool>::iterator it = sm1.begin(); it != sm1.end(); it++)
+	{
+		ASSERT_EQ((it)->first, (mit1++)->first);
+	}
+
+	CHECK_EQ(mit1, m1.end());
+
+
+}
+
+
+TEST(MapRangeConstructor)
+{
+	ft::map<int, bool> m1;
+	std::map<int, bool> sm1;
+
+	m1.insert(ft::pair<int, bool>(5, true));
+	m1.insert(ft::pair<int, bool>(6, true));
+	m1.insert(ft::pair<int, bool>(7, true));
+	m1.insert(ft::pair<int, bool>(8, true));
+	m1.insert(ft::pair<int, bool>(9, true));
+
+	sm1.insert(std::pair<int, bool>(5, true));
+	sm1.insert(std::pair<int, bool>(6, true));
+	sm1.insert(std::pair<int, bool>(7, true));
+	sm1.insert(std::pair<int, bool>(8, true));
+	sm1.insert(std::pair<int, bool>(9, true));
+
+	ft::map<int, bool> m2(m1.begin(), m1.end());
+	std::map<int, bool> sm2(sm1.begin(), sm1.end());
+
+	ft::map<int,bool>::iterator mit = m2.begin();
+
+	for (std::map<int, bool>::iterator it = sm2.begin(); it != sm2.end(); it++)
+	{
+		ASSERT_EQ((it)->first, (mit++)->first);
+	}
+
+	CHECK_EQ(mit, m2.end());
+
+}
+
 
 int main(void)
 {
 	run_tests();
+	// sleep(10);
 }

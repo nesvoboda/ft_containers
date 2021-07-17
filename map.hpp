@@ -144,6 +144,8 @@ namespace ft
 		friend class map;
 	};
 
+// TODO use allocator
+
 	template <class Key,									   // map::key_type
 			  class T,										   // map::mapped_type
 			  class Compare = less<Key>,					   // map::key_compare
@@ -158,33 +160,48 @@ namespace ft
 		typedef T mapped_type; //	The second template parameter (T)
 		typedef ft::pair<const key_type, mapped_type> value_type;
 		typedef Compare key_compare; //	The third template parameter (Compare)	defaults to: less<key_type>
-		// typedef Compare value_compare;													   // TODO doublecheck	Nested function class to compare elements	see value_comp
+		// typedef Compare value_compare;													   //	Nested function class to compare elements	see value_comp
 		typedef Alloc allocator_type;													   //	The fourth template parameter (Alloc)	defaults to: allocator<value_type>
 		typedef typename allocator_type::reference reference;							   //	allocator_type::reference	for the default allocator: value_type&
 		typedef typename allocator_type::const_reference const_reference;				   //	allocator_type::const_reference	for the default allocator: const value_type&
 		typedef typename allocator_type::pointer pointer;								   //	allocator_type::pointer	for the default allocator: value_type*
 		typedef typename allocator_type::const_pointer const_pointer;					   //	allocator_type::const_pointer	for the default allocator: const value_type*
 		typedef mapIterator<value_type, const key_type, mapped_type> iterator;			   //	a bidirectional iterator to value_type	convertible to const_iterator
-		typedef mapIterator<const value_type, const key_type, mapped_type> const_iterator; //a bidirectional iterator to const value_type	TODO
-		typedef rev_iterator<iterator> reverse_iterator;								   // reverse_iterator<iterator>	TODO
-		typedef rev_iterator<const_iterator> const_reverse_iterator;					   // const_reverse_iterator	reverse_iterator<const_iterator>	TODO
+		typedef mapIterator<const value_type, const key_type, mapped_type> const_iterator; //a bidirectional iterator to const value_type	
+		typedef rev_iterator<iterator> reverse_iterator;								   // reverse_iterator<iterator>	
+		typedef rev_iterator<const_iterator> const_reverse_iterator;					   // const_reverse_iterator	reverse_iterator<const_iterator>	
 		typedef ptrdiff_t difference_type;												   // TODO implement in iter traits	a signed integral type, identical to: iterator_traits<iterator>::difference_type	usually the same as ptrdiff_t
 		typedef size_t size_type;														   //	an unsigned integral type that can represent any non-negative value of difference_type	usually the same as size_t
 
-		map(){};
-		~map(){};
-		// map(const map &copy) {}; // TODO
-		// map &operator=(const map &operand); // TODO
+		// map() : {};
 
-		// void print_valtype(value_type val)
-		// {
-		// 	std::cout << "[key: " << val.first << ", val: " << val.second << "]";
-		// }
+		// Constructors
 
-		// void print_node(BSTNode<value_type> bstnode)
-		// {
-		// 	std::cout << "[BSTNode left: " << bstnode.left << ", right: " << bstnode.right << ", key: " << bstnode.value.first << ", val: " << bstnode.value.second << "]";
-		// }
+		// empty (1)	
+		explicit map (const key_compare& comp = key_compare(),
+					const allocator_type& alloc = allocator_type()) : _base(comp), _allocator(alloc) {} ;
+
+		// range (2)	
+		template <class InputIterator>
+		map (InputIterator first, InputIterator last,
+			const key_compare& comp = key_compare(),
+			const allocator_type& alloc = allocator_type()) : _base(comp), _allocator(alloc) {
+				while (first != last)
+				{
+					insert(*(first++));
+				}
+			};
+
+		// copy (3)	
+		map(const map &copy) : _base(copy._base), _allocator(copy._allocator) {};
+
+
+		~map() {};
+		map &operator=(const map &operand) {
+			_base = operand._base;
+			return (*this);
+		};
+
 
 		pair<iterator, bool> insert(const value_type &val)
 		{
@@ -426,11 +443,27 @@ namespace ft
 			return end();
 		}
 
+		pair<const_iterator,const_iterator> equal_range (const key_type& k) const
+		{
+			return ft::pair<const_iterator, const_iterator>(lower_bound(k), upper_bound(k));
+		}
+
+		pair<iterator,iterator>             equal_range (const key_type& k)
+		{
+			return ft::pair<iterator, iterator>(lower_bound(k), upper_bound(k));
+		}
+
+		allocator_type get_allocator() const
+		{
+			return _allocator;
+		}
+
 	private:
 		// BSTNode<value_type> *_head;
 		BSTree<const key_type, mapped_type, key_compare> _base;
 		// size_type _size;
 		typedef ABSTNode<const key_type, mapped_type> node_type;
+		Alloc _allocator;
 	};
 
 } // namespace ft

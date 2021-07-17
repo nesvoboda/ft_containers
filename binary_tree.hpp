@@ -96,7 +96,7 @@ public:
 	Compare _comp;
 
 	/////////////////
-	BSTree() : _head(new node_type(NULL, NULL, NULL, Key(), Value(), true)), _size(0), _comp(Compare()) {};
+	BSTree(Compare comp = Compare()) : _head(new node_type(NULL, NULL, NULL, Key(), Value(), true)), _size(0), _comp(comp) {};
 
 	BSTree(const BSTree &rhs) : _head(new node_type(NULL, NULL, NULL, Key(), Value(), true)), _size(0), _comp(Compare()) {
 		clone_node(rhs._head);
@@ -126,6 +126,7 @@ public:
 	{
 		clear();
 		clone_node(rhs._head);
+		return (*this);
 	};
 
 	~BSTree() { free_node(_head); _head = NULL;};
