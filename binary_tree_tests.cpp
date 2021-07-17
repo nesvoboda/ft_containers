@@ -486,20 +486,69 @@ TEST(BinaryTreeFind)
 	ASSERT_EQ(bt.find(42), NULL);
 }
 
+TEST(BinaryTreeHeight)
+{
+		BSTree<int, bool> bt;
 
-// TEST(AmICrazy)
-// {
-// 	std::map<std::string, int> map1;
+	bt.insert(ft::pair<int, bool>(6, true));
 
-// 	map1.insert(std::ft::pair<std::string, int>("hehe", 5));
-// 	std::map<std::string, int>::iterator it1 = map1.end();
+	ABSTNode<int, bool> *head = bt._head;
 
-// 	it1++;
-// 	std::cout << "Map1 end+1: " << (*it1).second << std::endl;
-// 	// it1++;
-// 	// it1++;
-// 	// std::cout << "Map1 begin+1: " << (*it1).second << std::endl;
-// }
+	head->left = new ABSTNode<int, bool>(NULL, NULL, head, 4, true);
+	head->left->left = new ABSTNode<int, bool>(NULL, NULL, head->left, 2, true);
+	head->left->right = new ABSTNode<int, bool>(NULL, NULL, head->left, 5, true);
+
+	head->right = new ABSTNode<int, bool>(NULL, NULL, head, 10, true);
+	head->right->left = new ABSTNode<int, bool>(NULL, NULL, head->right, 8, true);
+	head->right->right = new ABSTNode<int, bool>(NULL, NULL, head->right, 11, true);
+	head->right->left->right = new ABSTNode<int, bool>(NULL, NULL, head->right->left, 12, true);
+	bt._size += 6;
+
+	//         6
+	//   4          10
+	//2     5     8    11
+	//              12
+
+	ASSERT_EQ(bt.height(bt._head), 3);
+	ASSERT_EQ(bt.height(bt._head->left), 1);
+}
+
+
+TEST(BinaryTreeLeftRot)
+{
+	BSTree<int, bool> bt;
+
+	bt.insert(ft::pair<int, bool>(4, true));
+
+	ABSTNode<int, bool> *head = bt._head;
+
+	head->right = new ABSTNode<int, bool>(NULL, NULL, head, 6, true);
+	head->right->right = new ABSTNode<int, bool>(NULL, NULL, head->right, 8, true);
+	bt._size += 2;
+
+	// 4
+	//   6
+	//     8
+
+	// ASSERT_EQ(bt.height(bt._head), 3);
+	// ASSERT_EQ(bt.height(bt._head->left), 1);
+	bt.left_rotate(bt._head);
+
+	ASSERT_EQ(bt._head->data.first, 6);
+	ASSERT_EQ(bt._head->parent, NULL);
+
+
+	ASSERT_EQ(bt._head->left->data.first, 4);
+	ASSERT_EQ(bt._head->left->parent, bt._head);
+
+	ASSERT_EQ(bt._head->right->data.first, 8);
+	ASSERT_EQ(bt._head->right->parent, bt._head);
+}
+
+
+
+
+// TODO check if rebalancing doesn't move the 'end' pointer
 
 int main(void)
 {

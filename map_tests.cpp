@@ -986,6 +986,13 @@ TEST(MapRangeConstructor)
 
 }
 
+// TEST(MapMaxSize)
+// {
+// 	ft::map<int, bool> m1;
+// 	std::map<int, bool> sm1;
+
+// 	ASSERT_EQ(m1.max_size(), sm1.max_size());
+// }
 
 int main(void)
 {

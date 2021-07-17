@@ -203,6 +203,14 @@ namespace ft
 		};
 
 
+		size_type max_size() const
+		{
+			size_type max_nodes = std::numeric_limits<size_type>::max() / sizeof(value_type);
+			size_type max_ptrdiff = std::numeric_limits<difference_type >::max();
+
+			return (max_nodes < max_ptrdiff ? max_nodes : max_ptrdiff);
+		}
+
 		pair<iterator, bool> insert(const value_type &val)
 		{
 			ft::pair<node_type *, bool> ret = _base.insert(val);

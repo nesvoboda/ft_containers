@@ -179,6 +179,44 @@ public:
 		return insert(_head, val);
 	}
 
+	size_t height(node_type *target)
+	{
+		if (target->left == NULL && target->right == NULL)
+		{
+			return 0;
+		}
+		size_t left_height = 0;
+		if (target->left)
+			left_height = 1 + height(target->left);
+
+
+		size_t right_height = 0;
+		if (target->right)
+			right_height = 1 + height(target->right);
+
+		return left_height > right_height ? left_height : right_height;
+	}
+
+	void left_rotate(node_type *grandparent)
+	{
+		node_type *tmp = grandparent->right;
+		grandparent->right = tmp->left;
+
+		if (tmp->left)
+			tmp->left->parent = grandparent;
+
+		tmp->left = grandparent;
+
+		node_type *tmp2 = grandparent->parent;
+		grandparent->parent = tmp;
+		tmp->parent = tmp2;
+
+		// tmp parent
+
+		if (_head == grandparent)
+			_head = tmp;
+	}
+
 	void swap_content(BSTree &other)
 	{
 		node_type *tmp = _head;
