@@ -817,6 +817,56 @@ TEST(BinaryTreeCount)
 
 }
 
+TEST(BinaryTreeLowerBound)
+{
+	ft::map<int, bool> m1;
+
+	std::map<int, bool> sm1;
+
+	m1.insert(ft::pair<int, bool>(5, true));
+	m1.insert(ft::pair<int, bool>(6, true));
+	// m1.insert(ft::pair<int, bool>(7, true));
+	m1.insert(ft::pair<int, bool>(8, true));
+	m1.insert(ft::pair<int, bool>(9, true));
+
+	sm1.insert(std::pair<int, bool>(5, true));
+	sm1.insert(std::pair<int, bool>(6, true));
+	// sm1.insert(std::pair<int, bool>(7, true));
+	sm1.insert(std::pair<int, bool>(8, true));
+	sm1.insert(std::pair<int, bool>(9, true));
+
+	ASSERT_EQ(m1.lower_bound(5)->first, sm1.lower_bound(5)->first)
+	ASSERT_EQ(m1.lower_bound(2)->first, sm1.lower_bound(2)->first)
+	ASSERT_EQ((m1.lower_bound(10) == m1.end()), (sm1.lower_bound(10) == sm1.end()))
+	ASSERT_EQ(m1.lower_bound(7)->first, sm1.lower_bound(7)->first)
+	ASSERT_EQ(m1.lower_bound(8)->first, sm1.lower_bound(8)->first)
+}
+
+TEST(BinaryTreeUpperBound)
+{
+	ft::map<int, bool> m1;
+
+	std::map<int, bool> sm1;
+
+	m1.insert(ft::pair<int, bool>(5, true));
+	m1.insert(ft::pair<int, bool>(6, true));
+	// m1.insert(ft::pair<int, bool>(7, true));
+	m1.insert(ft::pair<int, bool>(8, true));
+	m1.insert(ft::pair<int, bool>(9, true));
+
+	sm1.insert(std::pair<int, bool>(5, true));
+	sm1.insert(std::pair<int, bool>(6, true));
+	// sm1.insert(std::pair<int, bool>(7, true));
+	sm1.insert(std::pair<int, bool>(8, true));
+	sm1.insert(std::pair<int, bool>(9, true));
+
+	ASSERT_EQ(m1.upper_bound(5)->first, sm1.upper_bound(5)->first)
+	ASSERT_EQ(m1.upper_bound(2)->first, sm1.upper_bound(2)->first)
+	ASSERT_EQ((m1.upper_bound(10) == m1.end()), (sm1.upper_bound(10) == sm1.end()))
+	ASSERT_EQ(m1.upper_bound(7)->first, sm1.upper_bound(7)->first)
+	ASSERT_EQ(m1.upper_bound(8)->first, sm1.upper_bound(8)->first)
+}
+
 
 int main(void)
 {

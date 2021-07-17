@@ -373,6 +373,59 @@ namespace ft
 				return 1;
 		}
 
+		iterator lower_bound (const key_type& k)
+		{
+			iterator b = begin();
+
+			while (b != end())
+			{
+				if (!(_base._comp(b->first, k)))
+					return b;
+				b++;
+			}
+			return end();
+		}
+
+		const_iterator lower_bound (const key_type& k) const
+		{
+			iterator b = begin();
+
+			while (b != end())
+			{
+				if (!(_base._comp(b._ptr->data.first, k)))
+					return const_iterator(b);
+				b++;
+			}
+			return end();
+		}
+
+		iterator upper_bound (const key_type& k)
+		{
+			iterator b = begin();
+
+			while (b != end())
+			{
+				if ((_base._comp(k, b._ptr->data.first)))
+					return b;
+				b++;
+			}
+			return end();
+
+		}
+
+		const_iterator upper_bound (const key_type& k) const
+		{
+			iterator b = begin();
+
+			while (b != end())
+			{
+				if ((_base._comp(k, b._ptr->data.first)))
+					return const_iterator(b);
+				b++;
+			}
+			return end();
+		}
+
 	private:
 		// BSTNode<value_type> *_head;
 		BSTree<const key_type, mapped_type, key_compare> _base;

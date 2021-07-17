@@ -311,6 +311,15 @@ public:
 	{
 		return find(_head, k);
 	}
+
+	// node_type *lower_bound(const Key &k) const
+	// {
+	// 	node_type *cur = _head;
+
+	// 	if (_comp(k, cur->data.first))
+
+	// 	while (cur)
+	// }
 /*
 	size_t contains(node_type *target, const Content& val)
 	{
