@@ -532,7 +532,7 @@ TEST(BinaryTreeLeftRot)
 
 	// ASSERT_EQ(bt.height(bt._head), 3);
 	// ASSERT_EQ(bt.height(bt._head->left), 1);
-	bt.left_rotate(bt._head);
+	bt._head = bt.left_rotate(bt._head);
 
 	ASSERT_EQ(bt._head->data.first, 6);
 	ASSERT_EQ(bt._head->parent, NULL);
@@ -545,6 +545,71 @@ TEST(BinaryTreeLeftRot)
 	ASSERT_EQ(bt._head->right->parent, bt._head);
 }
 
+TEST(BinaryTreeRightRot)
+{
+	BSTree<int, bool> bt;
+
+	bt.insert(ft::pair<int, bool>(8, true));
+
+	ABSTNode<int, bool> *head = bt._head;
+
+	head->left = new ABSTNode<int, bool>(NULL, NULL, head, 6, true);
+	head->left->left = new ABSTNode<int, bool>(NULL, NULL, head->left, 4, true);
+	bt._size += 2;
+
+	//      8
+	//   6
+	//4    
+
+	// ASSERT_EQ(bt.height(bt._head), 3);
+	// ASSERT_EQ(bt.height(bt._head->left), 1);
+	bt._head = bt.right_rotate(bt._head);
+
+	ASSERT_EQ(bt._head->data.first, 6);
+	ASSERT_EQ(bt._head->parent, NULL);
+
+
+	ASSERT_EQ(bt._head->left->data.first, 4);
+	ASSERT_EQ(bt._head->left->parent, bt._head);
+
+	ASSERT_EQ(bt._head->right->data.first, 8);
+	ASSERT_EQ(bt._head->right->parent, bt._head);
+}
+
+
+TEST(BinaryTreeRightLeftRot)
+{
+	BSTree<int, bool> bt;
+
+	bt.insert(ft::pair<int, bool>(4, true));
+
+	ABSTNode<int, bool> *head = bt._head;
+
+	head->right = new ABSTNode<int, bool>(NULL, NULL, head, 8, true);
+	head->right->left = new ABSTNode<int, bool>(NULL, NULL, head->right, 6, true);
+	bt._size += 2;
+
+	// 4
+	//   8
+	// 6   
+
+	// ASSERT_EQ(bt.height(bt._head), 3);
+	// ASSERT_EQ(bt.height(bt._head->left), 1);
+	bt._head = bt.right_left_rotate(bt._head);
+
+	// bt._head->right = bt.right_rotate(bt._head->right);
+	// bt._head = bt.left_rotate(bt._head);
+
+	ASSERT_EQ(bt._head->data.first, 6);
+	ASSERT_EQ(bt._head->parent, NULL);
+
+
+	ASSERT_EQ(bt._head->left->data.first, 4);
+	ASSERT_EQ(bt._head->left->parent, bt._head);
+
+	ASSERT_EQ(bt._head->right->data.first, 8);
+	ASSERT_EQ(bt._head->right->parent, bt._head);
+}
 
 
 

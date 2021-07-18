@@ -197,7 +197,7 @@ public:
 		return left_height > right_height ? left_height : right_height;
 	}
 
-	void left_rotate(node_type *grandparent)
+	node_type *left_rotate(node_type *grandparent)
 	{
 		node_type *tmp = grandparent->right;
 		grandparent->right = tmp->left;
@@ -211,10 +211,42 @@ public:
 		grandparent->parent = tmp;
 		tmp->parent = tmp2;
 
-		// tmp parent
+		// // tmp parent
+
+		// if (_head == grandparent)
+		// 	_head = tmp;
+
+		return tmp;
+	}
+
+	node_type *right_rotate(node_type *grandparent)
+	{
+		node_type *tmp = grandparent->left;
+
+		grandparent->left = tmp->right;
+		
+		if (tmp->right)
+			tmp->right->parent = grandparent;
+
+		tmp->right = grandparent;
+
+		node_type *tmp2 = grandparent->parent;
+		grandparent->parent = tmp;
+		tmp->parent = tmp2;
 
 		if (_head == grandparent)
 			_head = tmp;
+
+		// if (grandparent->parent)
+		// 	grandparent->parent->right = tmp;
+		return tmp;
+
+	}
+
+	node_type *right_left_rotate(node_type *grandparent)
+	{
+		grandparent->right = right_rotate(grandparent->right);
+		return left_rotate(grandparent);
 	}
 
 	void swap_content(BSTree &other)
