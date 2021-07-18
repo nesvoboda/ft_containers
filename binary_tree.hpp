@@ -147,7 +147,6 @@ public:
 				target->right = new_node;
 			else if (target->right->fake)
 			{
-				// std::cout << "Here" << std::endl;
 				node_type *tmp = target->right; // save the end element
 				target->right = new_node;
 				tmp->parent = target->right; // reattach end element to the new element
@@ -281,29 +280,22 @@ public:
 
 	void rebalance(node_type *target)
 	{
-		// std::cout << "Rebalancing" << std::endl;
-		// std::cout << "Score: " << height(target->left) - height(target->right) << std::endl;
 		if ((height(target->left) - height(target->right)) > 1) // left subtree bigger than right
 		{
-			// std::cout << "Here@" << std::endl;
 			if (height(target->left->left) > height(target->left->right))
 			{
-				// std::cout << "Here2" << std::endl;
 				// check problem
 				target = right_rotate(target);
 			}
 			else
 			{
-				// std::cout << "Here1" << std::endl;
 				target = left_right_rotate(target);
 			}
 		}
 		else
 		{
-			// std::cout << "Herez" << std::endl;
 			if (height(target->right->right) > height(target->right->left))
 			{
-				// std::cout << "LR" << std::endl;
 				target = left_rotate(target);
 			}
 			else
@@ -316,9 +308,7 @@ public:
 
 	void check_balance(node_type *target)
 	{
-		// std::cout << "Checking balance at " << target->data.first << std::endl;
 		ssize_t diffHeight = height(target->left) - height(target->right);
-		// std::cout << "left: " << height(target->left) << ", right: " << height(target->right) << " diffHeight " << diffHeight << std::endl;
 		if (diffHeight > 1 || diffHeight < -1)
 		{
 			rebalance(target);
@@ -395,23 +385,39 @@ public:
 				target->parent->left = NULL;
 			else
 				target->parent->right = NULL;
+			
 		}
 		else if (target->left == NULL || target->right == NULL) // one child
 		{
 			if (target->left == NULL) // if target has a right child
 			{
-				if (target == target->parent->left) // if target is someone's left child
-					target->parent->left = target->right;
+
+				if (target->parent)
+				{
+					if (target == target->parent->left) // if target is someone's left child
+						target->parent->left = target->right;
+					else
+						target->parent->right = target->right;
+				}
 				else
-					target->parent->right = target->right;
+				{
+					_head = target->right;
+				}
 				target->right->parent = target->parent;
 			}
 			else // if target has a left child
 			{
-				if (target == target->parent->left) // if target is someone's left child
-					target->parent->left = target->left;
+				if (target->parent)
+				{
+					if (target == target->parent->left) // if target is someone's left child
+						target->parent->left = target->left;
+					else
+						target->parent->right = target->left;
+				}
 				else
-					target->parent->right = target->left;
+				{
+					_head = target->left;
+				}
 				target->left->parent = target->parent;
 			}
 			
@@ -419,7 +425,13 @@ public:
 		else
 		{
 			node_type *successor = target->immediateSuccessor();
+			if (target == _head)
+			{
+				_head = successor;
+				// successor->parent = NULL;
+			}
 			swap(target, successor);
+
 			erase(target);
 			return;
 		}
@@ -434,7 +446,6 @@ public:
 			free_node(target->left);
 		if (target->right)
 			free_node(target->right);
-		// std::cout << "Ran on: " << target->data.first << std::endl;
 		delete target;
 	}
 

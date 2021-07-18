@@ -86,8 +86,12 @@ namespace ft
 
 			if (!successor)
 			{
-				if (_ptr == _ptr->parent->left)
-					_ptr = _ptr->parent;
+				node_type *cur = _ptr;
+				while (cur->parent && cur->parent->left != cur)
+				{
+					cur = cur->parent;
+				}
+				_ptr = cur->parent;
 			}
 			else
 				_ptr = successor;
@@ -101,8 +105,15 @@ namespace ft
 
 			if (!successor)
 			{
-				if (_ptr == _ptr->parent->left)
-					_ptr = _ptr->parent;
+				// if (_ptr == _ptr->parent->left)
+				// 	_ptr = _ptr->parent;
+				node_type *cur = _ptr;
+				while (cur->parent && cur->parent->left != cur)
+				{
+					cur = cur->parent;
+				}
+				_ptr = cur->parent;
+				
 			}
 			else
 				_ptr = successor;
@@ -115,8 +126,12 @@ namespace ft
 
 			if (!successor)
 			{
-				if (_ptr == _ptr->parent->right)
-					_ptr = _ptr->parent;
+				node_type *cur = _ptr;
+				while (cur->parent && cur->parent->right != cur)
+				{
+					cur = cur->parent;
+				}
+				_ptr = cur->parent;
 			}
 			else
 				_ptr = successor;
@@ -130,8 +145,12 @@ namespace ft
 
 			if (!successor)
 			{
-				if (_ptr == _ptr->parent->right)
-					_ptr = _ptr->parent;
+				node_type *cur = _ptr;
+				while (cur->parent && cur->parent->right != cur)
+				{
+					cur = cur->parent;
+				}
+				_ptr = cur->parent;
 			}
 			else
 				_ptr = successor;
@@ -466,9 +485,9 @@ namespace ft
 			return _allocator;
 		}
 
+		BSTree<const key_type, mapped_type, key_compare> _base;
 	private:
 		// BSTNode<value_type> *_head;
-		BSTree<const key_type, mapped_type, key_compare> _base;
 		// size_type _size;
 		typedef ABSTNode<const key_type, mapped_type> node_type;
 		Alloc _allocator;

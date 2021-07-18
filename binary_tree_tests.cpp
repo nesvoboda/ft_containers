@@ -42,6 +42,48 @@ TEST(BTreeInsertToEmpty)
 	ASSERT_EQ(endElement->parent, bt._head);
 }
 
+TEST(BTreeEraseHead)
+{
+	BSTree<int, bool> bt;
+
+	bt.insert(ft::pair<int, bool>(5, true));
+	bt.insert(ft::pair<int, bool>(4, true));
+
+	bt.erase(bt._head);
+}
+
+TEST(BTreeEraseHead2)
+{
+	BSTree<int, bool> bt;
+
+	bt.insert(ft::pair<int, bool>(5, true));
+	// bt.insert(ft::pair<int, bool>(4, true));
+
+	bt.erase(bt._head);
+
+	ASSERT_EQ(bt._head->fake, 1);
+	ASSERT_EQ(bt._head->left, NULL);
+	ASSERT_EQ(bt._head->right, NULL);
+	ASSERT_EQ(bt._head->parent, NULL);
+}
+
+TEST(BTreeEraseHead3)
+{
+	BSTree<int, bool> bt;
+
+	ft::pair<ABSTNode<int, bool> *, bool> ret = bt.insert(ft::pair<int, bool>(5, true));
+	ft::pair<ABSTNode<int, bool> *, bool> ret1 = bt.insert(ft::pair<int, bool>(6, true));
+	// bt.insert(ft::pair<int, bool>(4, true));
+
+	bt.erase(ret.first);
+	bt.erase(ret1.first);
+
+	ASSERT_EQ(bt._head->fake, 1);
+	ASSERT_EQ(bt._head->left, NULL);
+	ASSERT_EQ(bt._head->right, NULL);
+	ASSERT_EQ(bt._head->parent, NULL);
+}
+
 // TEST(BinaryTreeHeight)
 // {
 // 		BSTree<int, bool> bt;

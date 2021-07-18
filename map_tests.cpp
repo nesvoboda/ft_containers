@@ -346,6 +346,7 @@ TEST(MapIteratorPlusPlusInt)
 
 	while (sit2 != sm1.end())
 	{
+		// std::cout << "it2: " << it2->first << ", sit2: " << sit2->first << std::endl;
 		ASSERT_EQ((it2++)->first, (sit2++)->first);
 	}
 	// ASSERT_EQ(it2->first, sit2->first);
@@ -625,31 +626,79 @@ TEST(MapEraseRange)
 	ft::map<int, bool>::iterator it0 = m1.begin();
 
 	m1.insert(ft::pair<int, bool>(5, true));
-	m1.insert(ft::pair<int, bool>(6, true));
-	m1.insert(ft::pair<int, bool>(7, true));
-	m1.insert(ft::pair<int, bool>(8, true));
+	// m1.insert(ft::pair<int, bool>(6, true));
+	// m1.insert(ft::pair<int, bool>(7, true));
+	// m1.insert(ft::pair<int, bool>(8, true));
 	m1.insert(ft::pair<int, bool>(9, true));
 
 	sm1.insert(std::pair<int, bool>(5, true));
-	sm1.insert(std::pair<int, bool>(6, true));
-	sm1.insert(std::pair<int, bool>(7, true));
-	sm1.insert(std::pair<int, bool>(8, true));
+	// sm1.insert(std::pair<int, bool>(6, true));
+	// sm1.insert(std::pair<int, bool>(7, true));
+	// sm1.insert(std::pair<int, bool>(8, true));
 	sm1.insert(std::pair<int, bool>(9, true));
+
+
+	m1.erase(m1.begin(), --m1.end());
+	// m1.erase(++m1.begin());
+	// for (ft::map<int, bool>::iterator it = m1.begin(); it != ++++++++m1.begin(); it++)
+		// std::cout << it->first << std::endl;
+	sm1.erase(sm1.begin(), --sm1.end());
+	// sm1.erase(++sm1.begin());
 
 	ft::map<int, bool>::iterator it2 = m1.begin();
 	std::map<int, bool>::iterator sit2 = sm1.begin();
-
-	m1.erase(++m1.begin(), --m1.end());
-	sm1.erase(++sm1.begin(), --sm1.end());
-
 	while (sit2 != sm1.end())
 	{
+		std::cout << it2->first << std::endl;
 		ASSERT_EQ((it2++)->first, (sit2++)->first);
 		// std::cout << (sit2++)->first << std::endl;
 	}
-	// ASSERT_EQ(it2->first, sit2->first);
 	CHECK_EQ(it2, m1.end());
-	CHECK_EQ(it0, m1.end());
+
+
+	// CHECK_EQ(it0, m1.end());
+
+}
+
+TEST(MapEraseRange2)
+{
+	ft::map<int, bool> m1;
+	std::map<int, bool> sm1;
+
+	ft::map<int, bool>::iterator it0 = m1.begin();
+
+	m1.insert(ft::pair<int, bool>(5, true));
+	// m1.insert(ft::pair<int, bool>(6, true));
+	// m1.insert(ft::pair<int, bool>(7, true));
+	// m1.insert(ft::pair<int, bool>(8, true));
+	m1.insert(ft::pair<int, bool>(9, true));
+
+	sm1.insert(std::pair<int, bool>(5, true));
+	// sm1.insert(std::pair<int, bool>(6, true));
+	// sm1.insert(std::pair<int, bool>(7, true));
+	// sm1.insert(std::pair<int, bool>(8, true));
+	sm1.insert(std::pair<int, bool>(9, true));
+
+
+	m1.erase(m1.begin(), m1.end());
+	// m1.erase(++m1.begin());
+	// for (ft::map<int, bool>::iterator it = m1.begin(); it != ++++++++m1.begin(); it++)
+		// std::cout << it->first << std::endl;
+	sm1.erase(sm1.begin(), sm1.end());
+	// sm1.erase(++sm1.begin());
+
+	ft::map<int, bool>::iterator it2 = m1.begin();
+	std::map<int, bool>::iterator sit2 = sm1.begin();
+	while (sit2 != sm1.end())
+	{
+		std::cout << it2->first << std::endl;
+		ASSERT_EQ((it2++)->first, (sit2++)->first);
+		// std::cout << (sit2++)->first << std::endl;
+	}
+	CHECK_EQ(it2, m1.end());
+
+
+	// CHECK_EQ(it0, m1.end());
 
 }
 

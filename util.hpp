@@ -1,6 +1,8 @@
 #ifndef UTIL_HPP
 #define UTIL_HPP
 
+#define ABS(x) x < 0 ? -x : x;
+
 namespace ft
 {
 	template <typename T>
