@@ -133,37 +133,37 @@ public:
 
 	ft::pair<node_type *,bool> insert (node_type *target, const value_type &val)
 	{
+		node_type *new_node = new node_type(NULL, NULL, target, val.first, val.second);
 		if (_comp(val.first, target->data.first))
 		{
 			if (target->left == NULL)
-			{
-				target->left = new node_type(NULL, NULL, target, val.first, val.second);
-				_size += 1;
-				return ft::pair<node_type *, bool>(target->left, true);
-			}
-			return insert(target->left, val);
+				target->left = new_node;
+			else
+				return insert(target->left, val);
 		}
-		if (_comp(target->data.first, val.first))
+		else if (_comp(target->data.first, val.first))
 		{
 			if (target->right == NULL)
+				target->right = new_node;
+			else if (target->right->fake)
 			{
-				target->right = new node_type(NULL, NULL, target, val.first, val.second);
-				_size += 1;
-				return ft::pair<node_type *, bool>(target->right, true);
-			}
-
-			if (target->right->fake)
-			{
+				// std::cout << "Here" << std::endl;
 				node_type *tmp = target->right; // save the end element
-				target->right = new node_type(NULL, tmp, target, val.first, val.second);
+				target->right = new_node;
 				tmp->parent = target->right; // reattach end element to the new element
-				_size += 1;
-				return (ft::pair<node_type *, bool>(target->right, true));
+				new_node->right = tmp;
 			}
-
-			return insert(target->right, val);
+			else
+				return insert(target->right, val);
 		}
-		return ft::pair<node_type *, bool>(target, false);
+		else
+		{
+			delete new_node;
+			return ft::pair<node_type *, bool>(target, false);
+		}
+		_size += 1;
+		check_balance(new_node);
+		return (ft::pair<node_type *, bool>(new_node, true));
 	}
 
 	ft::pair<node_type *,bool> insert (const value_type& val)
@@ -179,20 +179,32 @@ public:
 		return insert(_head, val);
 	}
 
-	size_t height(node_type *target)
+	// size_t height(node_type *target)
+	// {
+	// 	if (target == NULL || (target->left == NULL && target->right == NULL))
+	// 	{
+	// 		return 0;
+	// 	}
+	// 	size_t left_height = 0;
+	// 	if (target->left)
+	// 		left_height = 1 + height(target->left);
+
+
+	// 	size_t right_height = 0;
+	// 	if (target->right)
+	// 		right_height = 1 + height(target->right);
+
+	// 	return left_height > right_height ? left_height : right_height;
+	// }
+
+	ssize_t height(node_type *target)
 	{
-		if (target->left == NULL && target->right == NULL)
+		if (target == NULL)
 		{
 			return 0;
 		}
-		size_t left_height = 0;
-		if (target->left)
-			left_height = 1 + height(target->left);
-
-
-		size_t right_height = 0;
-		if (target->right)
-			right_height = 1 + height(target->right);
+		size_t left_height = 1 + height(target->left);
+		size_t right_height = 1 + height(target->right);
 
 		return left_height > right_height ? left_height : right_height;
 	}
@@ -215,6 +227,13 @@ public:
 
 		// if (_head == grandparent)
 		// 	_head = tmp;
+		if (tmp2)
+		{
+			if (grandparent == tmp2->right)
+				tmp2->right = tmp;
+			else
+				tmp2->left = tmp;
+		}
 
 		return tmp;
 	}
@@ -237,8 +256,13 @@ public:
 		if (_head == grandparent)
 			_head = tmp;
 
-		// if (grandparent->parent)
-		// 	grandparent->parent->right = tmp;
+		if (tmp2)
+		{
+			if (grandparent == tmp2->right)
+				tmp2->right = tmp;
+			else
+				tmp2->left = tmp;
+		}
 		return tmp;
 
 	}
@@ -247,6 +271,61 @@ public:
 	{
 		grandparent->right = right_rotate(grandparent->right);
 		return left_rotate(grandparent);
+	}
+
+	node_type *left_right_rotate(node_type *grandparent)
+	{
+		grandparent->left = left_rotate(grandparent->left);
+		return right_rotate(grandparent);
+	}
+
+	void rebalance(node_type *target)
+	{
+		// std::cout << "Rebalancing" << std::endl;
+		// std::cout << "Score: " << height(target->left) - height(target->right) << std::endl;
+		if ((height(target->left) - height(target->right)) > 1) // left subtree bigger than right
+		{
+			// std::cout << "Here@" << std::endl;
+			if (height(target->left->left) > height(target->left->right))
+			{
+				// std::cout << "Here2" << std::endl;
+				// check problem
+				target = right_rotate(target);
+			}
+			else
+			{
+				// std::cout << "Here1" << std::endl;
+				target = left_right_rotate(target);
+			}
+		}
+		else
+		{
+			// std::cout << "Herez" << std::endl;
+			if (height(target->right->right) > height(target->right->left))
+			{
+				// std::cout << "LR" << std::endl;
+				target = left_rotate(target);
+			}
+			else
+				target = right_left_rotate(target);
+		}
+		if (target->parent == NULL)
+			_head = target;
+		
+	}
+
+	void check_balance(node_type *target)
+	{
+		// std::cout << "Checking balance at " << target->data.first << std::endl;
+		ssize_t diffHeight = height(target->left) - height(target->right);
+		// std::cout << "left: " << height(target->left) << ", right: " << height(target->right) << " diffHeight " << diffHeight << std::endl;
+		if (diffHeight > 1 || diffHeight < -1)
+		{
+			rebalance(target);
+		}
+		if (target->parent == NULL)
+			return;
+		check_balance(target->parent);
 	}
 
 	void swap_content(BSTree &other)

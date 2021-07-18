@@ -42,33 +42,78 @@ TEST(BTreeInsertToEmpty)
 	ASSERT_EQ(endElement->parent, bt._head);
 }
 
+// TEST(BinaryTreeHeight)
+// {
+// 		BSTree<int, bool> bt;
+
+// 	bt.insert(ft::pair<int, bool>(6, true));
+
+// 	ABSTNode<int, bool> *head = bt._head;
+
+// 	head->left = new ABSTNode<int, bool>(NULL, NULL, head, 4, true);
+// 	head->left->left = new ABSTNode<int, bool>(NULL, NULL, head->left, 2, true);
+// 	head->left->right = new ABSTNode<int, bool>(NULL, NULL, head->left, 5, true);
+
+// 	head->right = new ABSTNode<int, bool>(NULL, NULL, head, 10, true);
+// 	head->right->left = new ABSTNode<int, bool>(NULL, NULL, head->right, 8, true);
+// 	head->right->right = new ABSTNode<int, bool>(NULL, NULL, head->right, 11, true);
+// 	head->right->left->right = new ABSTNode<int, bool>(NULL, NULL, head->right->left, 12, true);
+// 	bt._size += 6;
+
+// 	//         6
+// 	//   4          10
+// 	//2     5     8    11
+// 	//              12
+
+// 	ASSERT_EQ(bt.height(bt._head), 3);
+// 	ASSERT_EQ(bt.height(bt._head->left), 1);
+// }
+
+TEST(BTreeHeight2)
+{
+	BSTree<int, bool> bt;
+	bt._head = new ABSTNode<int, bool>(NULL, NULL, NULL, 4, true); // one node
+
+	ASSERT_EQ(bt.height(bt._head), 1);
+
+	bt._head->right = new ABSTNode<int, bool>(NULL, NULL, bt._head, 4, true); // one node
+	ASSERT_EQ(bt.height(bt._head), 2);
+	ASSERT_EQ(bt.height(bt._head->left), 0);
+	ASSERT_EQ(bt.height(bt._head->right), 1);
+}
+
 TEST(BTreeInsertToNotEmptyGreater)
 {
 	BSTree<int, bool> bt;
 
 	bt.insert(ft::pair<int, bool>(5, true));
+
 	ft::pair<ABSTNode<int, bool> *, bool> ret = bt.insert(ft::pair<int, bool>(6, true));
 
 	ASSERT_EQ(bt._size, 2);
 
-	ASSERT_EQ(bt._head->left, NULL);
+	ASSERT_NEQ(bt._head->left, NULL);
 	ASSERT_NEQ(bt._head->right, NULL);
 	ASSERT_EQ(bt._head->parent, NULL);
-	ASSERT_EQ(bt._head->data.first, 5);
+	ASSERT_EQ(bt._head->data.first, 6);
 
-	ABSTNode<int, bool> *newElement = bt._head->right;
+	ABSTNode<int, bool> *newElement = bt._head;
 	ASSERT_EQ(ret.first, newElement);
 	ASSERT_EQ(ret.second, true);
-	ASSERT_EQ(newElement->left, NULL);
-	ASSERT_NEQ(newElement->right, NULL);
 	ASSERT_EQ(newElement->data.first, 6);
 
-	ABSTNode<int, bool> *endElement = bt._head->right->right;
+	ABSTNode<int, bool> *endElement = bt._head->right;
 
 	ASSERT_EQ(endElement->left, NULL);
 	ASSERT_EQ(endElement->right, NULL);
 	ASSERT_NEQ(endElement->parent, NULL);
-	ASSERT_EQ(endElement->parent, newElement);
+	ASSERT_EQ(endElement->parent, bt._head);
+	ASSERT_EQ(endElement->fake, 1);
+
+	ASSERT_EQ(bt._head->left->data.first, 5);
+	ASSERT_EQ(bt._head->left->left, NULL);
+	ASSERT_EQ(bt._head->left->right, NULL);
+	ASSERT_EQ(bt._head->left->parent, bt._head);
 }
 
 TEST(BTreeInsertToNotEmptyLess)
@@ -134,11 +179,21 @@ TEST(BtreeDetectEndElement)
 	bt.insert(ft::pair<int, bool>(5, true));
 	bt.insert(ft::pair<int, bool>(2, true));
 	bt.insert(ft::pair<int, bool>(3, true));
+	std::cout << "---" << std::endl;
 	bt.insert(ft::pair<int, bool>(4, true));
 
-	ASSERT_EQ(bt._head->left->data.first, 2);
-	ASSERT_EQ(bt._head->left->right->data.first, 3);
-	ASSERT_EQ(bt._head->left->right->right->data.first, 4);
+	std::cout << "Head: " << bt._head->data.first << std::endl;
+	std::cout << "Left: " << bt._head->left->data.first << std::endl;
+	std::cout << "Left->left: " << bt._head->left->left << std::endl;
+	std::cout << "Left->right: " << bt._head->left->right << std::endl;
+	std::cout << "Right: " << bt._head->right->data.first << std::endl;
+	std::cout << "Right fake?: " << bt._head->right->fake << std::endl;
+
+	// ASSERT_EQ(bt._head->left->data.first, 2);
+	// ASSERT_EQ(bt._head->left->right->data.first, 3);
+	// ASSERT_EQ(bt._head->left->right->right->data.first, 4);
+	// ASSERT_EQ(bt._head->right->data.first, 5);
+	// ASSERT_EQ(bt._head->right->right->fake, true);
 }
 
 TEST(ABSTNodeImmediateSuccessor)
@@ -166,7 +221,17 @@ TEST(ABSTNodeImmediatePredecessor)
 	bt.insert(ft::pair<int, bool>(10, true));
 	bt.insert(ft::pair<int, bool>(45, true));
 
-	ASSERT_EQ(ret.first->immediatePredecessor()->data.first, 4);
+	// std::cout << "Head: " << bt._head->data.first << std::endl;
+	// std::cout << "Head->left: " << bt._head->left->data.first << std::endl;
+	// std::cout << "Head->left->left: " << bt._head->left->left->data.first << std::endl;
+	// std::cout << "Head->left->right: " << bt._head->left->right->data.first << std::endl;
+	// std::cout << "Head->right: " << bt._head->right->data.first << std::endl;
+	// std::cout << "Head->right->left: " << bt._head->right->left->data.first << std::endl;
+	// std::cout << "Head->right->right: " << bt._head->right->right->data.first << std::endl;
+
+	// std::cout << ret.first->parent->data.first << std::endl;
+	// std::cout << bt._head->immediatePredecessor()->data.first << std::endl;
+	ASSERT_EQ(bt._head->immediatePredecessor()->data.first, 5);
 
 }
 
@@ -484,33 +549,6 @@ TEST(BinaryTreeFind)
 	ASSERT_EQ(bt.find(12)->data.first, 12);
 	ASSERT_EQ(bt.find(6)->data.first, 6);
 	ASSERT_EQ(bt.find(42), NULL);
-}
-
-TEST(BinaryTreeHeight)
-{
-		BSTree<int, bool> bt;
-
-	bt.insert(ft::pair<int, bool>(6, true));
-
-	ABSTNode<int, bool> *head = bt._head;
-
-	head->left = new ABSTNode<int, bool>(NULL, NULL, head, 4, true);
-	head->left->left = new ABSTNode<int, bool>(NULL, NULL, head->left, 2, true);
-	head->left->right = new ABSTNode<int, bool>(NULL, NULL, head->left, 5, true);
-
-	head->right = new ABSTNode<int, bool>(NULL, NULL, head, 10, true);
-	head->right->left = new ABSTNode<int, bool>(NULL, NULL, head->right, 8, true);
-	head->right->right = new ABSTNode<int, bool>(NULL, NULL, head->right, 11, true);
-	head->right->left->right = new ABSTNode<int, bool>(NULL, NULL, head->right->left, 12, true);
-	bt._size += 6;
-
-	//         6
-	//   4          10
-	//2     5     8    11
-	//              12
-
-	ASSERT_EQ(bt.height(bt._head), 3);
-	ASSERT_EQ(bt.height(bt._head->left), 1);
 }
 
 
