@@ -133,20 +133,27 @@ public:
 
 	ft::pair<node_type *,bool> insert (node_type *target, const value_type &val)
 	{
-		node_type *new_node = new node_type(NULL, NULL, target, val.first, val.second);
+		node_type *new_node = NULL;
 		if (_comp(val.first, target->data.first))
 		{
 			if (target->left == NULL)
+			{
+				new_node = new node_type(NULL, NULL, target, val.first, val.second);
 				target->left = new_node;
+			}
 			else
 				return insert(target->left, val);
 		}
 		else if (_comp(target->data.first, val.first))
 		{
 			if (target->right == NULL)
+			{
+				new_node = new node_type(NULL, NULL, target, val.first, val.second);
 				target->right = new_node;
+			}
 			else if (target->right->fake)
 			{
+				new_node = new node_type(NULL, NULL, target, val.first, val.second);
 				node_type *tmp = target->right; // save the end element
 				target->right = new_node;
 				tmp->parent = target->right; // reattach end element to the new element
@@ -157,7 +164,7 @@ public:
 		}
 		else
 		{
-			delete new_node;
+			// delete new_node;
 			return ft::pair<node_type *, bool>(target, false);
 		}
 		_size += 1;
