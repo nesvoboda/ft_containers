@@ -233,7 +233,7 @@ namespace ft
 			// return (max_nodes < max_ptrdiff ? max_nodes : max_ptrdiff); // this is the solution that reflects
 			// my solution better, but the answer would be different from the standard library.
 			
-			return max_ptrdiff / (sizeof(node_type) - 28); // this return corrseponds to the std lib.
+			return max_ptrdiff / ((sizeof(node_type) - sizeof(int) * 2) / 2); // this return corrseponds to the std lib.
 		}
 
 		pair<iterator, bool> insert(const value_type &val)
@@ -241,6 +241,39 @@ namespace ft
 			ft::pair<node_type *, bool> ret = _base.insert(val);
 
 			return (pair<iterator, bool>(iterator(ret.first), ret.second));
+		}
+
+		iterator insert(iterator position, const value_type& val)
+		{
+			
+			if (_base._size == 0 || position == end())
+			{
+				return iterator(_base.insert(val).first);
+			}
+			else
+			{
+				Compare comp;
+				iterator posNext = position;
+				posNext++;
+				if (comp((*position).first, val.first) && !comp(lower_bound(position->first)->first, val.first))
+					return iterator(_base.insert(position._ptr, val).first);
+				else
+					return iterator(_base.insert(val).first);
+			}
+			// (void) position;
+			// return iterator(ret.first);
+			// return _base.insert(position, val);
+		}
+
+		// range (3)	
+		template <class InputIterator>
+		void insert (InputIterator first, InputIterator last)
+		{
+			while (first != last)
+			{
+				insert(*first);
+				first++;
+			}
 		}
 
 		iterator begin()

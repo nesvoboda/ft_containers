@@ -845,4 +845,6 @@ TEST(BTreeInsertGrowingHeightAndBalance)
 int main(void)
 {
 	run_tests();
+
+	std::cout << "ms: " << std::map<int, bool>::node << std::endl;
 }

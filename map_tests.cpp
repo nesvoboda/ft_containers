@@ -1060,16 +1060,189 @@ TEST(MapConstIter)
 
 }
 
-// TEST(MapMaxSize)
-// {
-// 	ft::map<int, bool> m1;
-// 	std::map<int, bool> sm1;
 
-// 	ASSERT_EQ(m1.max_size(), sm1.max_size());
-// }
+#define COMPARE_MAPS(a, b) \
+	ASSERT_EQ(a.size(), b.size()); \
+	std::cout << a.size() << "==" << b.size() << std::endl; \
+	ft::map<int, bool>::iterator iterB = b.begin(); \
+	for (std::map<int, bool>::iterator iterA = a.begin(); iterA != a.end(); iterA++) \
+	{ \
+		ASSERT_EQ(iterA->first, iterB->first);\
+		ASSERT_EQ(iterA->second, iterB->second); \
+		iterB++; \
+	} \
+	CHECK_EQ(iterB, b.end()); \
+
+TEST(MapInsert2CorrectInput)
+{
+	ft::map<int, bool> m1;
+	std::map<int, bool> sm1;
+
+	m1.insert(ft::pair<int, bool>(5, true));
+	m1.insert(ft::pair<int, bool>(6, true));
+	// m1.insert(ft::pair<int, bool>(7, true));
+	m1.insert(ft::pair<int, bool>(8, true));
+	m1.insert(ft::pair<int, bool>(9, true));
+
+	sm1.insert(std::pair<int, bool>(5, true));
+	sm1.insert(std::pair<int, bool>(6, true));
+	// sm1.insert(std::pair<int, bool>(7, true));
+	sm1.insert(std::pair<int, bool>(8, true));
+	sm1.insert(std::pair<int, bool>(9, true));
+
+	m1.insert(++++m1.begin(), ft::pair<int, bool>(7, true));
+
+	sm1.insert(++++sm1.begin(), std::pair<int, bool>(7, true));
+
+	COMPARE_MAPS(sm1, m1);
+}
+
+TEST(MapInsert2TooLow)
+{
+	ft::map<int, bool> m1;
+	std::map<int, bool> sm1;
+
+	m1.insert(ft::pair<int, bool>(5, true));
+	m1.insert(ft::pair<int, bool>(6, true));
+	// m1.insert(ft::pair<int, bool>(7, true));
+	m1.insert(ft::pair<int, bool>(8, true));
+	m1.insert(ft::pair<int, bool>(9, true));
+
+	sm1.insert(std::pair<int, bool>(5, true));
+	sm1.insert(std::pair<int, bool>(6, true));
+	// sm1.insert(std::pair<int, bool>(7, true));
+	sm1.insert(std::pair<int, bool>(8, true));
+	sm1.insert(std::pair<int, bool>(9, true));
+
+	m1.insert(m1.begin(), ft::pair<int, bool>(7, true));
+
+	sm1.insert(sm1.begin(), std::pair<int, bool>(7, true));
+
+	COMPARE_MAPS(sm1, m1);
+}
+
+
+TEST(MapInsert2TooHigh)
+{
+	ft::map<int, bool> m1;
+	std::map<int, bool> sm1;
+
+	m1.insert(ft::pair<int, bool>(5, true));
+	m1.insert(ft::pair<int, bool>(6, true));
+	// m1.insert(ft::pair<int, bool>(7, true));
+	m1.insert(ft::pair<int, bool>(8, true));
+	m1.insert(ft::pair<int, bool>(9, true));
+
+	sm1.insert(std::pair<int, bool>(5, true));
+	sm1.insert(std::pair<int, bool>(6, true));
+	// sm1.insert(std::pair<int, bool>(7, true));
+	sm1.insert(std::pair<int, bool>(8, true));
+	sm1.insert(std::pair<int, bool>(9, true));
+
+	m1.insert(++++++++m1.begin(), ft::pair<int, bool>(7, true));
+
+	sm1.insert(++++++++sm1.begin(), std::pair<int, bool>(7, true));
+
+	COMPARE_MAPS(sm1, m1);
+}
+
+
+TEST(MapInsert2Exists)
+{
+	ft::map<int, bool> m1;
+	std::map<int, bool> sm1;
+
+	m1.insert(ft::pair<int, bool>(5, true));
+	m1.insert(ft::pair<int, bool>(6, true));
+	m1.insert(ft::pair<int, bool>(7, true));
+	m1.insert(ft::pair<int, bool>(8, true));
+	m1.insert(ft::pair<int, bool>(9, true));
+
+	sm1.insert(std::pair<int, bool>(5, true));
+	sm1.insert(std::pair<int, bool>(6, true));
+	sm1.insert(std::pair<int, bool>(7, true));
+	sm1.insert(std::pair<int, bool>(8, true));
+	sm1.insert(std::pair<int, bool>(9, true));
+
+	m1.insert(++++++m1.begin(), ft::pair<int, bool>(7, true));
+
+	sm1.insert(++++++sm1.begin(), std::pair<int, bool>(7, true));
+
+	COMPARE_MAPS(sm1, m1);
+}
+
+
+TEST(MapInsert2End)
+{
+	ft::map<int, bool> m1;
+	std::map<int, bool> sm1;
+
+	m1.insert(ft::pair<int, bool>(5, true));
+	m1.insert(ft::pair<int, bool>(6, true));
+	m1.insert(ft::pair<int, bool>(7, true));
+	m1.insert(ft::pair<int, bool>(8, true));
+	m1.insert(ft::pair<int, bool>(9, true));
+
+	sm1.insert(std::pair<int, bool>(5, true));
+	sm1.insert(std::pair<int, bool>(6, true));
+	sm1.insert(std::pair<int, bool>(7, true));
+	sm1.insert(std::pair<int, bool>(8, true));
+	sm1.insert(std::pair<int, bool>(9, true));
+
+	m1.insert(m1.end(), ft::pair<int, bool>(7, true));
+
+	sm1.insert(sm1.end(), std::pair<int, bool>(7, true));
+
+	COMPARE_MAPS(sm1, m1);
+}
+
+TEST(MapInsert2EndSmaller)
+{
+	ft::map<int, bool> m1;
+	std::map<int, bool> sm1;
+
+	m1.insert(ft::pair<int, bool>(5, true));
+	
+	sm1.insert(std::pair<int, bool>(5, true));
+	
+	m1.insert(m1.end(), ft::pair<int, bool>(2, true));
+
+	sm1.insert(sm1.end(), std::pair<int, bool>(2, true));
+
+	COMPARE_MAPS(sm1, m1);
+
+	size_t i = 0;
+	ft::map<int, bool>::iterator iter1 = m1.begin();
+	while (iter1 != m1.end())
+	{
+		std::cout << "m1[" << i << "]: " << iter1->first << " -> " << iter1->second << std::endl;
+		iter1++;
+	}
+
+	std::map<int, bool>::iterator iter2 = sm1.begin();
+	while (iter2 != sm1.end())
+	{
+		std::cout << "sm1[" << i << "]: " << iter2->first << " -> " << iter2->second << std::endl;
+		iter2++;
+	}
+}
+
+TEST(MapMaxSize)
+{
+	ft::map<int, bool> m1;
+	std::map<int, bool> sm1;
+
+	ASSERT_EQ(m1.max_size(), sm1.max_size());
+
+	ft::map<std::string, double> m2;
+	std::map<std::string, double> sm2;
+	ASSERT_EQ(m2.max_size(), sm2.max_size());
+}
 
 int main(void)
 {
+	std::cout << "size of one int: " << sizeof(int) << std::endl;
+	std::cout << "size of one node: " << sizeof(ABSTNode<int, bool>) << std::endl;
 	run_tests();
 	// sleep(10);
 }
