@@ -72,7 +72,7 @@ namespace ft
 			return (*this);
 		};
 
-		IteratorValue &operator*(void) { return _ptr->data; };
+		IteratorValue &operator*(void) const { return _ptr->data; };
 		IteratorValue *operator->(void) const { return &(_ptr->data); };
 
 		bool operator==(const mapIterator &rhs) const { return _ptr == rhs._ptr; };
