@@ -65,9 +65,6 @@ namespace ft
 		mapIterator(const mapIterator<T, NT> &other) : _ptr(other._ptr){};
 		~mapIterator(){};
 
-		// template <typename T, typename node_type>
-		// mapIte<T, node_type> &mapIte<T, node_type>::operator=(const mapIte &rhs) {
-
 		template <typename T, typename NT>
 		mapIterator<T, NT> &operator=(const mapIterator &other)
 		{
@@ -230,10 +227,13 @@ namespace ft
 
 		size_type max_size() const
 		{
-			size_type max_nodes = std::numeric_limits<size_type>::max() / sizeof(value_type);
+			// size_type max_nodes = std::numeric_limits<size_type>::max() / sizeof(value_type);
 			size_type max_ptrdiff = std::numeric_limits<difference_type >::max();
 
-			return (max_nodes < max_ptrdiff ? max_nodes : max_ptrdiff);
+			// return (max_nodes < max_ptrdiff ? max_nodes : max_ptrdiff); // this is the solution that reflects
+			// my solution better, but the answer would be different from the standard library.
+			
+			return max_ptrdiff / (sizeof(node_type) - 28); // this return corrseponds to the std lib.
 		}
 
 		pair<iterator, bool> insert(const value_type &val)
@@ -423,7 +423,7 @@ namespace ft
 				return 1;
 		}
 
-		iterator lower_bound (const key_type& k) const
+		iterator lower_bound (const key_type& k)
 		{
 			iterator b = begin();
 
@@ -436,7 +436,7 @@ namespace ft
 			return end();
 		}
 
-		const_iterator lower_bound (const key_type& k)
+		const_iterator lower_bound (const key_type& k) const
 		{
 			const_iterator b = begin();
 

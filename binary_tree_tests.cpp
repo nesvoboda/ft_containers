@@ -321,6 +321,10 @@ TEST(ABSTNodeImmediateSuccessor)
 	bt.insert(ft::pair<int, bool>(7, true));
 	bt.insert(ft::pair<int, bool>(8, true));
 
+	std::map<int, bool> m1;
+
+	// m1.max_size
+
 	ASSERT_EQ(ret.first->immediateSuccessor()->data.first, 7);
 
 }
