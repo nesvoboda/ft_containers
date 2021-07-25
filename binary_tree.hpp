@@ -3,6 +3,7 @@
 # define BINARY_TREE_HPP
 
 #include "map_util.hpp"
+#include "util.hpp"
 #include <unistd.h>
 
 // What a bst node should have
@@ -146,12 +147,13 @@ public:
 		if (target->right)
 			rh = target->right->height;
 
-		target->height = 1 + std::max(lh, rh);
+		target->height = 1 + MAX(lh, rh);
 
 		// std::cout << "Height assigned: " << target->height << " to node: " << target->data.first << std::endl;
 		target->bf = rh - lh;
 	}
 
+/*
 	void print_node(node_type *node)
 	{
 		if (!node)
@@ -173,6 +175,8 @@ public:
 	{
 		print_node(_head);
 	}
+
+	*/
 
 	void update_nodes_up_to_root(node_type *target)
 	{

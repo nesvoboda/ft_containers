@@ -1035,6 +1035,31 @@ TEST(MapRangeConstructor)
 
 }
 
+#include <vector>
+
+TEST(MapConstIter)
+{
+	std::vector<ft::pair<int,bool> > v1;
+	v1.push_back(ft::pair<int, bool>(5, true));
+	v1.push_back(ft::pair<int, bool>(6, true));
+	v1.push_back(ft::pair<int, bool>(7, true));
+	v1.push_back(ft::pair<int, bool>(8, true));
+
+	std::vector<std::pair<int,bool> > v2;
+	v2.push_back(std::pair<int, bool>(5, true));
+	v2.push_back(std::pair<int, bool>(6, true));
+	v2.push_back(std::pair<int, bool>(7, true));
+	v2.push_back(std::pair<int, bool>(8, true));
+
+	const ft::map<int, bool> m1(v1.begin(), v1.end());
+
+	// ft::map<int, bool>::const_iterator ite = m1.begin();
+
+	m1.lower_bound(5);
+
+
+}
+
 // TEST(MapMaxSize)
 // {
 // 	ft::map<int, bool> m1;

@@ -48,22 +48,28 @@ namespace ft
 	// 	BSTNode *head;
 	// }
 
-	template <class IteratorValue, class Key, class ContainerValue>
+	template <class IteratorValue, class NodeType>
 	class mapIterator
 	{
-		typedef ABSTNode<Key, ContainerValue> node_type;
+		typedef NodeType node_type;
 
 	public:
 		typedef IteratorValue value_type;
 		typedef ptrdiff_t difference_type;
-		ABSTNode<Key, ContainerValue> *_ptr; //REMOVE BEFORE FLIGHT
+		NodeType *_ptr; //REMOVE BEFORE FLIGHT
 
 		mapIterator() : _ptr(NULL){};
-		mapIterator(ABSTNode<Key, ContainerValue> *ptr) : _ptr(ptr){};
-		mapIterator(const mapIterator &other) : _ptr(other._ptr){};
+		mapIterator(NodeType *ptr) : _ptr(ptr){};
+
+		template <typename T, typename NT>
+		mapIterator(const mapIterator<T, NT> &other) : _ptr(other._ptr){};
 		~mapIterator(){};
 
-		mapIterator &operator=(const mapIterator &other)
+		// template <typename T, typename node_type>
+		// mapIte<T, node_type> &mapIte<T, node_type>::operator=(const mapIte &rhs) {
+
+		template <typename T, typename NT>
+		mapIterator<T, NT> &operator=(const mapIterator &other)
 		{
 			_ptr = other._ptr;
 			return (*this);
@@ -75,9 +81,9 @@ namespace ft
 		bool operator==(const mapIterator &rhs) const { return _ptr == rhs._ptr; };
 		bool operator!=(const mapIterator &rhs) const { return _ptr != rhs._ptr; };
 
-		operator mapIterator<const IteratorValue, Key, ContainerValue>(void) const
+		operator mapIterator<const IteratorValue, NodeType>(void) const
 		{
-			return mapIterator<const IteratorValue, Key, ContainerValue>(_ptr);
+			return mapIterator<const IteratorValue, NodeType>(_ptr);
 		}
 
 		mapIterator &operator++()
@@ -185,8 +191,8 @@ namespace ft
 		typedef typename allocator_type::const_reference const_reference;				   //	allocator_type::const_reference	for the default allocator: const value_type&
 		typedef typename allocator_type::pointer pointer;								   //	allocator_type::pointer	for the default allocator: value_type*
 		typedef typename allocator_type::const_pointer const_pointer;					   //	allocator_type::const_pointer	for the default allocator: const value_type*
-		typedef mapIterator<value_type, const key_type, mapped_type> iterator;			   //	a bidirectional iterator to value_type	convertible to const_iterator
-		typedef mapIterator<const value_type, const key_type, mapped_type> const_iterator; //a bidirectional iterator to const value_type	
+		typedef mapIterator<value_type, ABSTNode<const key_type, mapped_type> > iterator;			   //	a bidirectional iterator to value_type	convertible to const_iterator
+		typedef mapIterator<const value_type, ABSTNode<const key_type, mapped_type> > const_iterator; //a bidirectional iterator to const value_type	
 		typedef rev_iterator<iterator> reverse_iterator;								   // reverse_iterator<iterator>	
 		typedef rev_iterator<const_iterator> const_reverse_iterator;					   // const_reverse_iterator	reverse_iterator<const_iterator>	
 		typedef ptrdiff_t difference_type;												   // TODO implement in iter traits	a signed integral type, identical to: iterator_traits<iterator>::difference_type	usually the same as ptrdiff_t
@@ -273,7 +279,7 @@ namespace ft
 			{
 				cur = cur->right;
 			}
-			return iterator(cur);
+			return const_iterator(cur);
 		}
 
 		reverse_iterator rend()
@@ -417,7 +423,7 @@ namespace ft
 				return 1;
 		}
 
-		iterator lower_bound (const key_type& k)
+		iterator lower_bound (const key_type& k) const
 		{
 			iterator b = begin();
 
@@ -430,9 +436,9 @@ namespace ft
 			return end();
 		}
 
-		const_iterator lower_bound (const key_type& k) const
+		const_iterator lower_bound (const key_type& k)
 		{
-			iterator b = begin();
+			const_iterator b = begin();
 
 			while (b != end())
 			{
@@ -459,7 +465,7 @@ namespace ft
 
 		const_iterator upper_bound (const key_type& k) const
 		{
-			iterator b = begin();
+			const_iterator b = begin();
 
 			while (b != end())
 			{
