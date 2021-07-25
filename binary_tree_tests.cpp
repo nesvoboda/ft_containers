@@ -34,6 +34,10 @@ TEST(BTreeInsertToEmpty)
 	ASSERT_EQ(bt._head->parent, NULL);
 	ASSERT_EQ(bt._head->data.first, 5);
 
+	// 5
+	//   x
+	ASSERT_EQ(bt._head->bf, 1);
+
 	ABSTNode<int, bool> *endElement = bt._head->right;
 
 	ASSERT_EQ(endElement->left, NULL);
@@ -132,6 +136,13 @@ TEST(BTreeInsertToNotEmptyGreater)
 
 	ft::pair<ABSTNode<int, bool> *, bool> ret = bt.insert(ft::pair<int, bool>(6, true));
 
+	//   6
+	// 5    x
+
+	ASSERT_EQ(bt._head->bf, 0);
+	ASSERT_EQ(bt._head->left->bf, 0);
+	ASSERT_EQ(bt._head->right->bf, 0);
+
 	ASSERT_EQ(bt._size, 2);
 
 	ASSERT_NEQ(bt._head->left, NULL);
@@ -165,6 +176,13 @@ TEST(BTreeInsertToNotEmptyLess)
 	bt.insert(ft::pair<int, bool>(5, true));
 	ft::pair<ABSTNode<int, bool> *, bool> ret = bt.insert(ft::pair<int, bool>(2, true));
 
+	//   5
+	//2     x
+
+	ASSERT_EQ(bt._head->bf, 0);
+	ASSERT_EQ(bt._head->left->bf, 0);
+	ASSERT_EQ(bt._head->right->bf, 0);
+
 	ASSERT_EQ(bt._size, 2);
 
 	ASSERT_NEQ(bt._head->left, NULL);
@@ -188,6 +206,53 @@ TEST(BTreeInsertToNotEmptyLess)
 	ASSERT_NEQ(endElement->parent, NULL);
 	ASSERT_EQ(endElement->parent, bt._head);
 }
+
+TEST(BTreeBalanceFactorRightHeavy)
+{
+	BSTree<int, bool> bt;
+
+	ABSTNode<int, bool> *endNode = bt._head;
+
+	bt._head = new ABSTNode<int, bool>(NULL, NULL, NULL, 5, true);
+	bt._head->right = new ABSTNode<int, bool>(NULL, endNode, bt._head, 6, true);
+	// bt._head->right = new ABSTNode<int, bool>(NULL, endNode, bt._head->right, 7, true);
+
+	endNode->parent = bt._head->right;
+
+	bt.update_nodes_up_to_root(bt._head->right);
+
+	// 5
+	//   6
+	//     x
+
+	ASSERT_EQ(bt._head->bf, 2);
+	ASSERT_EQ(bt._head->right->bf, 1);
+	ASSERT_EQ(bt._head->right->right->bf, 0);
+}
+
+TEST(BTreeBalanceFactorLeftHeavy)
+{
+	BSTree<int, bool> bt;
+
+	ABSTNode<int, bool> *endNode = bt._head;
+
+	bt._head = new ABSTNode<int, bool>(NULL, NULL, NULL, 5, true);
+	bt._head->left = new ABSTNode<int, bool>(endNode, NULL, bt._head, 6, true);
+	// bt._head->right = new ABSTNode<int, bool>(NULL, endNode, bt._head->right, 7, true);
+
+	endNode->parent = bt._head->left;
+
+	bt.update_nodes_up_to_root(bt._head->left);
+
+	//     5
+	//   6
+	// x
+
+	ASSERT_EQ(bt._head->bf, -2);
+	ASSERT_EQ(bt._head->left->bf, -1);
+	ASSERT_EQ(bt._head->left->left->bf, 0);
+}
+
 
 TEST(BTreeInsertExisting)
 {
@@ -224,12 +289,19 @@ TEST(BtreeDetectEndElement)
 	std::cout << "---" << std::endl;
 	bt.insert(ft::pair<int, bool>(4, true));
 
-	std::cout << "Head: " << bt._head->data.first << std::endl;
-	std::cout << "Left: " << bt._head->left->data.first << std::endl;
-	std::cout << "Left->left: " << bt._head->left->left << std::endl;
-	std::cout << "Left->right: " << bt._head->left->right << std::endl;
-	std::cout << "Right: " << bt._head->right->data.first << std::endl;
-	std::cout << "Right fake?: " << bt._head->right->fake << std::endl;
+	ASSERT_EQ(bt._size, 4);
+
+	std::cout << "HEad: " << bt._head->data.first << std::endl;
+	std::cout << "HEad left: " << bt._head->left->data.first << std::endl;
+	std::cout << "HEad left left: " << bt._head->left->left->data.first << std::endl;
+	std::cout << "HEad left right: " << bt._head->left->right->data.first << std::endl;
+	std::cout << "HEad right: " << bt._head->right->data.first << std::endl;
+
+	// ASSERT_EQ(bt._head->height, 2);
+	ASSERT_EQ(bt._head->left->height, 1);
+	ASSERT_EQ(bt._head->right->height, 0);
+	ASSERT_EQ(bt._head->left->left->height, 0);
+	// ASSERT_EQ(bt._head->right->right->height, 0);
 
 	// ASSERT_EQ(bt._head->left->data.first, 2);
 	// ASSERT_EQ(bt._head->left->right->data.first, 3);
@@ -691,6 +763,77 @@ TEST(BinaryTreeRightLeftRot)
 	ASSERT_EQ(bt._head->right->parent, bt._head);
 }
 
+
+// TEST(BTreeInsertGrowingWtf)
+// {
+// 	BSTree<int, bool> bt;
+
+// 	bt.insert(ft::pair<int, bool>(4, true));
+// 	bt.insert(ft::pair<int, bool>(5, true));
+	
+// 	bt.insert(ft::pair<int, bool>(6, true));
+
+// 	std::cout << " --- " << std::endl;
+
+// 	std::cout << "Head: " << bt._head->data.first << std::endl;
+// 	std::cout << "Head left: " << bt._head->left->data.first << std::endl;
+// 	std::cout << "Head right: " << bt._head->right->data.first << std::endl;
+// 	std::cout << "Head right right: " << bt._head->right->right->data.first << std::endl;
+
+// 	ASSERT_NEQ(bt._head->right->right, NULL)
+// }
+
+
+TEST(BTreeInsertGrowingHeightAndBalance)
+{
+	BSTree<int, bool> bt;
+
+	bt.insert(ft::pair<int, bool>(4, true));
+	bt.insert(ft::pair<int, bool>(5, true));
+	
+	bt.insert(ft::pair<int, bool>(6, true));
+	ASSERT_EQ(bt._head->height, 2);
+	bt.print();
+	std::cout << " --- " << std::endl;
+
+	bt.insert(ft::pair<int, bool>(7, true));
+
+
+
+
+	std::cout << "Head: " << bt._head->data.first << std::endl;
+	std::cout << "Head left: " << bt._head->left->data.first << std::endl;
+	std::cout << "Head right: " << bt._head->right->data.first << std::endl;
+	std::cout << "Head right right: " << bt._head->right->right->data.first << std::endl;
+
+
+	// std::cout << "Head left left: " << bt._head->left->left->data.first << std::endl;
+	// std::cout << "Head right left: " << bt._head->right->left->data.first << std::endl;
+	// std::cout << "Head right right: " << bt._head->right->left->data.first << std::endl;
+	
+	std::cout << " --- " << std::endl;
+
+
+	std::cout << "Head: " << bt._head->data.first << std::endl;
+	std::cout << "Head left: " << bt._head->left->data.first << std::endl;
+	std::cout << "Head right: " << bt._head->right->data.first << std::endl;
+	std::cout << "Head right left: " << bt._head->right->left->data.first << std::endl;
+	std::cout << "Head right right: " << bt._head->right->right->data.first << std::endl;
+	
+	ASSERT_EQ(bt._head->height, 2);
+	ASSERT_EQ(bt._head->left->height, 0);
+	ASSERT_EQ(bt._head->right->height, 1);
+	// ASSERT_EQ(bt._head->left->left->height, 0);
+	ASSERT_EQ(bt._head->right->right->height, 0);
+	ASSERT_EQ(bt._head->right->left->height, 0);
+
+	ASSERT_EQ(bt._head->bf, 1);
+	ASSERT_EQ(bt._head->left->bf, 0);
+	// ASSERT_EQ(bt._head->left->left->bf, 0);
+	ASSERT_EQ(bt._head->right->bf, 0);
+	ASSERT_EQ(bt._head->right->right->bf, 0);
+	ASSERT_EQ(bt._head->right->left->bf, 0);
+}
 
 
 // TODO check if rebalancing doesn't move the 'end' pointer

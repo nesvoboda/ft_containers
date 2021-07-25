@@ -37,11 +37,16 @@ public:
 	// Key key;
 	// Value value;
 	ft::pair<Key, Value> data;
+	int height;
+	int bf;
 
 	bool fake; // for the end-element
 
 	ABSTNode(ABSTNode *_left, ABSTNode *_right, ABSTNode *_parent, Key _key, Value _value, bool _fake = false) :
-		left(_left), right(_right), parent(_parent), data(ft::pair<Key, Value>(_key, _value)), fake(_fake) {};
+		left(_left), right(_right), parent(_parent), data(ft::pair<Key, Value>(_key, _value)), fake(_fake) {
+			height = 0;
+			bf = 0;
+		};
 
 	ABSTNode *immediateSuccessor(void)
 	{
@@ -131,6 +136,53 @@ public:
 
 	~BSTree() { free_node(_head); _head = NULL;};
 
+	void update_node(node_type *target)
+	{
+		int lh = -1;
+		int rh = -1;
+		if (target->left)
+			lh = target->left->height;
+
+		if (target->right)
+			rh = target->right->height;
+
+		target->height = 1 + std::max(lh, rh);
+
+		// std::cout << "Height assigned: " << target->height << " to node: " << target->data.first << std::endl;
+		target->bf = rh - lh;
+	}
+
+	void print_node(node_type *node)
+	{
+		if (!node)
+			return;
+		
+		std::cout << "Node: " << node->data.first << ", ";
+		if (node->left)
+			std::cout << " left: " << node->left->data.first;
+		if (node->right)
+			std::cout << " right: " << node->right->data.first;
+
+		std::cout << std::endl;
+
+		print_node(node->left);
+		print_node(node->right);
+	}
+
+	void print(void)
+	{
+		print_node(_head);
+	}
+
+	void update_nodes_up_to_root(node_type *target)
+	{
+		while (target != NULL)
+		{
+			update_node(target);
+			target = target->parent;
+		}
+	}
+
 	ft::pair<node_type *,bool> insert (node_type *target, const value_type &val)
 	{
 		node_type *new_node = NULL;
@@ -139,6 +191,8 @@ public:
 			if (target->left == NULL)
 			{
 				new_node = new node_type(NULL, NULL, target, val.first, val.second);
+				new_node->height = 0;
+				new_node->bf = 0;
 				target->left = new_node;
 			}
 			else
@@ -149,11 +203,15 @@ public:
 			if (target->right == NULL)
 			{
 				new_node = new node_type(NULL, NULL, target, val.first, val.second);
+				new_node->height = 0;
+				new_node->bf = 0;
 				target->right = new_node;
 			}
 			else if (target->right->fake)
 			{
 				new_node = new node_type(NULL, NULL, target, val.first, val.second);
+				new_node->height = 1; // because it will also have the end element
+				new_node->bf = 1;
 				node_type *tmp = target->right; // save the end element
 				target->right = new_node;
 				tmp->parent = target->right; // reattach end element to the new element
@@ -168,7 +226,9 @@ public:
 			return ft::pair<node_type *, bool>(target, false);
 		}
 		_size += 1;
+		update_nodes_up_to_root(new_node);
 		check_balance(new_node);
+		// update_nodes_up_to_root(new_node);
 		return (ft::pair<node_type *, bool>(new_node, true));
 	}
 
@@ -178,6 +238,8 @@ public:
 		{
 			node_type *tmp = _head;
 			_head = new node_type(NULL, tmp, NULL, val.first, val.second);
+			_head->height = 1;
+			_head->bf = 1;
 			tmp->parent = _head;
 			_size += 1;
 			return ft::pair<node_type *, bool>(_head, true);
@@ -217,6 +279,7 @@ public:
 
 	node_type *left_rotate(node_type *grandparent)
 	{
+		// std::cout << "Left rotate" << std::endl;
 		node_type *tmp = grandparent->right;
 		grandparent->right = tmp->left;
 
@@ -240,12 +303,16 @@ public:
 			else
 				tmp2->left = tmp;
 		}
+		update_node(grandparent);
+		update_nodes_up_to_root(tmp);
+		
 
 		return tmp;
 	}
 
 	node_type *right_rotate(node_type *grandparent)
 	{
+		// std::cout << "Right rotate on: " << grandparent->data.first << std::endl;
 		node_type *tmp = grandparent->left;
 
 		grandparent->left = tmp->right;
@@ -269,6 +336,8 @@ public:
 			else
 				tmp2->left = tmp;
 		}
+		update_node(grandparent);
+		update_nodes_up_to_root(tmp);
 		return tmp;
 
 	}
@@ -315,7 +384,8 @@ public:
 
 	void check_balance(node_type *target)
 	{
-		ssize_t diffHeight = height(target->left) - height(target->right);
+		// ssize_t diffHeight = height(target->left) - height(target->right);
+		int diffHeight = target->bf;
 		if (diffHeight > 1 || diffHeight < -1)
 		{
 			rebalance(target);
