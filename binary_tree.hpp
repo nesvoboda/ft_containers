@@ -6,27 +6,6 @@
 #include "util.hpp"
 #include <unistd.h>
 
-// What a bst node should have
-// template <typename Content>
-// struct ABSTNode
-// {
-// public:
-// 	ABSTNode *left;
-// 	ABSTNode *right;
-// 	ABSTNode *parent;
-// 	// Content content;
-// 	Content key;
-
-// 	bool fake; // for the end-element
-
-// 	ABSTNode(ABSTNode *_left, ABSTNode *_right, ABSTNode *_parent, Content _content, bool _fake = false) :
-// 		left(_left), right(_right), parent(_parent), key(_content), fake(_fake) {};
-
-// 	Content toCompare(void) const {return content;};
-
-// };
-
-
 template <typename Key, typename Value>
 struct ABSTNode
 {
@@ -34,9 +13,7 @@ public:
 	ABSTNode *left;
 	ABSTNode *right;
 	ABSTNode *parent;
-	// // Content content;
-	// Key key;
-	// Value value;
+
 	ft::pair<Key, Value> data;
 	int height;
 	int bf;
@@ -75,36 +52,31 @@ public:
 		return cur;
 	}
 
-	// Content toCompare(void) const {return content;};
-
 };
 
 
-// class IntNode : public ABSTNode<int>
-// {
-// 	IntNode() {};
-// };
-
 // A generic binary search tree
-template <typename Key, typename Value, typename Compare = ft::less<Key> >
+template <typename Key, typename Value, typename Compare = ft::less<Key>, typename Allocator = std::allocator<ft::pair<Key, Value> > >
 class BSTree
 {
 public:
 
-	// Assumptions for now:
-	// - an empty tree contains one empty node
-
 	typedef ABSTNode<Key, Value> node_type;
 	typedef ft::pair<const Key, Value> value_type;
+	typedef typename Allocator::template rebind<node_type>::other node_alloc_type;
 	
 	node_type *_head;
 	size_t _size;
 	Compare _comp;
+	Allocator _alloc;
+	node_alloc_type _nodeAlloc;
+	// Allocator &_alloc;
 
 	/////////////////
-	BSTree(Compare comp = Compare()) : _head(new node_type(NULL, NULL, NULL, Key(), Value(), true)), _size(0), _comp(comp) {};
+	BSTree(Compare comp = Compare(), Allocator alloc = Allocator()) : 
+	_head(create_node(NULL, NULL, NULL, Key(), Value(), true)), _size(0), _comp(comp), _alloc(alloc), _nodeAlloc(node_alloc_type()) {};
 
-	BSTree(const BSTree &rhs) : _head(new node_type(NULL, NULL, NULL, Key(), Value(), true)), _size(0), _comp(Compare()) {
+	BSTree(const BSTree &rhs) : _head(create_node(NULL, NULL, NULL, Key(), Value(), true)), _size(0), _comp(rhs._comp), _alloc(rhs._alloc), _nodeAlloc(node_alloc_type()) {
 		clone_node(rhs._head);
 	};
 
@@ -121,15 +93,32 @@ public:
 			clone_node(other->right);
 	}
 
+	node_type *create_node(node_type *_left, node_type *_right, node_type *_parent, Key _key, Value _value, bool _fake = false)
+	{
+		node_type *ret = _nodeAlloc.allocate(1);
+		_nodeAlloc.construct(ret, node_type(_left, _right, _parent, _key, _value, _fake));
+		return ret;
+	}
+
+	void delete_node(node_type *target)
+	{
+		_nodeAlloc.destroy(target);
+		_nodeAlloc.deallocate(target, 1);
+	}
+
 	void clear(void)
 	{
 		free_node(_head);
-		_head = new node_type(NULL, NULL, NULL, Key(), Value(), true);
+		_head = create_node(NULL, NULL, NULL, Key(), Value(), true);
 		_size = 0;
 	}
 
 	BSTree &operator=(const BSTree &rhs)
 	{
+		_comp = rhs._comp;
+		_alloc = rhs._alloc;
+		_nodeAlloc = rhs._nodeAlloc;
+		
 		clear();
 		clone_node(rhs._head);
 		return (*this);
@@ -148,8 +137,6 @@ public:
 			rh = target->right->height;
 
 		target->height = 1 + MAX(lh, rh);
-
-		// std::cout << "Height assigned: " << target->height << " to node: " << target->data.first << std::endl;
 		target->bf = rh - lh;
 	}
 
@@ -194,7 +181,7 @@ public:
 		{
 			if (target->left == NULL)
 			{
-				new_node = new node_type(NULL, NULL, target, val.first, val.second);
+				new_node = create_node(NULL, NULL, target, val.first, val.second);
 				new_node->height = 0;
 				new_node->bf = 0;
 				target->left = new_node;
@@ -206,14 +193,14 @@ public:
 		{
 			if (target->right == NULL)
 			{
-				new_node = new node_type(NULL, NULL, target, val.first, val.second);
+				new_node = create_node(NULL, NULL, target, val.first, val.second);
 				new_node->height = 0;
 				new_node->bf = 0;
 				target->right = new_node;
 			}
 			else if (target->right->fake)
 			{
-				new_node = new node_type(NULL, NULL, target, val.first, val.second);
+				new_node = create_node(NULL, NULL, target, val.first, val.second);
 				new_node->height = 1; // because it will also have the end element
 				new_node->bf = 1;
 				node_type *tmp = target->right; // save the end element
@@ -232,7 +219,7 @@ public:
 		_size += 1;
 		update_nodes_up_to_root(new_node);
 		check_balance(new_node);
-		// update_nodes_up_to_root(new_node);
+
 		return (ft::pair<node_type *, bool>(new_node, true));
 	}
 
@@ -241,7 +228,7 @@ public:
 		if (_size == 0)
 		{
 			node_type *tmp = _head;
-			_head = new node_type(NULL, tmp, NULL, val.first, val.second);
+			_head = create_node(NULL, tmp, NULL, val.first, val.second);
 			_head->height = 1;
 			_head->bf = 1;
 			tmp->parent = _head;
@@ -250,24 +237,6 @@ public:
 		}
 		return insert(_head, val);
 	}
-
-	// size_t height(node_type *target)
-	// {
-	// 	if (target == NULL || (target->left == NULL && target->right == NULL))
-	// 	{
-	// 		return 0;
-	// 	}
-	// 	size_t left_height = 0;
-	// 	if (target->left)
-	// 		left_height = 1 + height(target->left);
-
-
-	// 	size_t right_height = 0;
-	// 	if (target->right)
-	// 		right_height = 1 + height(target->right);
-
-	// 	return left_height > right_height ? left_height : right_height;
-	// }
 
 	ssize_t height(node_type *target)
 	{
@@ -283,7 +252,6 @@ public:
 
 	node_type *left_rotate(node_type *grandparent)
 	{
-		// std::cout << "Left rotate" << std::endl;
 		node_type *tmp = grandparent->right;
 		grandparent->right = tmp->left;
 
@@ -296,10 +264,6 @@ public:
 		grandparent->parent = tmp;
 		tmp->parent = tmp2;
 
-		// // tmp parent
-
-		// if (_head == grandparent)
-		// 	_head = tmp;
 		if (tmp2)
 		{
 			if (grandparent == tmp2->right)
@@ -309,14 +273,11 @@ public:
 		}
 		update_node(grandparent);
 		update_nodes_up_to_root(tmp);
-		
-
 		return tmp;
 	}
 
 	node_type *right_rotate(node_type *grandparent)
 	{
-		// std::cout << "Right rotate on: " << grandparent->data.first << std::endl;
 		node_type *tmp = grandparent->left;
 
 		grandparent->left = tmp->right;
@@ -388,7 +349,6 @@ public:
 
 	void check_balance(node_type *target)
 	{
-		// ssize_t diffHeight = height(target->left) - height(target->right);
 		int diffHeight = target->bf;
 		if (diffHeight > 1 || diffHeight < -1)
 		{
@@ -503,7 +463,7 @@ public:
 			}
 			
 		}
-		else
+		else // target has two children, erasing is hard
 		{
 			node_type *successor = target->immediateSuccessor();
 			if (target == _head)
@@ -516,7 +476,7 @@ public:
 			erase(target);
 			return;
 		}
-		delete target;
+		delete_node(target);
 		_size -= 1;
 	}
 
@@ -527,7 +487,8 @@ public:
 			free_node(target->left);
 		if (target->right)
 			free_node(target->right);
-		delete target;
+		// delete target;
+		delete_node(target);
 	}
 
 	node_type *find(node_type *target, const Key &k) const

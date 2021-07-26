@@ -16,10 +16,10 @@ namespace ft
 	{
 		typedef NodeType node_type;
 
+		NodeType *_ptr;
 	public:
 		typedef IteratorValue value_type;
 		typedef ptrdiff_t difference_type;
-		NodeType *_ptr; //REMOVE BEFORE FLIGHT
 
 		mapIterator() : _ptr(NULL){};
 		mapIterator(NodeType *ptr) : _ptr(ptr){};
@@ -158,13 +158,13 @@ namespace ft
 
 		// empty (1)
 		explicit map(const key_compare &comp = key_compare(),
-					 const allocator_type &alloc = allocator_type()) : _base(comp), _allocator(alloc){};
+					 const allocator_type &alloc = allocator_type()) : _allocator(alloc), _base(comp, _allocator) {};
 
 		// range (2)
 		template <class InputIterator>
 		map(InputIterator first, InputIterator last,
 			const key_compare &comp = key_compare(),
-			const allocator_type &alloc = allocator_type()) : _base(comp), _allocator(alloc)
+			const allocator_type &alloc = allocator_type()) : _allocator(alloc), _base(comp, _allocator) 
 		{
 			while (first != last)
 			{
@@ -173,7 +173,7 @@ namespace ft
 		};
 
 		// copy (3)
-		map(const map &copy) : _base(copy._base), _allocator(copy._allocator){};
+		map(const map &copy) : _allocator(copy._allocator), _base(copy._base) {};
 
 		~map(){};
 		map &operator=(const map &operand)
@@ -468,13 +468,13 @@ namespace ft
 			return _allocator;
 		}
 
-		BSTree<const key_type, mapped_type, key_compare> _base;
 
 	private:
+		Alloc _allocator;
+		BSTree<const key_type, mapped_type, key_compare> _base;
 		// BSTNode<value_type> *_head;
 		// size_type _size;
 		typedef ABSTNode<const key_type, mapped_type> node_type;
-		Alloc _allocator;
 	};
 
 	// (1)
