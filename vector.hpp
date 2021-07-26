@@ -18,17 +18,6 @@
 namespace ft
 {
 
-	template <bool B, class T = void>
-	struct enable_if
-	{
-	};
-
-	template <class T>
-	struct enable_if<true, T>
-	{
-		typedef T type;
-	};
-
 	template <typename InputIterator>
 	size_t distance(InputIterator a, InputIterator b)
 	{
@@ -39,12 +28,6 @@ namespace ft
 			s++;
 		}
 		return s;
-	}
-
-	template <typename T, typename T1>
-	T min(T a, T1 b)
-	{
-		return a < b ? a : b;
 	}
 
 	// Stay tuned for the iterator
@@ -77,13 +60,33 @@ namespace ft
 		size_type _capacity;
 		allocator_type _alloc;
 
+		pointer allocate_elements(size_type how_many)
+		{
+			pointer ret = _alloc.allocate(how_many);
+			// _alloc.construct(ret, )
+			for (size_type i = 0; i < how_many; i++)
+			{
+				_alloc.construct(ret+i, value_type());
+			}
+			return ret;
+		}
+
+		void destroy_elements(pointer p, size_type how_many)
+		{
+			for (size_type i = 0; i < how_many; i++)
+			{
+				_alloc.destroy(p+i);
+			}
+			_alloc.deallocate(p, how_many);
+		}
+
 	public:
 		// TODO Use allocator properly
 
 		// default (1)
 		explicit vector(const allocator_type &alloc = allocator_type())
 		{
-			_base = new T[1];
+			_base = allocate_elements(1);
 			_size = 0;
 			_capacity = 0;
 			_alloc = alloc;
@@ -93,7 +96,7 @@ namespace ft
 						const allocator_type &alloc = allocator_type())
 		{
 			_capacity = n;
-			_base = new T[_capacity];
+			_base = allocate_elements(_capacity);
 			for (size_type i = 0; i < n; i++)
 				_base[i] = val;
 			_size = n;
@@ -102,17 +105,13 @@ namespace ft
 
 		// range (3)
 		template <class InputIterator>
-		vector(typename ft::enable_if<!std::is_integral<InputIterator>::value, InputIterator>::type first, InputIterator last,
+		vector(typename ft::enable_if<!ft::is_integral<InputIterator>::value, InputIterator>::type first, InputIterator last,
 			   const allocator_type &alloc = allocator_type())
 		{
 			_alloc = alloc;
 			_capacity = 0;
-			_base = new T[1];
+			_base = allocate_elements(1);
 			_size = 0;
-			// for (InputIterator it = first; it != last; it++)
-			// {
-			//     push_back(*it);
-			// }
 			assign(first, last);
 		}
 
@@ -121,7 +120,7 @@ namespace ft
 		{
 			_alloc = x.get_allocator();
 			_capacity = x.capacity();
-			_base = new T[_capacity];
+			_base = allocate_elements(_capacity);
 			_size = 0;
 
 			for (vector::const_iterator it = x.begin(); it != x.end(); it++)
@@ -133,7 +132,10 @@ namespace ft
 		~vector()
 		{
 
-			delete[] _base;
+			// delete[] _base;
+			if (_capacity)
+				destroy_elements(_base, _capacity);
+
 			_size = 0;
 			_capacity = 0;
 		};
@@ -144,9 +146,10 @@ namespace ft
 
 			if (_capacity < x.capacity())
 			{
-				delete[] _base;
+				// delete[] _base;
+				destroy_elements(_base, _capacity);
 				_capacity = x.size();
-				_base = new T[_capacity];
+				_base = allocate_elements(_capacity);
 				_size = 0;
 				for (vector::const_iterator it = x.begin(); it != x.end(); it++)
 				{
@@ -198,13 +201,6 @@ namespace ft
 			}
 			if (n > _size)
 			{
-				// while (n > _capacity)
-				// {
-				// 	if (_capacity == 0)
-				// 		reserve(_size);
-				// 	else
-				// 		reserve(_capacity * RESERVE_FACTOR);
-				// }
 				if (n > _capacity * 2)
 					reserve(n);
 				else if (n > _capacity)
@@ -226,12 +222,13 @@ namespace ft
 			if (n > _capacity)
 			{
 				size_type newCapacity = n;
-				pointer newBase = new value_type[newCapacity];
+				pointer newBase = allocate_elements(newCapacity);
 				for (size_type i = 0; i < _size; i++)
 				{
 					newBase[i] = _base[i];
 				}
-				delete[] _base;
+				// delete[] _base;
+				destroy_elements(_base, _capacity);
 				_base = newBase;
 				_capacity = newCapacity;
 			}
@@ -281,15 +278,16 @@ namespace ft
 
 		// range (1)
 		template <class InputIterator>
-		void assign(typename ft::enable_if<!std::is_integral<InputIterator>::value, InputIterator>::type first, InputIterator last)
+		void assign(typename ft::enable_if<!ft::is_integral<InputIterator>::value, InputIterator>::type first, InputIterator last)
 		{
 			size_t their_len = ft::distance(first, last);
 			// std::cout << "Their len: " << their_len << std::endl;
 			if (their_len > _capacity)
 			{
-				delete[] _base;
+				// delete[] _base;
+				destroy_elements(_base, _capacity);
 				_capacity = their_len;
-				_base = new T[their_len];
+				_base = allocate_elements(their_len);
 				_size = 0;
 
 				for (InputIterator it = first; it != last; it++)
@@ -314,7 +312,7 @@ namespace ft
 			// {
 			//     delete[] _base;
 			//     _capacity = n * RESERVE_FACTOR;
-			//     _base = new T[_capacity];
+			//     _base = allocate_elements(_capacity);
 			//     for (size_type i = 0; i < n; i++)
 			//         _base[i] = val;
 			//     _size = n;
@@ -328,9 +326,11 @@ namespace ft
 
 			if (n > _capacity)
 			{
-				delete[] _base;
+				// delete[] _base;
+				destroy_elements(_base, _capacity);
+
 				_capacity = n;
-				_base = new T[_capacity];
+				_base = allocate_elements(_capacity);
 				for (size_type i = 0; i < n; i++)
 					_base[i] = val;
 				_size = n;
@@ -403,7 +403,7 @@ namespace ft
 
 		// range (3)
 		template <class InputIterator>
-		void insert(iterator position, typename ft::enable_if<!std::is_integral<InputIterator>::value, InputIterator>::type first, InputIterator last)
+		void insert(iterator position, typename ft::enable_if<!ft::is_integral<InputIterator>::value, InputIterator>::type first, InputIterator last)
 		{
 			size_type target_index = position.base() - _base;
 

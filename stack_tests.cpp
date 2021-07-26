@@ -231,6 +231,12 @@ TEST(StackRelativeOperators6)
 	ASSERT_EQ((fs >= fs_a), (std >= std_a));
 }
 
+TEST(FtIsIntegral)
+{
+	ASSERT_EQ(ft::is_integral<int>::value, std::is_integral<int>::value);
+	ASSERT_EQ(ft::is_integral<std::string>::value, std::is_integral<std::string>::value);
+}
+
 
 
 int main(void)
