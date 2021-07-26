@@ -61,12 +61,12 @@ namespace ft
 		mapIterator() : _ptr(NULL){};
 		mapIterator(NodeType *ptr) : _ptr(ptr){};
 
-		template <typename T, typename NT>
-		mapIterator(const mapIterator<T, NT> &other) : _ptr(other._ptr){};
+		// template <typename T, typename NT>
+		mapIterator(const mapIterator &other) : _ptr(other._ptr){};
 		~mapIterator(){};
 
 		template <typename T, typename NT>
-		mapIterator<T, NT> &operator=(const mapIterator &other)
+		mapIterator &operator=(const mapIterator &other)
 		{
 			_ptr = other._ptr;
 			return (*this);
