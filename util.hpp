@@ -7,7 +7,8 @@
 namespace ft
 {
 
-	struct bidirectional_iterator_tag {}
+	struct bidirectional_iterator_tag {};
+	struct random_access_iterator_tag {};
 
 	// Our iterator traits will just consist of iterator's nested types
 	template <class Iterator>

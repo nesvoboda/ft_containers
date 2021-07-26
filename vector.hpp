@@ -494,6 +494,9 @@ namespace ft
 		typedef typename vector<Tt>::size_type size_type;
 		typedef ptrdiff_t difference_type;
 		typedef Val value_type;
+		typedef random_access_iterator_tag iterator_category;
+		typedef value_type* pointer;
+		typedef value_type& reference;
 
 	private:
 		Tt *_ptr;
