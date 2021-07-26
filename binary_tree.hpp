@@ -406,8 +406,8 @@ public:
 		other._head = tmp;
 
 		size_t t = other._size;
-		_size = other._size;
-		other._size = t;
+		other._size = _size;
+		_size = t;
 	}
 
 	void swap(node_type *a, node_type *b)

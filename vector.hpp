@@ -51,7 +51,7 @@ namespace ft
 	template <typename T, typename Val>
 	class vectorIterator;
 
-	template <typename T, typename Alloc = std::allocator<T>>
+	template <typename T, typename Alloc = std::allocator<T> >
 	class vector
 	{
 
@@ -65,8 +65,8 @@ namespace ft
 		typedef const value_type *const_pointer;
 		typedef vectorIterator<T, T> iterator;
 		typedef vectorIterator<T, const T> const_iterator;
-		typedef rev_iterator<vectorIterator<T, T>> reverse_iterator;
-		typedef rev_iterator<vectorIterator<T, const T>> const_reverse_iterator;
+		typedef rev_iterator<vectorIterator<T, T> > reverse_iterator;
+		typedef rev_iterator<vectorIterator<T, const T> > const_reverse_iterator;
 		typedef ptrdiff_t difference_type;
 		typedef size_t size_type;
 
