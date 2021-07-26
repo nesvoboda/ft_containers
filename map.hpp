@@ -18,6 +18,11 @@ namespace ft
 
 		NodeType *_ptr;
 	public:
+
+		// Nested types for iterator_traits
+		typedef bidirectional_iterator_tag iterator_category;
+		typedef IteratorValue * pointer;
+		typedef IteratorValue & reference;
 		typedef IteratorValue value_type;
 		typedef ptrdiff_t difference_type;
 

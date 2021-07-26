@@ -6,6 +6,19 @@
 
 namespace ft
 {
+
+	struct bidirectional_iterator_tag {}
+
+	// Our iterator traits will just consist of iterator's nested types
+	template <class Iterator>
+	struct iterator_traits {
+		typedef typename Iterator::iterator_category iterator_category;
+		typedef typename Iterator::value_type        value_type;
+		typedef typename Iterator::difference_type   difference_type;
+		typedef typename Iterator::pointer           pointer;
+		typedef typename Iterator::reference         reference;
+	};
+
 	template <typename T>
 	void swap_val(T &a, T &b)
 	{
