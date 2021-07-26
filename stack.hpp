@@ -19,6 +19,67 @@ namespace ft
 
 		explicit stack (const container_type& ctnr = container_type()) : _base(ctnr) {};
 
+		bool empty() const
+		{
+			return _base.empty();
+		}
+
+		value_type& top()
+		{
+			return _base.back();
+		}
+
+		const value_type& top() const
+		{
+			return _base.back();
+		}
+
+		void push (const value_type& val)
+		{
+			_base.push_back(val);
+		}
+
+		void pop()
+		{
+			_base.pop_back();
+		}
+
+		size_type size() const
+		{
+			return _base.size();
+		}
+
+		friend bool operator== (const stack& lhs, const stack& rhs)
+		{
+			return lhs._base == rhs._base;
+		};
+
+		friend bool operator!= (const stack& lhs, const stack& rhs)
+		{
+			return lhs._base != rhs._base;
+		};
+
+		friend bool operator<  (const stack& lhs, const stack& rhs)
+		{
+			return lhs._base < rhs._base;
+		};
+
+		friend bool operator<= (const stack& lhs, const stack& rhs)
+		{
+			return lhs._base <= rhs._base;
+		};
+
+		friend bool operator>  (const stack& lhs, const stack& rhs)
+		{
+			return lhs._base > rhs._base;
+		};
+
+		friend bool operator>= (const stack& lhs, const stack& rhs)
+		{
+			return lhs._base >= rhs._base;
+		}
+
+
 	};
 
 }
