@@ -44,7 +44,7 @@ template <class iterator>
 			_iter = _iter.operator++();
 			return *this;
 		}
-		value_type &operator*()
+		value_type &operator*() const
 		{
 			// iterator i = _iter;
 			// i--;
@@ -73,7 +73,7 @@ template <class iterator>
 			--(*this);
 			return retval;
 		}
-		value_type *operator->(void) { return &this->operator*(); };
+		value_type *operator->(void) const { return &this->operator*(); };
 
         // Only for randomAccess
 
