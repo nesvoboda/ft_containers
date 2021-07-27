@@ -1,7 +1,7 @@
 #include "elementest.hpp"
 
 #include <stack>
-#include "stack.hpp"
+#include "../stack.hpp"
 
 TEST(StackConstructor)
 {
@@ -239,7 +239,7 @@ TEST(FtIsIntegral)
 
 
 
-int main(void)
-{
-	run_tests();
-}
+// int main(void)
+// {
+// 	run_tests();
+// }

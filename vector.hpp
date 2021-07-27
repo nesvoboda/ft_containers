@@ -135,6 +135,8 @@ namespace ft
 			// delete[] _base;
 			if (_capacity)
 				destroy_elements(_base, _capacity);
+			else
+				destroy_elements(_base, 1);
 
 			_size = 0;
 			_capacity = 0;

@@ -1,4 +1,4 @@
-#include "vector.hpp"
+#include "../vector.hpp"
 #include "elementest.hpp"
 
 TEST(VectorConstructor)
@@ -1291,7 +1291,7 @@ TEST(STDMadness)
 }
 */
 
-int main(void)
-{
-    run_tests();
-}
+// int main(void)
+// {
+//     run_tests();
+// }

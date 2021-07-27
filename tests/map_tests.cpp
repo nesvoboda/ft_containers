@@ -1,5 +1,5 @@
 #include "elementest.hpp"
-#include "map.hpp"
+#include "../map.hpp"
 #include <utility>
 #include <map>
 
@@ -1239,10 +1239,10 @@ TEST(MapMaxSize)
 	ASSERT_EQ(m2.max_size(), sm2.max_size());
 }
 
-int main(void)
-{
-	std::cout << "size of one int: " << sizeof(int) << std::endl;
-	std::cout << "size of one node: " << sizeof(ABSTNode<int, bool>) << std::endl;
-	run_tests();
-	// sleep(10);
-}
+// int main(void)
+// {
+// 	std::cout << "size of one int: " << sizeof(int) << std::endl;
+// 	std::cout << "size of one node: " << sizeof(ABSTNode<int, bool>) << std::endl;
+// 	run_tests();
+// 	// sleep(10);
+// }

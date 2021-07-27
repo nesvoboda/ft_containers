@@ -1,11 +1,24 @@
-#include <vector>
-#include <iostream>
-#include <stdlib.h>
+# pragma once
+#ifndef ELEMENTEST_HPP
 
-bool lastTestFailed = false;
-int failureLine = 0;
-const char *failureFile;
-int testsFailed = 0;
+# define ELEMENTEST_HPP
+
+
+# include <vector>
+# include <iostream>
+# include <stdlib.h>
+
+// struct TestData {
+// 	bool lastTestFailed;
+// 	int failureLine;
+// 	const char *failureFile;
+// 	int testsFailed;
+// }
+
+extern bool lastTestFailed;
+extern int failureLine;
+extern const char *failureFile;
+extern int testsFailed;
 
 class TestBase
 {
@@ -31,7 +44,7 @@ public:
 	virtual void run() = 0;
 };
 
-std::vector<TestBase *> tests;
+extern std::vector<TestBase *> tests;
 
 #define TEST(testName)               \
 	class testName : public TestBase \
@@ -47,7 +60,7 @@ std::vector<TestBase *> tests;
 	testName global_##testName;      \
 	void testName::run()
 
-void run_tests()
+static void run_tests()
 {
 	for (size_t i = 0; i < tests.size(); i++)
 	{
@@ -69,6 +82,7 @@ void run_tests()
 			lastTestFailed = true;                                                                                   \
 			return;                                                                                                  \
 		}                                                                                                            \
+		std::cout << lastTestFailed << std::endl;\
 	}
 
 #define ASSERT_NEQ(expected, actual)                                                                                            \
@@ -84,7 +98,7 @@ void run_tests()
 		}                                                                                                                       \
 	}
 
-bool exception_thrown = false;
+extern bool exception_thrown;
 #define ASSERT_EXCEPTION(expression, exceptionType)                                                                                        \
 	{                                                                                                                                      \
 		failureLine = __LINE__;                                                                                                            \
@@ -164,3 +178,6 @@ void check_container(T comparator[], iterator first, iterator last)
 		i++;
 	}
 }
+
+
+#endif //  ELEMENTEST_HPP

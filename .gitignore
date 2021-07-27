@@ -1,0 +1,5 @@
+.vscode
+.idea
+a.out*
+cmake-build-debug
+containers_test

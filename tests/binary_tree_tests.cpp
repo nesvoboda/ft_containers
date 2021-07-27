@@ -1,5 +1,5 @@
 #include "elementest.hpp"
-#include "binary_tree.hpp"
+#include "../binary_tree.hpp"
 
 #include <map>
 #include <string>
@@ -797,7 +797,6 @@ TEST(BTreeInsertGrowingHeightAndBalance)
 	
 	bt.insert(ft::pair<int, bool>(6, true));
 	ASSERT_EQ(bt._head->height, 2);
-	bt.print();
 	std::cout << " --- " << std::endl;
 
 	bt.insert(ft::pair<int, bool>(7, true));
@@ -837,14 +836,4 @@ TEST(BTreeInsertGrowingHeightAndBalance)
 	ASSERT_EQ(bt._head->right->bf, 0);
 	ASSERT_EQ(bt._head->right->right->bf, 0);
 	ASSERT_EQ(bt._head->right->left->bf, 0);
-}
-
-
-// TODO check if rebalancing doesn't move the 'end' pointer
-
-int main(void)
-{
-	run_tests();
-
-	std::cout << "ms: " << std::map<int, bool>::node << std::endl;
 }
