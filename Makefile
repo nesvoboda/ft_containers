@@ -1,7 +1,7 @@
 SRCS = tests/main.cpp 
 OBJS = $(SRCS:.cpp=.o)
 NAME = run_tests
-CXXFLAGS = -Wall -Wextra -Werror
+CXXFLAGS = -Wall -Wextra -Werror -std=c++98
 CXX = clang++
 
 all:		$(NAME)

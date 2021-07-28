@@ -340,7 +340,7 @@ TEST(ABSTNodeImmediateSuccessor)
 TEST(ABSTNodeImmediatePredecessor)
 {
 	BSTree<int, bool> bt;
-	ft::pair<ABSTNode<int, bool> *, bool> ret = bt.insert(ft::pair<int, bool>(5, true));
+	bt.insert(ft::pair<int, bool>(5, true));
 	bt.insert(ft::pair<int, bool>(7, true));
 	bt.insert(ft::pair<int, bool>(4, true));
 	bt.insert(ft::pair<int, bool>(2, true));
@@ -1142,7 +1142,6 @@ TEST(MapBeginAndIterComparison)
 	std::map<std::string, int> sm1;
 
 	ft::map<std::string, int>::iterator it1 = m1.begin();
-	std::map<std::string, int>::iterator sit1 = sm1.begin();
 
 	m1["42"] = 21;
 	sm1["42"] = 21;
