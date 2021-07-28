@@ -3,3 +3,5 @@
 a.out*
 cmake-build-debug
 containers_test
+*.o
+run_tests
