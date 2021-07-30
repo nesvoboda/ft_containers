@@ -305,17 +305,9 @@ TEST(BtreeDetectEndElement)
 	std::cout << "HEad left right: " << bt._head->left->right->data.first << std::endl;
 	std::cout << "HEad right: " << bt._head->right->data.first << std::endl;
 
-	// ASSERT_EQ(bt._head->height, 2);
 	ASSERT_EQ(bt._head->left->height, 1);
 	ASSERT_EQ(bt._head->right->height, 0);
 	ASSERT_EQ(bt._head->left->left->height, 0);
-	// ASSERT_EQ(bt._head->right->right->height, 0);
-
-	// ASSERT_EQ(bt._head->left->data.first, 2);
-	// ASSERT_EQ(bt._head->left->right->data.first, 3);
-	// ASSERT_EQ(bt._head->left->right->right->data.first, 4);
-	// ASSERT_EQ(bt._head->right->data.first, 5);
-	// ASSERT_EQ(bt._head->right->right->fake, true);
 }
 
 TEST(ABSTNodeImmediateSuccessor)
@@ -331,8 +323,6 @@ TEST(ABSTNodeImmediateSuccessor)
 
 	std::map<int, bool> m1;
 
-	// m1.max_size
-
 	ASSERT_EQ(ret.first->immediateSuccessor()->data.first, 7);
 
 }
@@ -347,16 +337,6 @@ TEST(ABSTNodeImmediatePredecessor)
 	bt.insert(ft::pair<int, bool>(10, true));
 	bt.insert(ft::pair<int, bool>(45, true));
 
-	// std::cout << "Head: " << bt._head->data.first << std::endl;
-	// std::cout << "Head->left: " << bt._head->left->data.first << std::endl;
-	// std::cout << "Head->left->left: " << bt._head->left->left->data.first << std::endl;
-	// std::cout << "Head->left->right: " << bt._head->left->right->data.first << std::endl;
-	// std::cout << "Head->right: " << bt._head->right->data.first << std::endl;
-	// std::cout << "Head->right->left: " << bt._head->right->left->data.first << std::endl;
-	// std::cout << "Head->right->right: " << bt._head->right->right->data.first << std::endl;
-
-	// std::cout << ret.first->parent->data.first << std::endl;
-	// std::cout << bt._head->immediatePredecessor()->data.first << std::endl;
 	ASSERT_EQ(bt._head->immediatePredecessor()->data.first, 5);
 
 }
@@ -416,7 +396,6 @@ TEST(BTreeEraseOneChild)
 
 	head->left = new ABSTNode<int, bool>(NULL, NULL, head, 4, true);
 	head->left->left = new ABSTNode<int, bool>(NULL, NULL, head->left, 2, true);
-	// head->left->right = new ABSTNode<int, bool>(NULL, NULL, head->left, 3, true);
 
 	head->right = new ABSTNode<int, bool>(NULL, NULL, head, 10, true);
 	head->right->left = new ABSTNode<int, bool>(NULL, NULL, head->right, 8, true);
@@ -435,7 +414,6 @@ TEST(BTreeEraseOneChild)
 	ASSERT_EQ(bt._head->left->data.first, 2);
 	ASSERT_EQ(bt._head->left->left, NULL);
 	ASSERT_EQ(bt._head->left->right, NULL);
-	// ASSERT_EQ(bt._head->left->right->data.first, 3);
 	
 	ASSERT_EQ(bt._head->right->data.first, 10);
 	ASSERT_EQ(bt._head->right->right->data.first, 12);
@@ -482,7 +460,6 @@ TEST(BTreeEraseTwoChildren)
 	ASSERT_EQ(bt._head->left->left->parent, bt._head->left);
 
 	ASSERT_EQ(bt._head->left->right, NULL);
-	// ASSERT_EQ(bt._head->left->right->data.first, 3);
 	
 	ASSERT_EQ(bt._head->right->data.first, 10);
 	ASSERT_EQ(bt._head->right->parent, bt._head);
@@ -775,27 +752,6 @@ TEST(BinaryTreeRightLeftRot)
 	ASSERT_EQ(bt._head->right->parent, bt._head);
 }
 
-
-// TEST(BTreeInsertGrowingWtf)
-// {
-// 	BSTree<int, bool> bt;
-
-// 	bt.insert(ft::pair<int, bool>(4, true));
-// 	bt.insert(ft::pair<int, bool>(5, true));
-	
-// 	bt.insert(ft::pair<int, bool>(6, true));
-
-// 	std::cout << " --- " << std::endl;
-
-// 	std::cout << "Head: " << bt._head->data.first << std::endl;
-// 	std::cout << "Head left: " << bt._head->left->data.first << std::endl;
-// 	std::cout << "Head right: " << bt._head->right->data.first << std::endl;
-// 	std::cout << "Head right right: " << bt._head->right->right->data.first << std::endl;
-
-// 	ASSERT_NEQ(bt._head->right->right, NULL)
-// }
-
-
 TEST(BTreeInsertGrowingHeightAndBalance)
 {
 	BSTree<int, bool> bt;
@@ -808,39 +764,15 @@ TEST(BTreeInsertGrowingHeightAndBalance)
 	std::cout << " --- " << std::endl;
 
 	bt.insert(ft::pair<int, bool>(7, true));
-
-
-
-
-	std::cout << "Head: " << bt._head->data.first << std::endl;
-	std::cout << "Head left: " << bt._head->left->data.first << std::endl;
-	std::cout << "Head right: " << bt._head->right->data.first << std::endl;
-	std::cout << "Head right right: " << bt._head->right->right->data.first << std::endl;
-
-
-	// std::cout << "Head left left: " << bt._head->left->left->data.first << std::endl;
-	// std::cout << "Head right left: " << bt._head->right->left->data.first << std::endl;
-	// std::cout << "Head right right: " << bt._head->right->left->data.first << std::endl;
-	
-	std::cout << " --- " << std::endl;
-
-
-	std::cout << "Head: " << bt._head->data.first << std::endl;
-	std::cout << "Head left: " << bt._head->left->data.first << std::endl;
-	std::cout << "Head right: " << bt._head->right->data.first << std::endl;
-	std::cout << "Head right left: " << bt._head->right->left->data.first << std::endl;
-	std::cout << "Head right right: " << bt._head->right->right->data.first << std::endl;
 	
 	ASSERT_EQ(bt._head->height, 2);
 	ASSERT_EQ(bt._head->left->height, 0);
 	ASSERT_EQ(bt._head->right->height, 1);
-	// ASSERT_EQ(bt._head->left->left->height, 0);
 	ASSERT_EQ(bt._head->right->right->height, 0);
 	ASSERT_EQ(bt._head->right->left->height, 0);
 
 	ASSERT_EQ(bt._head->bf, 1);
 	ASSERT_EQ(bt._head->left->bf, 0);
-	// ASSERT_EQ(bt._head->left->left->bf, 0);
 	ASSERT_EQ(bt._head->right->bf, 0);
 	ASSERT_EQ(bt._head->right->right->bf, 0);
 	ASSERT_EQ(bt._head->right->left->bf, 0);
