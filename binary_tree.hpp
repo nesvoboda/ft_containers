@@ -140,7 +140,7 @@ public:
 		target->bf = rh - lh;
 	}
 
-/*
+
 	void print_node(node_type *node)
 	{
 		if (!node)
@@ -163,7 +163,6 @@ public:
 		print_node(_head);
 	}
 
-	*/
 
 	void update_nodes_up_to_root(node_type *target)
 	{

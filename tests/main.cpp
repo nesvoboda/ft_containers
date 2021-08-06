@@ -126,6 +126,7 @@ TEST(BTreeEraseHead3)
 TEST(BTreeHeight2)
 {
 	BSTree<int, bool> bt;
+	bt.delete_node(bt._head);
 	bt._head = new ABSTNode<int, bool>(NULL, NULL, NULL, 4, true); // one node
 
 	ASSERT_EQ(bt.height(bt._head), 1);
@@ -346,23 +347,19 @@ TEST(BTreeEraseLeaf)
 	BSTree<int, bool> bt;
 
 	bt.insert(ft::pair<int, bool>(6, true));
-
-	ABSTNode<int, bool> *head = bt._head;
-
-	head->left = new ABSTNode<int, bool>(NULL, NULL, head, 4, true);
-	head->left->left = new ABSTNode<int, bool>(NULL, NULL, head->left, 2, true);
-	head->left->right = new ABSTNode<int, bool>(NULL, NULL, head->left, 5, true);
-
-	head->right = new ABSTNode<int, bool>(NULL, NULL, head, 10, true);
-	head->right->left = new ABSTNode<int, bool>(NULL, NULL, head->right, 8, true);
-	head->right->right = new ABSTNode<int, bool>(NULL, NULL, head->right, 12, true);
-	bt._size += 6;
+	bt.insert(ft::pair<int, bool>(4, true));
+	bt.insert(ft::pair<int, bool>(2, true));
+	bt.insert(ft::pair<int, bool>(5, true));
+	bt.insert(ft::pair<int, bool>(10, true));
+	bt.insert(ft::pair<int, bool>(8, true));
+	bt.insert(ft::pair<int, bool>(12, true));
 
 	//         6
 	//   4          10
 	//2     5     8     12
 
-	bt.erase(head->right->left); // 8
+	bt.erase(bt._head->right->left); // 8
+	
 	ASSERT_EQ(bt._size, 6);
 
 	ASSERT_EQ(bt._head->data.first, 6);
@@ -391,22 +388,20 @@ TEST(BTreeEraseOneChild)
 	BSTree<int, bool> bt;
 
 	bt.insert(ft::pair<int, bool>(6, true));
+	bt.insert(ft::pair<int, bool>(4, true));
+	bt.insert(ft::pair<int, bool>(2, true));
+	bt.insert(ft::pair<int, bool>(10, true));
+	bt.insert(ft::pair<int, bool>(8, true));
+	bt.insert(ft::pair<int, bool>(12, true));
 
-	ABSTNode<int, bool> *head = bt._head;
-
-	head->left = new ABSTNode<int, bool>(NULL, NULL, head, 4, true);
-	head->left->left = new ABSTNode<int, bool>(NULL, NULL, head->left, 2, true);
-
-	head->right = new ABSTNode<int, bool>(NULL, NULL, head, 10, true);
-	head->right->left = new ABSTNode<int, bool>(NULL, NULL, head->right, 8, true);
-	head->right->right = new ABSTNode<int, bool>(NULL, NULL, head->right, 12, true);
-	bt._size += 5;
+	bt.print();
 
 	//         6
 	//   4          10
 	//2           8     12
 
-	bt.erase(head->left); // 8
+	bt.erase(bt._head->left); // 4
+
 	ASSERT_EQ(bt._size, 5);
 
 	ASSERT_EQ(bt._head->data.first, 6);
@@ -424,18 +419,14 @@ TEST(BTreeEraseTwoChildren)
 {
 	BSTree<int, bool> bt;
 
+
 	bt.insert(ft::pair<int, bool>(6, true));
-
-	ABSTNode<int, bool> *head = bt._head;
-
-	head->left = new ABSTNode<int, bool>(NULL, NULL, head, 4, true);
-	head->left->left = new ABSTNode<int, bool>(NULL, NULL, head->left, 2, true);
-	head->left->right = new ABSTNode<int, bool>(NULL, NULL, head->left, 5, true);
-
-	head->right = new ABSTNode<int, bool>(NULL, NULL, head, 10, true);
-	head->right->left = new ABSTNode<int, bool>(NULL, NULL, head->right, 8, true);
-	head->right->right = new ABSTNode<int, bool>(NULL, NULL, head->right, 12, true);
-	bt._size += 6;
+	bt.insert(ft::pair<int, bool>(4, true));
+	bt.insert(ft::pair<int, bool>(2, true));
+	bt.insert(ft::pair<int, bool>(5, true));
+	bt.insert(ft::pair<int, bool>(10, true));
+	bt.insert(ft::pair<int, bool>(8, true));
+	bt.insert(ft::pair<int, bool>(12, true));
 
 	//         6
 	//   4          10
@@ -447,7 +438,7 @@ TEST(BTreeEraseTwoChildren)
 	//   5          10
 	//2           8     12
 
-	bt.erase(head->left); // 4
+	bt.erase(bt._head->left); // 4
 	ASSERT_EQ(bt._size, 6);
 
 	ASSERT_EQ(bt._head->data.first, 6);
@@ -476,17 +467,12 @@ TEST(BinaryTreeCopy)
 	BSTree<int, bool> bt;
 
 	bt.insert(ft::pair<int, bool>(6, true));
-
-	ABSTNode<int, bool> *head = bt._head;
-
-	head->left = new ABSTNode<int, bool>(NULL, NULL, head, 4, true);
-	head->left->left = new ABSTNode<int, bool>(NULL, NULL, head->left, 2, true);
-	head->left->right = new ABSTNode<int, bool>(NULL, NULL, head->left, 5, true);
-
-	head->right = new ABSTNode<int, bool>(NULL, NULL, head, 10, true);
-	head->right->left = new ABSTNode<int, bool>(NULL, NULL, head->right, 8, true);
-	head->right->right = new ABSTNode<int, bool>(NULL, NULL, head->right, 12, true);
-	bt._size += 6;
+	bt.insert(ft::pair<int, bool>(4, true));
+	bt.insert(ft::pair<int, bool>(2, true));
+	bt.insert(ft::pair<int, bool>(5, true));
+	bt.insert(ft::pair<int, bool>(10, true));
+	bt.insert(ft::pair<int, bool>(8, true));
+	bt.insert(ft::pair<int, bool>(12, true));
 
 	//         6
 	//   4          10
@@ -529,17 +515,12 @@ TEST(BinaryTreeSwapContent)
 	BSTree<int, bool> bt;
 
 	bt.insert(ft::pair<int, bool>(6, true));
-
-	ABSTNode<int, bool> *head = bt._head;
-
-	head->left = new ABSTNode<int, bool>(NULL, NULL, head, 4, true);
-	head->left->left = new ABSTNode<int, bool>(NULL, NULL, head->left, 2, true);
-	head->left->right = new ABSTNode<int, bool>(NULL, NULL, head->left, 5, true);
-
-	head->right = new ABSTNode<int, bool>(NULL, NULL, head, 10, true);
-	head->right->left = new ABSTNode<int, bool>(NULL, NULL, head->right, 8, true);
-	head->right->right = new ABSTNode<int, bool>(NULL, NULL, head->right, 12, true);
-	bt._size += 6;
+	bt.insert(ft::pair<int, bool>(4, true));
+	bt.insert(ft::pair<int, bool>(2, true));
+	bt.insert(ft::pair<int, bool>(5, true));
+	bt.insert(ft::pair<int, bool>(10, true));
+	bt.insert(ft::pair<int, bool>(8, true));
+	bt.insert(ft::pair<int, bool>(12, true));
 
 	//         6
 	//   4          10
@@ -549,16 +530,14 @@ TEST(BinaryTreeSwapContent)
 
 	bt2.insert(ft::pair<int, bool>(7, true));
 
-	ABSTNode<int, bool> *head2 = bt2._head;
-
-	head2->left = new ABSTNode<int, bool>(NULL, NULL, head2, 5, true);
-	head2->left->left = new ABSTNode<int, bool>(NULL, NULL, head2->left, 4, true);
-	head2->left->right = new ABSTNode<int, bool>(NULL, NULL, head2->left, 6, true);
-
-	head2->right = new ABSTNode<int, bool>(NULL, NULL, head2, 11, true);
-	head2->right->left = new ABSTNode<int, bool>(NULL, NULL, head2->right, 9, true);
-	head2->right->right = new ABSTNode<int, bool>(NULL, NULL, head2->right, 13, true);
-	bt2._size += 6;
+	
+	bt2.insert(ft::pair<int, bool>(7, true));
+	bt2.insert(ft::pair<int, bool>(5, true));
+	bt2.insert(ft::pair<int, bool>(3, true));
+	bt2.insert(ft::pair<int, bool>(6, true));
+	bt2.insert(ft::pair<int, bool>(11, true));
+	bt2.insert(ft::pair<int, bool>(9, true));
+	bt2.insert(ft::pair<int, bool>(13, true));
 
 
 	//         7
@@ -604,18 +583,12 @@ TEST(BinaryTreeClear)
 	BSTree<int, bool> bt;
 
 	bt.insert(ft::pair<int, bool>(6, true));
-
-	ABSTNode<int, bool> *head = bt._head;
-
-	head->left = new ABSTNode<int, bool>(NULL, NULL, head, 4, true);
-	head->left->left = new ABSTNode<int, bool>(NULL, NULL, head->left, 2, true);
-	head->left->right = new ABSTNode<int, bool>(NULL, NULL, head->left, 5, true);
-
-	head->right = new ABSTNode<int, bool>(NULL, NULL, head, 10, true);
-	head->right->left = new ABSTNode<int, bool>(NULL, NULL, head->right, 8, true);
-	head->right->right = new ABSTNode<int, bool>(NULL, NULL, head->right, 12, true);
-	bt._size += 6;
-
+	bt.insert(ft::pair<int, bool>(4, true));
+	bt.insert(ft::pair<int, bool>(2, true));
+	bt.insert(ft::pair<int, bool>(5, true));
+	bt.insert(ft::pair<int, bool>(10, true));
+	bt.insert(ft::pair<int, bool>(8, true));
+	bt.insert(ft::pair<int, bool>(12, true));
 	bt.clear();
 
 	ASSERT_EQ(bt._size, 0);
@@ -630,17 +603,12 @@ TEST(BinaryTreeFind)
 	BSTree<int, bool> bt;
 
 	bt.insert(ft::pair<int, bool>(6, true));
-
-	ABSTNode<int, bool> *head = bt._head;
-
-	head->left = new ABSTNode<int, bool>(NULL, NULL, head, 4, true);
-	head->left->left = new ABSTNode<int, bool>(NULL, NULL, head->left, 2, true);
-	head->left->right = new ABSTNode<int, bool>(NULL, NULL, head->left, 5, true);
-
-	head->right = new ABSTNode<int, bool>(NULL, NULL, head, 10, true);
-	head->right->left = new ABSTNode<int, bool>(NULL, NULL, head->right, 8, true);
-	head->right->right = new ABSTNode<int, bool>(NULL, NULL, head->right, 12, true);
-	bt._size += 6;
+	bt.insert(ft::pair<int, bool>(4, true));
+	bt.insert(ft::pair<int, bool>(2, true));
+	bt.insert(ft::pair<int, bool>(5, true));
+	bt.insert(ft::pair<int, bool>(10, true));
+	bt.insert(ft::pair<int, bool>(8, true));
+	bt.insert(ft::pair<int, bool>(12, true));
 
 	// bt.clear();
 
@@ -662,6 +630,8 @@ TEST(BinaryTreeLeftRot)
 	bt.insert(ft::pair<int, bool>(4, true));
 
 	ABSTNode<int, bool> *head = bt._head;
+
+	bt.delete_node(bt._head->right); // we don't need the end element in this test
 
 	head->right = new ABSTNode<int, bool>(NULL, NULL, head, 6, true);
 	head->right->right = new ABSTNode<int, bool>(NULL, NULL, head->right, 8, true);
@@ -694,6 +664,8 @@ TEST(BinaryTreeRightRot)
 
 	ABSTNode<int, bool> *head = bt._head;
 
+	// bt.delete_node(bt._head->right); // we don't need the end element in this test
+
 	head->left = new ABSTNode<int, bool>(NULL, NULL, head, 6, true);
 	head->left->left = new ABSTNode<int, bool>(NULL, NULL, head->left, 4, true);
 	bt._size += 2;
@@ -725,6 +697,7 @@ TEST(BinaryTreeRightLeftRot)
 	bt.insert(ft::pair<int, bool>(4, true));
 
 	ABSTNode<int, bool> *head = bt._head;
+	bt.delete_node(bt._head->right); // we don't need the end element in this test
 
 	head->right = new ABSTNode<int, bool>(NULL, NULL, head, 8, true);
 	head->right->left = new ABSTNode<int, bool>(NULL, NULL, head->right, 6, true);
@@ -777,6 +750,7 @@ TEST(BTreeInsertGrowingHeightAndBalance)
 	ASSERT_EQ(bt._head->right->right->bf, 0);
 	ASSERT_EQ(bt._head->right->left->bf, 0);
 }
+
 
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
@@ -2030,7 +2004,7 @@ TEST(MapMaxSize)
 	std::map<std::string, double> sm2;
 	ASSERT_EQ(m2.max_size(), sm2.max_size());
 }
-
+/*
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 // STACK TESTS
@@ -2273,7 +2247,7 @@ TEST(FtIsIntegral)
 	ASSERT_EQ(ft::is_integral<int>::value, std::is_integral<int>::value);
 	ASSERT_EQ(ft::is_integral<std::string>::value, std::is_integral<std::string>::value);
 }
-
+*/
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 // TESTS END
@@ -2285,5 +2259,5 @@ TEST(FtIsIntegral)
 int main(void)
 {
 	run_tests();
-	sleep(10);
+	// sleep(10);
 }

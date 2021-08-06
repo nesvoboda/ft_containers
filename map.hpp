@@ -2,11 +2,17 @@
 #define MAP_HPP
 
 #include <memory>
+#include <cstddef> // ptrdiff_t
+#include <limits> // numeric_limits for max_size
 
 #include "map_util.hpp"
 #include "binary_tree.hpp"
 #include "revIterator.hpp"
 #include "util.hpp"
+
+#ifdef __linux__
+# define LINUX 1
+#endif
 
 namespace ft
 {
@@ -198,8 +204,14 @@ namespace ft
 			// return (max_nodes < max_ptrdiff ? max_nodes : max_ptrdiff); // this is the solution that reflects
 			// my solution better, but the answer would be different from the standard library.
 
-			// account for two additional ints in my node class
-			return max_ptrdiff / ((sizeof(node_type) - sizeof(int) * 2) / 2); // this return corrseponds to the std lib.
+			size_type nodeSize = sizeof(node_type);
+
+			nodeSize -= sizeof(int) * 2; // account for two additional ints in my node class
+
+			if (LINUX)
+				return max_ptrdiff / (nodeSize); // this return corrseponds to the std lib.
+			else
+				return max_ptrdiff / (nodeSize / 2); // this return corrseponds to the std lib.
 		}
 
 		pair<iterator, bool> insert(const value_type &val)
