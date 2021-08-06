@@ -5,6 +5,7 @@
 #include "map_util.hpp"
 #include "util.hpp"
 #include <unistd.h>
+#include <iostream>
 
 template <typename Key, typename Value>
 struct ABSTNode
@@ -140,7 +141,7 @@ public:
 		target->bf = rh - lh;
 	}
 
-
+	// This is for test/debug purposes, won't be accessible in the real map.
 	void print_node(node_type *node)
 	{
 		if (!node)
@@ -162,7 +163,6 @@ public:
 	{
 		print_node(_head);
 	}
-
 
 	void update_nodes_up_to_root(node_type *target)
 	{

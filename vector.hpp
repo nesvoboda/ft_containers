@@ -5,6 +5,7 @@
 #include <stdexcept>
 #include <iostream>
 #include <limits>
+#include <cstddef> // ptrdiff_t
 
 #include "revIterator.hpp"
 #include "util.hpp"
