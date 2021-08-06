@@ -16,6 +16,12 @@
 // How many times more elements reserve
 #define RESERVE_FACTOR 2
 
+#ifdef __linux__
+# define LINUX 1
+#else
+# define LINUX 0
+#endif
+
 namespace ft
 {
 
@@ -199,15 +205,15 @@ namespace ft
 		{
 			if (n < _size)
 			{
-				// TODO check if destruction here is ok
 				_size = n;
 			}
 			if (n > _size)
 			{
-				if (n > _capacity * 2)
+				size_type multiplier = LINUX ? _size : _capacity;
+				if (n > multiplier * 2)
 					reserve(n);
-				else if (n > _capacity)
-					reserve(_capacity * 2);
+				else if (n > multiplier)
+					reserve(multiplier * 2);
 
 				while (_size != n)
 				{
@@ -412,13 +418,15 @@ namespace ft
 
 			size_type n = ft::distance(first, last);
 
+			size_type multiplier = LINUX ? _size : _capacity;
+
 			if ((_size + n) > _capacity)
 			{
 				// reserve((_size + n));
 				if ((_size + n) > _capacity * 2)
 					reserve((_size + n));
 				else if ((_size + n) > _capacity)
-					reserve(_capacity * 2);
+					reserve(multiplier * 2);
 			}
 
 			// while ((_size+n) > _capacity)
