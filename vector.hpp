@@ -699,18 +699,7 @@ namespace ft
 	template <class T, class Alloc>
 	bool operator==(const vector<T, Alloc> &lhs, const vector<T, Alloc> &rhs)
 	{
-		if (lhs.size() != rhs.size())
-			return false;
-
-		typename vector<T, Alloc>::const_iterator lhs_it = lhs.begin();
-		typename vector<T, Alloc>::const_iterator rhs_it = rhs.begin();
-
-		for (size_t i = 0; i < lhs.size(); i++)
-		{
-			if (*lhs_it++ != *rhs_it++)
-				return false;
-		}
-		return true;
+		return lhs.size() == rhs.size() && equal(lhs.begin(), lhs.end(), rhs.begin());
 	}
 
 	// (2)
@@ -724,20 +713,7 @@ namespace ft
 	template <class T, class Alloc>
 	bool operator<(const vector<T, Alloc> &lhs, const vector<T, Alloc> &rhs)
 	{
-		typename ft::vector<T, Alloc>::const_iterator lhs_it = lhs.begin();
-		typename ft::vector<T, Alloc>::const_iterator rhs_it = rhs.begin();
-		for (size_t i = 0; i < lhs.size(); i++)
-		{
-			if (*lhs_it != *rhs_it)
-			{
-				if (*lhs_it < *rhs_it)
-					return true;
-				return false;
-			}
-			lhs_it++;
-			rhs_it++;
-		}
-		return lhs.size() < rhs.size();
+		return lexicographical_compare(lhs.begin(), lhs.end(), rhs.begin(), rhs.end());
 	}
 	// (4)
 	template <class T, class Alloc>
@@ -750,20 +726,7 @@ namespace ft
 	template <class T, class Alloc>
 	bool operator>(const vector<T, Alloc> &lhs, const vector<T, Alloc> &rhs)
 	{
-		typename ft::vector<T, Alloc>::const_iterator lhs_it = lhs.begin();
-		typename ft::vector<T, Alloc>::const_iterator rhs_it = rhs.begin();
-		for (size_t i = 0; i < lhs.size(); i++)
-		{
-			if (*lhs_it != *rhs_it)
-			{
-				if (*lhs_it > *rhs_it)
-					return true;
-				return false;
-			}
-			lhs_it++;
-			rhs_it++;
-		}
-		return lhs.size() > rhs.size();
+		return (rhs < lhs);
 	}
 	// (6)
 	template <class T, class Alloc>

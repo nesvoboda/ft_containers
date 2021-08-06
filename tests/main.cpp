@@ -2004,7 +2004,7 @@ TEST(MapMaxSize)
 	std::map<std::string, double> sm2;
 	ASSERT_EQ(m2.max_size(), sm2.max_size());
 }
-/*
+
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 // STACK TESTS
@@ -2242,12 +2242,16 @@ TEST(StackRelativeOperators6)
 	ASSERT_EQ((fs >= fs_a), (std >= std_a));
 }
 
+// This could be tested, but would require C++11 standard, and, therefore,
+// wouldn't let to use --std=c++98 during test compilation.
+/*
 TEST(FtIsIntegral)
 {
 	ASSERT_EQ(ft::is_integral<int>::value, std::is_integral<int>::value);
 	ASSERT_EQ(ft::is_integral<std::string>::value, std::is_integral<std::string>::value);
 }
 */
+
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 // TESTS END
