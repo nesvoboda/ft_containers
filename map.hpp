@@ -141,7 +141,22 @@ namespace ft
 		friend class map;
 	};
 
-	// TODO use allocator
+	// This structure exsists to mimic max_size on Linux.
+	// Its purpose is to be of exactly the same size that the tree node in
+	// linux std lib. This allows us to get the coherent max_size from the
+	// allocator
+	template <class valueType>
+	class LinuxTreeNodeEmulator {
+
+		public: 
+			enum color { colorOne, colorTwo } _color;
+			LinuxTreeNodeEmulator(color c) : _color(c), one(NULL), two(NULL), three(NULL), val(valueType()) {};
+
+			LinuxTreeNodeEmulator *one;
+			LinuxTreeNodeEmulator *two;
+			LinuxTreeNodeEmulator *three;
+			valueType val;
+	};
 
 	template <class Key,									   // map::key_type
 			  class T,										   // map::mapped_type
@@ -208,10 +223,18 @@ namespace ft
 
 			size_type nodeSize = sizeof(node_type);
 
+			// std::cout << "NodeSize: " << nodeSize << std::endl;
+
 			nodeSize -= sizeof(int) * 2; // account for two additional ints in my node class
 
 			if (LINUX)
-				return max_ptrdiff / (nodeSize); // this return corrseponds to the std lib.
+			{
+				node_alloc_type nodeAlloc(_allocator);
+
+				return nodeAlloc.max_size();
+				// return get_allocator().max_size() / (nodeSize - sizeof(bool) * 35);
+			}
+				// return max_ptrdiff / (nodeSize); // this return corrseponds to the std lib.
 			else
 				return max_ptrdiff / (nodeSize / 2); // this return corrseponds to the std lib.
 		}
@@ -497,6 +520,7 @@ namespace ft
 		// BSTNode<value_type> *_head;
 		// size_type _size;
 		typedef ABSTNode<const key_type, mapped_type> node_type;
+		typedef typename Alloc::template rebind<LinuxTreeNodeEmulator<value_type> >::other node_alloc_type;
 	};
 
 	// (1)
