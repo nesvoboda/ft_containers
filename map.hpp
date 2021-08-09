@@ -223,8 +223,6 @@ namespace ft
 
 			size_type nodeSize = sizeof(node_type);
 
-			// std::cout << "NodeSize: " << nodeSize << std::endl;
-
 			nodeSize -= sizeof(int) * 2; // account for two additional ints in my node class
 
 			if (LINUX)

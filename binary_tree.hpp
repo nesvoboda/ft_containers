@@ -464,7 +464,8 @@ public:
 		}
 		else // target has two children, erasing is hard
 		{
-			node_type *successor = target->immediateSuccessor();
+			node_type *successor = target->immediatePredecessor();
+
 			if (target == _head)
 			{
 				_head = successor;

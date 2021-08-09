@@ -435,8 +435,8 @@ TEST(BTreeEraseTwoChildren)
 	// we want
 
 	//         6
-	//   5          10
-	//2           8     12
+	//   2          10
+	//     5      8     12
 
 	bt.erase(bt._head->left); // 4
 	ASSERT_EQ(bt._size, 6);
@@ -444,13 +444,13 @@ TEST(BTreeEraseTwoChildren)
 	ASSERT_EQ(bt._head->data.first, 6);
 	ASSERT_EQ(bt._head->parent, NULL);
 
-	ASSERT_EQ(bt._head->left->data.first, 5);
+	ASSERT_EQ(bt._head->left->data.first, 2);
 	ASSERT_EQ(bt._head->left->parent, bt._head);
 
-	ASSERT_EQ(bt._head->left->left->data.first, 2);
-	ASSERT_EQ(bt._head->left->left->parent, bt._head->left);
+	ASSERT_EQ(bt._head->left->right->data.first, 5);
+	ASSERT_EQ(bt._head->left->right->parent, bt._head->left);
 
-	ASSERT_EQ(bt._head->left->right, NULL);
+	ASSERT_EQ(bt._head->left->left, NULL);
 	
 	ASSERT_EQ(bt._head->right->data.first, 10);
 	ASSERT_EQ(bt._head->right->parent, bt._head);
@@ -1993,6 +1993,28 @@ TEST(MapInsert2EndSmaller)
 	}
 }
 
+TEST(MapEraseEnd)
+{
+	std::map<int, bool> sm1;
+	ft::map<int, bool> m1;
+
+	sm1[5] = true;
+	sm1[6] = true;
+	m1[5] = true;
+	m1[6] = true;
+
+
+	std::cout << "---" << std::endl;
+	sm1.erase(--sm1.end(), sm1.end());
+	m1.erase(--m1.end(), m1.end());
+
+	sm1[7] = true;
+	m1[7] = true;
+
+
+	COMPARE_MAPS(sm1, m1);
+}
+
 TEST(MapMaxSize)
 {
 	ft::map<int, bool> m1;
@@ -2003,6 +2025,38 @@ TEST(MapMaxSize)
 	ft::map<std::string, double> m2;
 	std::map<std::string, double> sm2;
 	ASSERT_EQ(m2.max_size(), sm2.max_size());
+}
+
+TEST(BTreeEraseEnd)
+{
+	BSTree<int, bool> bt;
+
+	bt.insert(ft::pair<int, bool>(5, true));
+	ABSTNode<int, bool> *b = bt.insert(ft::pair<int, bool>(6, true)).first;
+
+	// bt.erase(a);
+	bt.erase(b);
+
+	bt.print();
+
+	ASSERT_EQ(bt._head->left, NULL);
+	ASSERT_EQ(bt._head->data.first, 5);
+	ASSERT_EQ(bt._head->right->fake, true);
+	ASSERT_EQ(bt._head->parent, NULL);
+	ASSERT_EQ(bt._head->fake, false);
+	ASSERT_EQ(bt._size, 1);
+
+	bt.insert(ft::pair<int, bool>(7, true));
+
+	bt.print();
+	ASSERT_EQ(bt._head->data.first, 7);
+	ASSERT_EQ(bt._head->data.second, true);
+	ASSERT_EQ(bt._head->left->data.first, 5);
+	ASSERT_EQ(bt._head->parent, NULL);
+	ASSERT_EQ(bt._head->right->fake, 1);
+	ASSERT_EQ(bt._head->right->left, NULL);
+	ASSERT_EQ(bt._head->right->right, NULL);
+	ASSERT_EQ(bt._head->right->parent, bt._head);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
