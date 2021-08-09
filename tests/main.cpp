@@ -2313,9 +2313,16 @@ TEST(FtIsIntegral)
 ////////////////////////////////////////////////////////////////////////////////
 
 #include <unistd.h>
+#include "benchmarks.hpp"
 
 int main(void)
 {
 	run_tests();
+
+	std::cout << "Benchmarks: " << std::endl << std::endl;
+
+	benchmark_map();
+	benchmark_vector();
+	benchmark_stack();
 	// sleep(10);
 }
