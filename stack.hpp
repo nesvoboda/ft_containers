@@ -9,6 +9,7 @@ namespace ft
 	template <class T, class Container = vector<T> >
 	class stack
 	{
+	protected:
 		Container _base;
 
 	public:
