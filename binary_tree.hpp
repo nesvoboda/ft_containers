@@ -1,11 +1,11 @@
 
 #ifndef BINARY_TREE_HPP
-# define BINARY_TREE_HPP
+#define BINARY_TREE_HPP
 
 #include "map_util.hpp"
 #include "util.hpp"
-#include <unistd.h>
 #include <iostream>
+#include <unistd.h>
 
 template <typename Key, typename Value>
 struct ABSTNode
@@ -21,17 +21,17 @@ public:
 
 	bool fake; // for the end-element
 
-	ABSTNode(ABSTNode *_left, ABSTNode *_right, ABSTNode *_parent, Key _key, Value _value, bool _fake = false) :
-		left(_left), right(_right), parent(_parent), data(ft::pair<Key, Value>(_key, _value)), fake(_fake) {
-			height = 0;
-			bf = 0;
-		};
+	ABSTNode(ABSTNode *_left, ABSTNode *_right, ABSTNode *_parent, Key _key, Value _value, bool _fake = false) : left(_left), right(_right), parent(_parent), data(ft::pair<Key, Value>(_key, _value)), fake(_fake)
+	{
+		height = 0;
+		bf = 0;
+	};
 
 	ABSTNode *immediateSuccessor(void)
 	{
 		if (this->right == NULL)
 			return NULL;
-		ABSTNode *cur =this->right;
+		ABSTNode *cur = this->right;
 
 		while (cur->left != NULL)
 		{
@@ -44,7 +44,7 @@ public:
 	{
 		if (this->left == NULL)
 			return NULL;
-		ABSTNode *cur =this->left;
+		ABSTNode *cur = this->left;
 
 		while (cur->right != NULL)
 		{
@@ -52,20 +52,17 @@ public:
 		}
 		return cur;
 	}
-
 };
-
 
 // A generic binary search tree
 template <typename Key, typename Value, typename Compare = ft::less<Key>, typename Allocator = std::allocator<ft::pair<Key, Value> > >
 class BSTree
 {
 public:
-
 	typedef ABSTNode<Key, Value> node_type;
 	typedef ft::pair<const Key, Value> value_type;
 	typedef typename Allocator::template rebind<node_type>::other node_alloc_type;
-	
+
 	node_type *_head;
 	size_t _size;
 	Compare _comp;
@@ -74,10 +71,10 @@ public:
 	// Allocator &_alloc;
 
 	/////////////////
-	BSTree(Compare comp = Compare(), Allocator alloc = Allocator()) : 
-	_head(create_node(NULL, NULL, NULL, Key(), Value(), true)), _size(0), _comp(comp), _alloc(alloc), _nodeAlloc(node_alloc_type()) {};
+	BSTree(Compare comp = Compare(), Allocator alloc = Allocator()) : _head(create_node(NULL, NULL, NULL, Key(), Value(), true)), _size(0), _comp(comp), _alloc(alloc), _nodeAlloc(node_alloc_type()){};
 
-	BSTree(const BSTree &rhs) : _head(create_node(NULL, NULL, NULL, Key(), Value(), true)), _size(0), _comp(rhs._comp), _alloc(rhs._alloc), _nodeAlloc(node_alloc_type()) {
+	BSTree(const BSTree &rhs) : _head(create_node(NULL, NULL, NULL, Key(), Value(), true)), _size(0), _comp(rhs._comp), _alloc(rhs._alloc), _nodeAlloc(node_alloc_type())
+	{
 		clone_node(rhs._head);
 	};
 
@@ -119,13 +116,17 @@ public:
 		_comp = rhs._comp;
 		_alloc = rhs._alloc;
 		_nodeAlloc = rhs._nodeAlloc;
-		
+
 		clear();
 		clone_node(rhs._head);
 		return (*this);
 	};
 
-	~BSTree() { free_node(_head); _head = NULL;};
+	~BSTree()
+	{
+		free_node(_head);
+		_head = NULL;
+	};
 
 	void update_node(node_type *target)
 	{
@@ -146,7 +147,7 @@ public:
 	{
 		if (!node)
 			return;
-		
+
 		std::cout << "Node: " << node->data.first << ", ";
 		if (node->left)
 			std::cout << " left: " << node->left->data.first;
@@ -173,7 +174,7 @@ public:
 		}
 	}
 
-	ft::pair<node_type *,bool> insert (node_type *target, const value_type &val)
+	ft::pair<node_type *, bool> insert(node_type *target, const value_type &val)
 	{
 		node_type *new_node = NULL;
 		if (_comp(val.first, target->data.first))
@@ -222,7 +223,7 @@ public:
 		return (ft::pair<node_type *, bool>(new_node, true));
 	}
 
-	ft::pair<node_type *,bool> insert (const value_type& val)
+	ft::pair<node_type *, bool> insert(const value_type &val)
 	{
 		if (_size == 0)
 		{
@@ -280,7 +281,7 @@ public:
 		node_type *tmp = grandparent->left;
 
 		grandparent->left = tmp->right;
-		
+
 		if (tmp->right)
 			tmp->right->parent = grandparent;
 
@@ -303,7 +304,6 @@ public:
 		update_node(grandparent);
 		update_nodes_up_to_root(tmp);
 		return tmp;
-
 	}
 
 	node_type *right_left_rotate(node_type *grandparent)
@@ -343,7 +343,6 @@ public:
 		}
 		if (target->parent == NULL)
 			_head = target;
-		
 	}
 
 	void check_balance(node_type *target)
@@ -395,7 +394,7 @@ public:
 
 		node_type *aLeft = a->left;
 		node_type *aRight = a->right;
-		
+
 		node_type *bLeft = b->left;
 		node_type *bRight = b->right;
 
@@ -415,7 +414,7 @@ public:
 			bRight->parent = a;
 		a->right = bRight;
 	}
-	
+
 	void erase(node_type *target)
 	{
 		// leaf node
@@ -425,7 +424,6 @@ public:
 				target->parent->left = NULL;
 			else
 				target->parent->right = NULL;
-			
 		}
 		else if (target->left == NULL || target->right == NULL) // one child
 		{
@@ -460,7 +458,6 @@ public:
 				}
 				target->left->parent = target->parent;
 			}
-			
 		}
 		else // target has two children, erasing is hard
 		{
@@ -479,7 +476,6 @@ public:
 		delete_node(target);
 		_size -= 1;
 	}
-
 
 	void free_node(node_type *target)
 	{
@@ -510,7 +506,7 @@ public:
 		}
 	}
 
-	node_type *find (const Key& k) const
+	node_type *find(const Key &k) const
 	{
 		return find(_head, k);
 	}
@@ -523,7 +519,7 @@ public:
 
 	// 	while (cur)
 	// }
-/*
+	/*
 	size_t contains(node_type *target, const Content& val)
 	{
 		if (target == NULL || (target->fake))
@@ -541,7 +537,6 @@ public:
 	{
 		return contains(_head, val);
 	} */
-
 };
 
 #endif

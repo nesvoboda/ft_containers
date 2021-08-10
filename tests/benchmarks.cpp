@@ -30,7 +30,6 @@ Timer &Timer::operator=(const Timer &ref)
 	return (*this);
 }
 
-
 void benchmark_map()
 {
 	std::cout << "\033[1;34m--- MAP BENCHMARK ⚡ ---\033[0m" << std::endl;
@@ -45,9 +44,9 @@ void benchmark_map()
 	ft = insert_growing(200000, m1);
 	std::cout << "Ft: " << ft << std::endl;
 
-	std::cout << "Our map is " << (double) ft / (double) std << " times slower.   ";
+	std::cout << "Our map is " << (double)ft / (double)std << " times slower.   ";
 
-	if (((double) ft / (double) std) < 20.0 )
+	if (((double)ft / (double)std) < 20.0)
 	{
 		std::cout << "\033[1;32m[PASS]\033[0m" << std::endl;
 	}
@@ -55,7 +54,6 @@ void benchmark_map()
 	{
 		std::cout << "\033[1;31m[FAIL]\033[0m" << std::endl;
 	}
-	
 
 	std::cout << std::endl;
 }
@@ -74,9 +72,9 @@ void benchmark_vector()
 	ft = v_insert_growing(200000, v1);
 	std::cout << "Ft: " << ft << std::endl;
 
-	std::cout << "Our vector is " << (double) ft / (double) std << " times slower. ";
+	std::cout << "Our vector is " << (double)ft / (double)std << " times slower. ";
 
-	if (((double) ft / (double) std) < 20.0 )
+	if (((double)ft / (double)std) < 20.0)
 	{
 		std::cout << "\033[1;32m[PASS]\033[0m" << std::endl;
 	}
@@ -102,9 +100,9 @@ void benchmark_stack()
 	ft = s_insert_growing(200000, s1);
 	std::cout << "Ft: " << ft << std::endl;
 
-	std::cout << "Our stack is " << (double) ft / (double) std << " times slower. ";
+	std::cout << "Our stack is " << (double)ft / (double)std << " times slower. ";
 
-	if (((double) ft / (double) std) < 20.0 )
+	if (((double)ft / (double)std) < 20.0)
 	{
 		std::cout << "\033[1;32m[PASS]\033[0m" << std::endl;
 	}

@@ -1,8 +1,9 @@
 #ifndef BENCHMARKS_HPP
 
-#include <ctime>
+#	include <ctime>
 
-class Timer {
+class Timer
+{
 
 	std::clock_t _start;
 
@@ -15,13 +16,13 @@ public:
 	std::clock_t stop();
 };
 
-#include <iostream>
-#include <map>
-#include <vector>
-#include <stack>
-#include "../map.hpp"
-#include "../vector.hpp"
-#include "../stack.hpp"
+#	include "../map.hpp"
+#	include "../stack.hpp"
+#	include "../vector.hpp"
+#	include <iostream>
+#	include <map>
+#	include <stack>
+#	include <vector>
 
 // mapType must be a map to int, bool.
 template <typename MapType>
