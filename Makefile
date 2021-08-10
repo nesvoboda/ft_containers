@@ -1,4 +1,4 @@
-SRCS = tests/main.cpp 
+SRCS = tests/main.cpp tests/benchmarks.cpp
 OBJS = $(SRCS:.cpp=.o)
 NAME = run_tests
 CXXFLAGS = -Wall -Wextra -Werror -std=c++98
