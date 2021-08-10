@@ -1,3 +1,6 @@
+#ifndef ELEMENTEST_HPP
+# define ELEMENTEST_HPP
+
 #include <vector>
 #include <iostream>
 #include <stdlib.h>
@@ -164,3 +167,5 @@ void check_container(T comparator[], iterator first, iterator last)
 		i++;
 	}
 }
+
+#endif
