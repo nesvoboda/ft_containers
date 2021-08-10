@@ -1,7 +1,7 @@
 #ifndef STACK_HPP
 #define STACK_HPP
 
-#include "vector.hpp"
+#include "Vector.hpp"
 
 namespace ft
 {

@@ -19,9 +19,9 @@ public:
 #include <map>
 #include <vector>
 #include <stack>
-#include "../map.hpp"
-#include "../vector.hpp"
-#include "../stack.hpp"
+#include "../Map.hpp"
+#include "../Vector.hpp"
+#include "../Stack.hpp"
 
 // mapType must be a map to int, bool.
 template <typename MapType>
