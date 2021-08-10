@@ -17,4 +17,7 @@ fclean:		clean
 
 re:			fclean all
 
+test:		$(NAME)
+			./run_tests
+
 .PHONY:		clean fclean re all
