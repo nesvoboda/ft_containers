@@ -1,19 +1,19 @@
 #ifndef MAP_HPP
 #define MAP_HPP
 
-#include <memory>
 #include <cstddef> // ptrdiff_t
-#include <limits> // numeric_limits for max_size
+#include <limits>  // numeric_limits for max_size
+#include <memory>
 
-#include "map_util.hpp"
 #include "binary_tree.hpp"
+#include "map_util.hpp"
 #include "revIterator.hpp"
 #include "util.hpp"
 
 #ifdef __linux__
-# define LINUX 1
+#	define LINUX 1
 #else
-# define LINUX 0
+#	define LINUX 0
 #endif
 
 namespace ft
@@ -25,12 +25,12 @@ namespace ft
 		typedef NodeType node_type;
 
 		NodeType *_ptr;
-	public:
 
+	public:
 		// Nested types for iterator_traits
 		typedef bidirectional_iterator_tag iterator_category;
-		typedef IteratorValue * pointer;
-		typedef IteratorValue & reference;
+		typedef IteratorValue *pointer;
+		typedef IteratorValue &reference;
 		typedef IteratorValue value_type;
 		typedef ptrdiff_t difference_type;
 
@@ -137,6 +137,7 @@ namespace ft
 
 		// We need this to be able to access the underlying pointer (for instance,
 		// to erase an element). Map iterator doesn't have base() in std.
+		// This is also used in the std lib sources.
 		template <class, class, class, class>
 		friend class map;
 	};
@@ -146,21 +147,26 @@ namespace ft
 	// linux std lib. This allows us to get the coherent max_size from the
 	// allocator
 	template <class valueType>
-	class LinuxTreeNodeEmulator {
+	class LinuxTreeNodeEmulator
+	{
 
-		public: 
-			enum color { colorOne, colorTwo } _color;
-			LinuxTreeNodeEmulator(color c) : _color(c), one(NULL), two(NULL), three(NULL), val(valueType()) {};
+	public:
+		enum color
+		{
+			colorOne,
+			colorTwo
+		} _color;
+		LinuxTreeNodeEmulator(color c) : _color(c), one(NULL), two(NULL), three(NULL), val(valueType()){};
 
-			LinuxTreeNodeEmulator *one;
-			LinuxTreeNodeEmulator *two;
-			LinuxTreeNodeEmulator *three;
-			valueType val;
+		LinuxTreeNodeEmulator *one;
+		LinuxTreeNodeEmulator *two;
+		LinuxTreeNodeEmulator *three;
+		valueType val;
 	};
 
-	template <class Key,									   // map::key_type
-			  class T,										   // map::mapped_type
-			  class Compare = less<Key>,					   // map::key_compare
+	template <class Key,										// map::key_type
+			  class T,											// map::mapped_type
+			  class Compare = less<Key>,						// map::key_compare
 			  class Alloc = std::allocator<pair<const Key, T> > // map::allocator_type
 			  >
 	class map
@@ -173,29 +179,29 @@ namespace ft
 		typedef ft::pair<const key_type, mapped_type> value_type;
 		typedef Compare key_compare; //	The third template parameter (Compare)	defaults to: less<key_type>
 		// typedef Compare value_compare;													   //	Nested function class to compare elements	see value_comp
-		typedef Alloc allocator_type;																 //	The fourth template parameter (Alloc)	defaults to: allocator<value_type>
-		typedef typename allocator_type::reference reference;										 //	allocator_type::reference	for the default allocator: value_type&
-		typedef typename allocator_type::const_reference const_reference;							 //	allocator_type::const_reference	for the default allocator: const value_type&
-		typedef typename allocator_type::pointer pointer;											 //	allocator_type::pointer	for the default allocator: value_type*
-		typedef typename allocator_type::const_pointer const_pointer;								 //	allocator_type::const_pointer	for the default allocator: const value_type*
-		typedef mapIterator<value_type, ABSTNode<const key_type, mapped_type> > iterator;			 //	a bidirectional iterator to value_type	convertible to const_iterator
+		typedef Alloc allocator_type;																  //	The fourth template parameter (Alloc)	defaults to: allocator<value_type>
+		typedef typename allocator_type::reference reference;										  //	allocator_type::reference	for the default allocator: value_type&
+		typedef typename allocator_type::const_reference const_reference;							  //	allocator_type::const_reference	for the default allocator: const value_type&
+		typedef typename allocator_type::pointer pointer;											  //	allocator_type::pointer	for the default allocator: value_type*
+		typedef typename allocator_type::const_pointer const_pointer;								  //	allocator_type::const_pointer	for the default allocator: const value_type*
+		typedef mapIterator<value_type, ABSTNode<const key_type, mapped_type> > iterator;			  //	a bidirectional iterator to value_type	convertible to const_iterator
 		typedef mapIterator<const value_type, ABSTNode<const key_type, mapped_type> > const_iterator; //a bidirectional iterator to const value_type
-		typedef rev_iterator<iterator> reverse_iterator;											 // reverse_iterator<iterator>
-		typedef rev_iterator<const_iterator> const_reverse_iterator;								 // const_reverse_iterator	reverse_iterator<const_iterator>
-		typedef ptrdiff_t difference_type;															 // TODO implement in iter traits	a signed integral type, identical to: iterator_traits<iterator>::difference_type	usually the same as ptrdiff_t
-		typedef size_t size_type;																	 //	an unsigned integral type that can represent any non-negative value of difference_type	usually the same as size_t
+		typedef rev_iterator<iterator> reverse_iterator;											  // reverse_iterator<iterator>
+		typedef rev_iterator<const_iterator> const_reverse_iterator;								  // const_reverse_iterator	reverse_iterator<const_iterator>
+		typedef ptrdiff_t difference_type;															  // TODO implement in iter traits	a signed integral type, identical to: iterator_traits<iterator>::difference_type	usually the same as ptrdiff_t
+		typedef size_t size_type;																	  //	an unsigned integral type that can represent any non-negative value of difference_type	usually the same as size_t
 
 		// Constructors
 
 		// empty (1)
 		explicit map(const key_compare &comp = key_compare(),
-					 const allocator_type &alloc = allocator_type()) : _allocator(alloc), _base(comp, _allocator) {};
+					 const allocator_type &alloc = allocator_type()) : _allocator(alloc), _base(comp, _allocator){};
 
 		// range (2)
 		template <class InputIterator>
 		map(InputIterator first, InputIterator last,
 			const key_compare &comp = key_compare(),
-			const allocator_type &alloc = allocator_type()) : _allocator(alloc), _base(comp, _allocator) 
+			const allocator_type &alloc = allocator_type()) : _allocator(alloc), _base(comp, _allocator)
 		{
 			while (first != last)
 			{
@@ -204,7 +210,7 @@ namespace ft
 		};
 
 		// copy (3)
-		map(const map &copy) : _allocator(copy._allocator), _base(copy._base) {};
+		map(const map &copy) : _allocator(copy._allocator), _base(copy._base){};
 
 		~map(){};
 		map &operator=(const map &operand)
@@ -232,7 +238,7 @@ namespace ft
 				return nodeAlloc.max_size();
 				// return get_allocator().max_size() / (nodeSize - sizeof(bool) * 35);
 			}
-				// return max_ptrdiff / (nodeSize); // this return corrseponds to the std lib.
+			// return max_ptrdiff / (nodeSize); // this return corrseponds to the std lib.
 			else
 				return max_ptrdiff / (nodeSize / 2); // this return corrseponds to the std lib.
 		}
@@ -394,13 +400,13 @@ namespace ft
 
 		// template <class Key, class T, class Compare, class Alloc>
 		class value_compare
-		{ // in C++98, it is required to inherit binary_function<value_type,value_type,bool>
-			friend class map;
+		{ // in C++98, it is required to inherit binary_function<value_type,value_type,bool> ..
 
 		protected:
 			Compare comp;
-			value_compare(Compare c) : comp(c) {} // constructed with map's comparison object
+
 		public:
+			value_compare(Compare c) : comp(c) {} // constructed with map's comparison object
 			typedef bool result_type;
 			typedef value_type first_argument_type;
 			typedef value_type second_argument_type;
@@ -463,7 +469,7 @@ namespace ft
 
 			while (b != end())
 			{
-				if (!(_base._comp(b._ptr->data.first, k)))
+				if (!(_base._comp(b->first, k)))
 					return const_iterator(b);
 				b++;
 			}
@@ -476,7 +482,7 @@ namespace ft
 
 			while (b != end())
 			{
-				if ((_base._comp(k, b._ptr->data.first)))
+				if ((_base._comp(k, b->first)))
 					return b;
 				b++;
 			}
@@ -489,7 +495,7 @@ namespace ft
 
 			while (b != end())
 			{
-				if ((_base._comp(k, b._ptr->data.first)))
+				if ((_base._comp(k, b->first)))
 					return const_iterator(b);
 				b++;
 			}
@@ -510,7 +516,6 @@ namespace ft
 		{
 			return _allocator;
 		}
-
 
 	private:
 		Alloc _allocator;

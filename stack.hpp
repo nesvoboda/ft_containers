@@ -12,29 +12,28 @@ namespace ft
 		Container _base;
 
 	public:
-
-	typedef T value_type; //	The first template parameter (T)	Type of the elements
+		typedef T value_type;			  //	The first template parameter (T)	Type of the elements
 		typedef Container container_type; //	The second template parameter (Container)	Type of the underlying container
-		typedef size_t size_type; //	an unsigned integral type	usually the same as size_t
+		typedef size_t size_type;		  //	an unsigned integral type	usually the same as size_t
 
-		explicit stack (const container_type& ctnr = container_type()) : _base(ctnr) {};
+		explicit stack(const container_type &ctnr = container_type()) : _base(ctnr){};
 
 		bool empty() const
 		{
 			return _base.empty();
 		}
 
-		value_type& top()
+		value_type &top()
 		{
 			return _base.back();
 		}
 
-		const value_type& top() const
+		const value_type &top() const
 		{
 			return _base.back();
 		}
 
-		void push (const value_type& val)
+		void push(const value_type &val)
 		{
 			_base.push_back(val);
 		}
@@ -49,37 +48,35 @@ namespace ft
 			return _base.size();
 		}
 
-		friend bool operator== (const stack& lhs, const stack& rhs)
+		bool operator==(const stack &rhs) const
 		{
-			return lhs._base == rhs._base;
+			return this->_base == rhs._base;
 		};
 
-		friend bool operator!= (const stack& lhs, const stack& rhs)
+		bool operator!=(const stack &rhs) const
 		{
-			return lhs._base != rhs._base;
+			return this->_base != rhs._base;
 		};
 
-		friend bool operator<  (const stack& lhs, const stack& rhs)
+		bool operator<(const stack &rhs) const
 		{
-			return lhs._base < rhs._base;
+			return this->_base < rhs._base;
 		};
 
-		friend bool operator<= (const stack& lhs, const stack& rhs)
+		bool operator<=(const stack &rhs) const
 		{
-			return lhs._base <= rhs._base;
+			return this->_base <= rhs._base;
 		};
 
-		friend bool operator>  (const stack& lhs, const stack& rhs)
+		bool operator>(const stack &rhs) const
 		{
-			return lhs._base > rhs._base;
+			return this->_base > rhs._base;
 		};
 
-		friend bool operator>= (const stack& lhs, const stack& rhs)
+		bool operator>=(const stack &rhs) const
 		{
-			return lhs._base >= rhs._base;
+			return this->_base >= rhs._base;
 		}
-
-
 	};
 
 }

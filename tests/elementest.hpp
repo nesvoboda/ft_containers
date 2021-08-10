@@ -1,9 +1,9 @@
 #ifndef ELEMENTEST_HPP
-# define ELEMENTEST_HPP
+#define ELEMENTEST_HPP
 
-#include <vector>
 #include <iostream>
 #include <stdlib.h>
+#include <vector>
 
 bool lastTestFailed = false;
 int failureLine = 0;

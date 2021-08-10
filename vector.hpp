@@ -1,11 +1,11 @@
 #ifndef VECTOR_HPP
 #define VECTOR_HPP
 
-#include <memory>
-#include <stdexcept>
+#include <cstddef> // ptrdiff_t
 #include <iostream>
 #include <limits>
-#include <cstddef> // ptrdiff_t
+#include <memory>
+#include <stdexcept>
 
 #include "revIterator.hpp"
 #include "util.hpp"
@@ -14,9 +14,9 @@
 #define RESERVE_FACTOR 2
 
 #ifdef __linux__
-# define LINUX 1
+#	define LINUX 1
 #else
-# define LINUX 0
+#	define LINUX 0
 #endif
 
 namespace ft
@@ -70,7 +70,7 @@ namespace ft
 			// _alloc.construct(ret, )
 			for (size_type i = 0; i < how_many; i++)
 			{
-				_alloc.construct(ret+i, value_type());
+				_alloc.construct(ret + i, value_type());
 			}
 			return ret;
 		}
@@ -79,13 +79,12 @@ namespace ft
 		{
 			for (size_type i = 0; i < how_many; i++)
 			{
-				_alloc.destroy(p+i);
+				_alloc.destroy(p + i);
 			}
 			_alloc.deallocate(p, how_many);
 		}
 
 	public:
-
 		// default (1)
 		explicit vector(const allocator_type &alloc = allocator_type())
 		{
@@ -267,7 +266,6 @@ namespace ft
 
 		reference back() { return *(_base + _size - 1); };
 		const_reference back() const { return *(_base + _size - 1); };
-
 
 		// range (1)
 		template <class InputIterator>
@@ -455,8 +453,8 @@ namespace ft
 		typedef ptrdiff_t difference_type;
 		typedef Val value_type;
 		typedef random_access_iterator_tag iterator_category;
-		typedef value_type* pointer;
-		typedef value_type& reference;
+		typedef value_type *pointer;
+		typedef value_type &reference;
 
 	private:
 		Tt *_ptr;
@@ -465,7 +463,7 @@ namespace ft
 		vectorIterator(void) : _ptr(NULL){};
 		vectorIterator(const vectorIterator &copy) : _ptr(copy._ptr){};
 		vectorIterator(Tt *ptr) : _ptr(ptr){};
-		
+
 		vectorIterator &operator=(const vectorIterator &op)
 		{
 			_ptr = op._ptr;
@@ -479,7 +477,7 @@ namespace ft
 			return vectorIterator<Tt, const Val>(this->_ptr);
 		}
 
-		~vectorIterator() {};
+		~vectorIterator(){};
 
 		Val &operator*(void)
 		{
@@ -583,7 +581,6 @@ namespace ft
 		{
 			return (!((*this) == rhs));
 		}
-
 	};
 
 	template <typename Tt, typename Val>
@@ -592,7 +589,6 @@ namespace ft
 		return vectorIterator<Tt, Val>(rhs.base() + n);
 	};
 
-	
 	// (1)
 	template <class T, class Alloc>
 	bool operator==(const vector<T, Alloc> &lhs, const vector<T, Alloc> &rhs)
