@@ -34,9 +34,6 @@ namespace ft
 		typedef IteratorValue value_type;
 		typedef ptrdiff_t difference_type;
 
-		// TODO check other nested types
-		// TODO check visibility
-
 		mapIterator() : _ptr(NULL){};
 		mapIterator(NodeType *ptr) : _ptr(ptr){};
 
