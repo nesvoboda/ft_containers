@@ -3493,6 +3493,18 @@ TEST(VectorReverseIteratorValueAssignment)
 	}
 }
 
+TEST(MakePair)
+{
+	std::pair<int, bool> sp;
+	ft::pair<int, bool> fp;
+
+	sp = std::make_pair(5, true);
+	fp = ft::make_pair(5, true);
+
+	ASSERT_EQ(sp.first, fp.first);
+	ASSERT_EQ(sp.second, fp.second);
+}
+
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 // TESTS END

@@ -38,6 +38,11 @@ std::clock_t insert_growing(size_t times, MapType map)
 		map.find(i);
 	}
 
+	// Copy-construction and destruction
+	{
+		MapType new_map(map);
+	}
+
 	return t.stop();
 }
 
@@ -57,6 +62,13 @@ std::clock_t v_insert_growing(size_t times, VectorType vector)
 		tmp = vector[i];
 	}
 
+	{
+
+		VectorType newVector(vector); // copy and destruction
+	}
+
+	vector.erase(vector.begin(), vector.end()); // erase
+
 	return t.stop();
 }
 
@@ -71,6 +83,10 @@ std::clock_t s_insert_growing(size_t times, StackType stack)
 	for (size_t i = 0; i < times; i++)
 	{
 		stack.push(i); // insert a constantly growing range of integers
+	}
+
+	{
+		StackType newStack(stack); //copy and destruction
 	}
 
 	for (size_t i = 0; i < times; i++)
